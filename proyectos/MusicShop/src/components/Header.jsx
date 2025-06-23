@@ -1,6 +1,8 @@
-function Header({ cart }) {
-    const isEmpty = () => cart.length === 0
-    const calcularTotal = () => cart.reduce((total, elemento) => (total + (elemento.price * elemento.count)), 0)
+import {useMemo} from 'react'
+
+function Header({ cart, removeFromCart, changeCount, cleanCart }) {
+    const isEmpty = useMemo(() => cart.length === 0, [cart])
+    const calcularTotal = useMemo(() => cart.reduce((total, elemento) => (total + (elemento.price * elemento.count)), 0), [cart])
 
     return (
         <header className="py-5 header">
@@ -16,7 +18,7 @@ function Header({ cart }) {
                             <img className="img-fluid" src="./img/carrito.png" alt="imagen carrito" />
 
                             <div id="carrito" className="bg-white p-3">
-                                {isEmpty()
+                                {isEmpty
                                     ? (<p className="text-center">El carrito esta vacio</p>)
                                     : (
                                         <><table className="w-100 table">
@@ -43,6 +45,7 @@ function Header({ cart }) {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
+                                                                onClick={() => changeCount(element.id, false)}
                                                             >
                                                                 -
                                                             </button>
@@ -50,6 +53,7 @@ function Header({ cart }) {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
+                                                                onClick={() => changeCount(element.id, true)}
                                                             >
                                                                 +
                                                             </button>
@@ -58,6 +62,7 @@ function Header({ cart }) {
                                                             <button
                                                                 className="btn btn-danger"
                                                                 type="button"
+                                                                onClick={() => removeFromCart(element.id)}
                                                             >
                                                                 X
                                                             </button>
@@ -68,11 +73,11 @@ function Header({ cart }) {
                                             </tbody>
                                         </table>
 
-                                            <p className="text-end">Total a pagar: <span className="fw-bold">{calcularTotal()}€</span></p>
+                                            <p className="text-end">Total a pagar: <span className="fw-bold">{calcularTotal}€</span></p>
                                         </>
                                     )
                                 }
-                                <button className="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                                <button className="btn btn-dark w-100 mt-3 p-2" onClick={cleanCart}>Vaciar Carrito</button>
                             </div>
                         </div>
                     </nav>

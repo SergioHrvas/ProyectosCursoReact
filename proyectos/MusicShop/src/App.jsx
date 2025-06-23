@@ -4,9 +4,29 @@ import { useState, useEffect } from 'react'
 import { db } from './data/db.js'
 
 function App() {
-  const [data, setData] = useState(db)
 
-  // Si fuese una API
+  // Carrito inicial (recuperamos de localStorage)
+  const initialCart = () => {
+    const localStorageCart = localStorage.getItem('cart')
+    
+    // Comprobamos si hay algo
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+  }
+
+  //Estados
+  const [cart, setCart] = useState(initialCart())
+  const [data] = useState(db)
+
+  //Constantes
+  const MAX_ITEMS = 10;
+  const MIN_ITEMS = 1;
+
+  // Guaramos persistencia de datos
+  useEffect(()=> {
+        localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
+
+   // Si fuese una API
   /*
   const [data, setData] = useState([])
 
@@ -14,9 +34,7 @@ function App() {
     setData(db)
   }, [])
   */
-
-  const [cart, setCart] = useState([])
-
+  
   function addToCart(element){
     //Buscamos si existe el elemento en el carrito
     const itemExists = cart.findIndex((item) => element.id === item.id)
@@ -25,8 +43,8 @@ function App() {
       setCart([...cart, {...element, count: 1}])
     }
     else{ // Ya existe en el carrito
-      setCart(cart.map((item, indice) =>
-        indice === itemExists
+      setCart(prevCart => prevCart.map((item, indice) =>
+        (indice === itemExists && item.count < MAX_ITEMS)
           ? {...item, count: item.count + 1} 
           : item
       ))
@@ -39,10 +57,33 @@ function App() {
     }
   }
 
+  function removeFromCart(id){
+    //setCart(cart.filter(element => element.id !== id))
+
+    setCart(prevCart => prevCart.filter(element => element.id !== id))
+  }
+
+  function changeCount(id, inc){
+    if (inc === true) //INCREMENTAR
+      setCart(prevCart => prevCart.map(element => (element.id === id && element.count < MAX_ITEMS) ? {...element, count: element.count + 1} : element))
+    else // DECREMENTAR
+      setCart(prevCart => prevCart.map(element => (element.id === id && element.count > MIN_ITEMS )? {...element, count: element.count - 1} : element))
+  }
+
+  function cleanCart(){
+    setCart([])  
+  }
+
+
   return (
     <>
         {/* Cabecera */}
-        <Header cart={cart}/>
+        <Header 
+          cart={cart} 
+          removeFromCart={removeFromCart}
+          changeCount={changeCount}
+          cleanCart={cleanCart}
+        />
 
 
         <main className="container-xl mt-5">
@@ -64,7 +105,7 @@ function App() {
 
       <footer className="bg-dark mt-5 py-5">
           <div className="container-xl">
-              <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarLA - Todos los derechos Reservados</p>
+              <p className="text-white text-center fs-4 mt-4 m-md-0">MusicShop - Todos los derechos Reservados</p>
           </div>
       </footer>
     </>

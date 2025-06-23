@@ -279,3 +279,25 @@ objeto = { var1, var2 }
     - Si queiro actualizar la cantidad de un elemento de un array, no puedo hacer ``cart[itemExists].count++`` porque estoy modificando el state directamnte (lo estoy mutando y el state es inmutable). Para hacerlo bien, debo crear una copia con ``const updatedCart = ...cart``y luego hacer el count++ sobre esa copia. Finalmente, usamos setCart(updatedCart) para modificar el estado correctamente. El motivo de esto es que si no lo hago mediante esa función, react no detectará el cambio porque la referencia del objeto/array seguirá siendo la misma aunque sus propiedades cambien.
 
     - **State derivado**: Si tenemos un state (por ejemplo, array) podemos crear una función/variable cuyo valor dependa de ese estado. Por ejemplo: si tenemos el estado cart que es un array, podemos declarar la variable ``const isEmpty = () => cart.length === 0``. De esta forma podemos dejar la lógica fuera del template y mejorar la legibilidad del código.
+
+    - **hook useMemo**: parecido al Computed Properties de VueJS. Simplifica los templates y está enfocado al performance porque evita que el código del componente se ejecute si alguna de las dependencias que vamos a definir en ese useMemo no han cambiado. Renderizar completamente la app cada vez que se cambia el state, puede ralentizar la aplicación. Con useMemo podemos decirle: no hagas render completo de la app hasta que no cambie x cosa.
+        - Por ejemplo: ``const isEmpty = useMemo(() => cart.length === 0, [cart])`` -> Vuelve a hacer el render cada vez que cambie el carrito. Ese código solo se ejecuta cuando carrito se haya modificado.
+        - No se usa en todos lados. ES enfocado a performance, pero como lo que hace es cachear los resultados entre renders, a veces puede ser contraproducente cachear tanto. 
+
+    - **Persistencia**: Utilizaremos LocalStorage.
+        - LocalStorage.setItem:
+            - Primer parametro: nombre de lo que quiero almacenar
+            - Segundo parametro: valor (no permite objetos complejos)
+
+    - El estado en react es ASINCRONO: no se actualiza inmediatamente sino que tarda unos milisegundos. Si fuera síncrono, no podriamos interactuar con la pantalla hasta que se guarde, lo que afectaría al rendimiento. Cuando se hace setEstado() se sigue con el código a continuación. -> Utilizamos useEffect para asegurarnos de hacer algo cuando el estado se guarde por completo (como la persistencia).
+
+    - Al hacer
+    ```
+    useEffect(()=> {
+            localStorage.setItem('cart', JSON.stringify(cart))
+    }, [cart])
+    ```
+    le estamos diciendo que se ejecute cada vez que el carrito cambie pero también se ejecuta una vez cuando el component esté listo (similar a cuando no tiene dependencias). Por tanto, como el carrito esta vacío (``const [cart, setCart] = useState([])``), le estamos estableciendo el carrito vacío al localStorage al principio. Debemos revisar primero si hay algo en localStorage (si no hay nada, le asignamos el vacío.)
+
+
+    - **Deploy**: Ahora mismo tenemos todo en desarrollo pero una vez hemos terminado el proyecto, hay que construirlo con npm run build. Este comando va hacer unas mejoras de performance haciendo una versión simplificada y ligera.
