@@ -4,9 +4,10 @@ import type { OrderProduct, Product } from "../types"
 export default function useOrder(){
     
     const MAX_ITEMS = 10
-    const MIN_ITEMS = 0
 
     const [order, setOrder] = useState<OrderProduct[]>([])
+
+    const [tip, setTip] = useState(0)
 
     const addProductToOrder = (element: Product) => {
         const productExists = order.find(item => item.id === element.id)
@@ -22,8 +23,22 @@ export default function useOrder(){
 
     }
     
+    const removeProductFromOrder = (id: OrderProduct['id']) => {
+        setOrder(order.filter(element => element.id !== id))
+    }
+
+    const saveOrder = () => {
+        console.log("LLEGO")
+        setTip(0)
+        setOrder([])
+    }
+    
     return {
+        order,
+        tip,
+        setTip,
         addProductToOrder,
-        order
+        removeProductFromOrder,
+        saveOrder
     }
 }

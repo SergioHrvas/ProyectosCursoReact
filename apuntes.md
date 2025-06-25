@@ -199,6 +199,10 @@ Puede no ser necesario crear el type y simplemente sustituir los lugares donde p
 
 - Los **generics** nos permiten escribir código más flexible y reutilizable. COn ``<>``podemos especificar un tipo de dato para que no solo lo infiera por su valor inicial. Esto es util cuando tienes un type un poco más complejo. Por ejemplo: ``const [order, setOrder] = useState<OrderProducto[]>([])``
 
+- Para convertir de String a number se puede:
+    - Poner un signo + delante: ``onChange={e => setTip(+e.target.value)}``
+    - poner e.target.valueAsNumber (no funciona con los input de tipo radio)
+    - 
 
 ## TAILWIND CSS
 Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase contiene propiedades CSS, en taildind cada clase es una propiedad de CSS con un nombre similar.
@@ -380,6 +384,38 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
     - **hook useMemo**: parecido al Computed Properties de VueJS. Simplifica los templates y está enfocado al performance porque evita que el código del componente se ejecute si alguna de las dependencias que vamos a definir en ese useMemo no han cambiado. Renderizar completamente la app cada vez que se cambia el state, puede ralentizar la aplicación. Con useMemo podemos decirle: no hagas render completo de la app hasta que no cambie x cosa.
         - Por ejemplo: ``const isEmpty = useMemo(() => cart.length === 0, [cart])`` -> Vuelve a hacer el render cada vez que cambie el carrito. Ese código solo se ejecuta cuando carrito se haya modificado.
         - No se usa en todos lados. ES enfocado a performance, pero como lo que hace es cachear los resultados entre renders, a veces puede ser contraproducente cachear tanto. 
+
+    - **hook useCallback**: Alternativa a useMemo. Funcionan igual pero la forma de llamarlas es diferente (como funcion en vez de como variable)
+    
+    Pasaríamos de esto:
+    ```
+    const subTotal = useMemo(() =>
+        order.reduce((total, element) => total + element.count * element.price, 0)
+    , [order])
+
+    const tipTotal = useMemo(() =>
+        subTotal * tip
+    , [tip, subTotal])
+    
+    const total = useMemo(() =>
+        subTotal + tipTotal
+    , [subTotal + tipTotal])
+    ```
+    
+    A esto:
+    ```
+    const subTotal = useCallback(() =>
+        order.reduce((total, element) => total + element.count * element.price, 0)
+    , [order])
+
+    const tipTotal = useCallback(() =>
+        subTotal() * tip
+    , [tip, order])
+    
+    const total = useCallback(() =>
+        subTotal() + tipTotal()
+    , [tip, order])
+    ``` 
 
     - **Persistencia**: Utilizaremos LocalStorage.
         - LocalStorage.setItem:
