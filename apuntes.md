@@ -195,6 +195,42 @@ export interface CartItem extends Instrument & {
 ``export type InstrumentId = Pick<Instrument, 'id'>``
 También podemos utilizar algo que se conoce com lookup que es: 
 ``export type InstrumentId = Instrument['id']``
+Puede no ser necesario crear el type y simplemente sustituir los lugares donde ponemos id a Instument['id'] y de esta forma el tipo de dato inferido siempre será ese
+
+- Los **generics** nos permiten escribir código más flexible y reutilizable. COn ``<>``podemos especificar un tipo de dato para que no solo lo infiera por su valor inicial. Esto es util cuando tienes un type un poco más complejo. Por ejemplo: ``const [order, setOrder] = useState<OrderProducto[]>([])``
+
+
+## TAILWIND CSS
+Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase contiene propiedades CSS, en taildind cada clase es una propiedad de CSS con un nombre similar.
+- Ventajas:
+    - Escribimos código CSS en los componentes sin hojas externas.
+    - No es necesario preocuparse por la hetencia de CSS. (evitamos uso de important y demas)
+    - No hay que preocuparse por cómo nombrar las clases.
+
+- Instalamos con: 
+    ```
+    npm install -D tailwindcss@3 postcss autoprefixer
+    npx tailwindcss init -p
+    ```
+    - Vemos que se crean dos archivos. A tailwind.config.js le agregamos
+    ```
+      content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    ```
+    De esta forma le estamos especificando en qué archivos o dónde va a encontrar codigo HTML que va a tener clases de CSS. De esta forma una vez construyamos el proyecto, solo va a tomar las clases del framework que hemos utilizado y crear una hoja de estilos solo con esas clases (a diferencia de bootstrap que incluye las miles de lineas de clases predefinidas). 
+
+    - Añadimos al index.css 
+    ```
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    ```
+    Esto indica que vamos a utilizar talwind y queremos habilitar esos componentes y utilidades.
+    - Cuando ya tenemos configurado tailwind, vemos que todo tiene la misma apariencia (h1 y p por ejemplo). Tailwind quita todos los estilos para que comencemos a agregar la apariencia que deseemos a cada elemento.
+
+    - ``grid md:grid-cols-2`` hace que al disminuir el ancho de la página, las columnas se apile una encima de otra verticalmente (responsive)
 
 ## REACT VITE
 
@@ -369,3 +405,6 @@ También podemos utilizar algo que se conoce com lookup que es:
         - Los hooks son funciones JS con algunas reglas. Deben seguir la convención de react useNombredelhook. Un hook solo debe tener lógica y no presentación.
 
         - Al llamar al hook personalizado, estoy creando algo como "instancias" de una clase. Si llamamos dos veces a useHook es como si creara dos estados distintos. No se comparten, no se conectan. Son dos distintos. 
+
+    - Con el plugin de React snippets, podemos escribir ``rfc`` o ``rafc`` para crear la base de un componente
+
