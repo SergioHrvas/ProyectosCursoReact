@@ -134,6 +134,67 @@ objeto = { var1, var2 }
 
 - Para asignar un elemento creado dentro de otro, elementoPadre.appendChild(nuevoElemento)
 
+## TYPESCRIPT
+- Es un lenguaje de programación opensource de Microsfot. Es un superconjunto tipado de JS -> cualquier código JS válido es también código TS válido
+- Agrega un sistema de tipos estático a JS, lo que permite detectar errores y proporcionar herramientas de desarrollo más sólidas.
+- Ventajas:
+    - Permite especificar los tipos de variable, parámetros de función, valores de retorno... esto da la capacidad de comprobar los tipos durante la compilación y detectar posibles errores antes de que se ejecute el código.+
+- TS con React:
+    - Una vez escrito el código TS, se compila a JS.
+    - React y Vite incluyen soporte a JS. 
+    - Es un estándar para crear aplicaciones React, Angular, VueJS
+- Al crear el proyecto React en TS:
+    - La estructura es la misma excepto los dos ficheros tsconfig -> configuración de typescript con reglas para compilar.
+    - Los archivos son tsx en vez de jsx
+- TS utiliza inferencia para decir: esta variable es de X tipo o nula. Para asegurarse que no es nula, podemos decir "as Tipodedato" pero no es muy buena práctica porque le estamos diciendo algo como "confía en mí". Podemos utilizar entonces el Assertion notnull (!) -> le decimos "no va a ser null"
+
+- Primitive Types son los que soporta TS de forma nativa: number, string, boolean, null y undefined 
+
+- Los arrays tienen una sintáxis especial para crearlos. ``const db: Instrument[] = [elemento1, elemento2]``
+
+- **Types e interfaces**: Pueden ser utilizadas de forma alterna y hay muy pocas diferencias entre ambos. Es una forma de crear una estructura o agrupar propiedades de un objeto
+
+- **Tipo de dato any**: Si nos fijamos podemos asignar una variable un string, luego un number... etc. Esto hay que evitarlo en TS sobre todo. A eso se refiere el tipo de dato any -> puede recibir cualquier tipo de dato, puede ser reescrito en cualquier momento. Llenarlo de any es como no usar any. Hay que dar mas información
+
+- Para dar esta información de tipo de datos en los props, hay dos formas de hacerlo:
+    - Inline type: ``function Instrument({instrument, addToCart} : {instrument: Instrument, addToCart: (item: Instrument) => void})`` -> Es mas facil tener errores
+    - Crear type separado para los props
+
+- Es bueno reutilizar los types para la consistencia. Dos formas de hacerlo:
+    - Creamos un archivo types.d.ts en src. Pegamos el tipo de dato que queremos reutilizar y vemos que no da errores. el ``.d``del fichero no se necesita importar. PEro no es recomendable hacerlo de esta forma.
+    - Crear carpeta types, dentro index.ts con los tipos y export y los importamos con ``import type { Instrument } from "../types"``
+
+- Al obtener datos de localStorage o de fetchAPI, a ts se le hace muy dificil inferir el tipo de dato -> es externo, se le complica.
+
+- Herencia entre types: para simplificar el codigo es bueno utilizar herencia de la siguiente forma: 
+```
+export type CartItem = Instrument & {
+    count: number
+}
+```
+
+si CartItem lo definimos como interfaz sería: 
+```
+export interface CartItem extends Instrument & {
+    count: number
+}
+```
+
+- **Utility Types**: https://www.typescriptlang.org/docs/handbook/utility-types.html
+    - Sintáxis un poco extraña
+    - Pick : Nos permite escoger ciertos elementos de otro type.
+
+    ``export type CartItem = Pick<Element, 'id | 'name' | 'price' > & {
+        count: number
+    }``
+
+    - Omit: Quita ciertos atributos de otro type.
+    - Hay más en la documentación
+
+- Podemos tomar el id como number con id: number y se solucionarían los problemas. Pero qué pasa si en algún momento migramos de bd de una que utiliza id como numeros a string. Habría que cambiar todas las partes del código donde se toma el id como string. Queremos que los cambios sean lo mas sencillos posibles. Creamos un type llamado InstrumentId:
+``export type InstrumentId = Pick<Instrument, 'id'>``
+También podemos utilizar algo que se conoce com lookup que es: 
+``export type InstrumentId = Instrument['id']``
 
 ## REACT VITE
 
@@ -301,3 +362,10 @@ objeto = { var1, var2 }
 
 
     - **Deploy**: Ahora mismo tenemos todo en desarrollo pero una vez hemos terminado el proyecto, hay que construirlo con npm run build. Este comando va hacer unas mejoras de performance haciendo una versión simplificada y ligera.
+
+    - **Crear hooks propios**: Se trata de incorporar state y otros hooks de react a nuestro código para poderlo reutilizar en otros proyectos. De esta forma podemos organizar el código para que el hook se encargue de toda la lógica del state mientras que los componentes se encarguen de mostrar la información
+        - Ventajas: El código tendrá todas las ventajas de react (effects, state, integrar otros hooks, performance), reutilizable para otros proyectos y fácil de escribir las pruebas/testing.
+
+        - Los hooks son funciones JS con algunas reglas. Deben seguir la convención de react useNombredelhook. Un hook solo debe tener lógica y no presentación.
+
+        - Al llamar al hook personalizado, estoy creando algo como "instancias" de una clase. Si llamamos dos veces a useHook es como si creara dos estados distintos. No se comparten, no se conectan. Son dos distintos. 
