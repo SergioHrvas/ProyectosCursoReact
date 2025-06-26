@@ -444,3 +444,49 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - Con el plugin de React snippets, podemos escribir ``rfc`` o ``rafc`` para crear la base de un componente
 
+    - Se puede poner el estado y las funciones en un hook personalizado como se ha explicado antes y es correcto, pero cuando vamos teniendo states mas complejos, podemos almacenarlos en **reducers**, que son una forma de almacenar el state. No es de forma global, es un archivo aparte en el cual vamos colocando el state y utilizamos un hook llamado useReducer. 
+
+    - **HOOK USEREDUCER**: Aparte de un hook nuevo es la base de herramientas como Zustand y Redux Toolkit que se explicarán más adelante.
+        - UseReducer es una alternativa de useState (está basado en él).
+        - Es un hook para manejar el state. Permite agregar un reducer a los componentes.
+        - Simplifica la administración del estado en las aplicaciones.
+        - Se utiliza para manejar estados más complejos y transiciones de estado que involucran lógica más complicada. Mientras que *useState* es ideal para manejar estados simples, useReducer es más idóneo para situaciones donde el nuevo estado depende del anterior o cuando hay varios sub-valores o lógica condicional a considerar (por ejemplo múltiples states que se actualizan en base a ciertas acciones). 
+        - Sintáxis:
+            - ``const [state, dispatch] = useReducer(reducer, initialState):``
+            - Reducer: Función que toma el estado actual y una acción y devuelve un nuevo estado.
+            - Estado inicial: Estado inicial del reducer (cómo va a iniciar el state y en base a las interacciones del usuario, se irá actualizando)
+        - Términos importantes:
+            - state: valor del estado cuya lógica se maneja dentro del Reducer.
+            - initialState
+            - Actions: acciones o funciones que manejan toda la lógica para modificar el state. Básicamente es una función que desde afuera (desde el componnete) llega y modificia el state. Muy similar a las funciones que exportamos en nuestro custom hook 
+            - Payload: información que modifica el state (similar a los customhooks, donde teníamos una función y le pasábamos un id o un objeto con la información modificando el state)
+            - Dispatch: función que manda llamar la acción con el payload.
+
+        - Preparación:
+        ```
+        // Type que describirá lo que pasará en el reducer
+        export type ActivityActions = {
+
+        }
+
+        // Tipo del estado
+        type ActivityState = {
+            activities : Activity[]
+        }
+
+        // Estado
+        export const initialState: ActivityState = {
+            activities: []
+        }
+
+        // Conecta las acciones y el estado
+        export const activityReducer = (
+            state: ActivityState = initialState,
+            action: ActivityActions
+        ) => {
+            
+        }
+        ```
+        - Una acción consta de dos partes:
+            - El type: descripcion
+            - Payload: información que modifica o vamos a agregar al state
