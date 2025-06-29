@@ -1,23 +1,33 @@
 import { categories } from "../data/categories"
-import { useState, type ActionDispatch, type ChangeEvent, type FormEvent } from "react"
+import {v4 as uuidv4} from 'uuid'
+import { useEffect, useState, type ActionDispatch, type ChangeEvent, type FormEvent } from "react"
 import type { Activity } from '../types'
-import type { ActivityActions } from "../reducers/activityReducer"
+import type { ActivityActions, ActivityState } from "../reducers/activityReducer"
+
 
 type FormProps = {
-    dispatch: ActionDispatch<[action: ActivityActions]>
+    dispatch: ActionDispatch<[action: ActivityActions]>,
+    state: ActivityState
 }
 
-const initialState = {
+const initialState : Activity = {
+    id: uuidv4(), // id único
     category: 1,
     name: "",
     calories: 0
   }
 
 
-export const Form = ({dispatch}: FormProps) => {
+export const Form = ({dispatch, state}: FormProps) => {
 
   // Estado
   const [activity, setActivity] = useState<Activity>(initialState)
+
+  useEffect(() => {
+    if(state.currentActivityId){
+        setActivity(state.activities.filter(act => act.id === state.currentActivityId)[0])
+    }
+  }, [state.currentActivityId])
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement> ) => {
     setActivity(
@@ -41,7 +51,10 @@ export const Form = ({dispatch}: FormProps) => {
 
      // Reiniciamos formulario
      setActivity(
-        initialState
+        {
+            ...initialState,
+            id: uuidv4()
+        }
      )
   }
 
