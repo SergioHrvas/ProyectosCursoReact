@@ -490,3 +490,5 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         - Una acción consta de dos partes:
             - El type: descripcion
             - Payload: información que modifica o vamos a agregar al state
+
+    - Todo esto del useReducer está genial, pero podemos evitar estar pasandos esos props de state y de dispatch a los componentes utilizando ContextAPI o algun otro manejador de estados globales. 
