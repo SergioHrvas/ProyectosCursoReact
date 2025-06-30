@@ -1,7 +1,6 @@
 import { BudgetForm } from "./components/BudgetForm"
 
 function App() {
-
   return (
     <>
       <header className="bg-lime-600 py-8 max-h-70">
