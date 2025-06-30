@@ -491,4 +491,112 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
             - El type: descripcion
             - Payload: información que modifica o vamos a agregar al state
 
-    - Todo esto del useReducer está genial, pero podemos evitar estar pasandos esos props de state y de dispatch a los componentes utilizando ContextAPI o algun otro manejador de estados globales. 
+    - Todo esto del useReducer está genial, pero podemos evitar estar pasandos esos props de state y de dispatch a los componentes utilizando ContextAPI o algun otro manejador de estados globales. Si el proyecto empieza a ser más complejo, tener un estado global nos puede ahorrar muchas líneas de código.
+
+    - **Context API**: Nos permite manejar un estado global sin instalar dependencias porque ya viene incluido en React. 
+        - Permite tener un estado global en la aplicacion: solo se tiene una instancia del state que se puede acceder desde cualquier componente sin tener que pasarlo por distintos componentes vía props.
+        - Si colocamos un state en un custom hook o reducer, lo que hemos hecho ha sido pasarlo en el App.tsx a los demás componentes vía props. Si comenzamos a instanciar ese reducer o ese custom hook, tendríamos múltiples instancias del state. Por tanto las funciones no se pueden comunicar correctamente, solo podrían hacerlo con el state que fue insanciado. Esto lo solucionamos con ContextAPI: solo vamos a tener una instancia del state porque va a estar fuera de la aplicación: la va a rodear.
+        - Utilizaremos el hook **useContext** (otras opciones son Redux Toolkit o Zustand). Context es muy bueno porque no requiere dependencias, pero su boilerplate para configurarlo puede ser complejo (de hecho vamos a crear nuestro context y un custom hook para poder acceder directamente a ese context)
+        - Creamos la carpeta de context en src y creamos dentro el fichero budgetContext.tsx (en este caso)
+            - Creamos el provider primero que todo. De ahí vienen los datos. 
+            ```
+            export const BudgetProvider = () => {
+
+                return (
+                    
+                )
+            }
+            ```
+            - Si queremos acceder al state y a las acciones del reducer, hay que agregar el useReducer dentro. Si no utilizaramos reducer, utilizaríamos los hooks useState, useEffect... En el return pasamos tanto el state como el dispatch para que siempre que utilicemos nuestro provider, podamos tener acceso al reducer y a las funciones de ese reducer (el dispatch).
+            
+            - Para ello hay que crear el context porque hasta ahora solo era la sintaxis para poder acceder a la información y utilizar la sintáxis de react. Lo haremos con la función ``createContext`. Hay que pasarle un valor por defecto.
+            
+            - Antes vamos a decirle qué va a manejar el provider: El provider maneja el state y el dispatch, por tanto, creamos el tipo de dato nuevo. Aqui se conectará el context y el provider. Digamos que context es la acción de tener el estado global pero provider serán los datos que va a tener ese context. 
+
+            ```
+            type BudgetContextProps = {
+                state: BudgetState,
+                dispatch: ActionDispatch<[action: BudgetActions]>
+            }
+
+            export const BudgetContext = createContext()
+
+            export const BudgetProvider = () => {
+
+                const [state, dispatch] = useReducer(budgetReducer, initialState) 
+
+                return (
+
+                )
+            }
+            ```
+
+            De esta formna sabe el context qué es lo que tiene que tener registrado y al tener esos props, tenemos el autocompletado y va a estar sincronizado tanto el context, que va a saber lo que tiene que manejar y el provider igual.
+        
+        - Ahora que tenemos el context y el provider, lo que los contecta o lo que le dice al context que el provider va a manejar el state y el dispatch es el type (BudgetContextProps). Pero como tal no están conectados de ninguna forma. Solo le estamos diciendo a nuestro context que el provider va a tener un state y un dispactch. -> En el return, colocamos el BudgetContext con sintáxis de componente y pasamos state y dispatch, y de esa forma cuando instanciemos o utilicemos nuestro context, tendremos acceso a state y dispatch.
+
+            ```
+            return (
+                <BudgetContext.Provider>
+                    
+                </BudgetContext.Provider>
+            )
+            ```
+
+            Lo que va a hacer es rodear la aplicación de React y dentro va a ser muy simple tener acceso al state y al dispatch. ¿Cómo? Con los children -> Props especial que existe en React y hace referencia a los hijos de un componente. Hace referencia a todos los hijos de un componente. 
+
+            ```
+            import { createContext, useReducer, type ActionDispatch, type ReactNode } from 'react'
+            import { budgetReducer, initialState, type BudgetActions, type BudgetState } from '../reducers/budgetReducer'
+
+            type BudgetContextProps = {
+                state: BudgetState,
+                dispatch: ActionDispatch<[action: BudgetActions]>
+            }
+
+            type BudgetProviderProps = {
+                children: ReactNode
+            }
+
+            // "Confia en mi, te voy a pasar correctamente tanto state como dispatch"
+            // export const BudgetContext = createContext<BudgetContextProps>({} as BudgetContextProps)
+
+            export const BudgetContext = createContext<BudgetContextProps>(null!)
+
+            export const BudgetProvider = ({children}: BudgetProviderProps) => {
+
+                const [state, dispatch] = useReducer(budgetReducer, initialState) 
+
+                return (
+                    <BudgetContext.Provider
+                        value={{
+                            state, dispatch
+                        }}>
+                        {children}
+                    </BudgetContext.Provider>
+                )
+            }
+            ```
+
+            De esta forma, creando el type BudgetProviderProps con los children (como ReactNode) y devolviendo el Context.Provider con state y dispatch en el value y los hijos dentro, tenemos el context acabado.
+        - Para colocar este context, hay que irse al main.tsx. Ahí se ve lo que renderiza la app principal. Context lo que hace es colocarse sobre la aplicación (rodearla) para permitir acceder a las funciones, state y datos que tengamos en el provider. 
+            - Importamos en main.tsx el BudgetProvider (recordemos que es lo que contiene los datos, mientras el context solamente lo genera)
+
+            ```
+            createRoot(document.getElementById('root')!).render(
+                <StrictMode>
+                    <BudgetProvider>
+                        <App />
+                    </BudgetProvider>
+                </StrictMode>,
+            )
+            ```
+        - Para poder utilizar el context y acceder a lo que retornamos en ``value = {{state, dispatch}}``, hay que utilizar useContext: 
+        ``const context = useContext(BudgetContext)``. De esta forma podremos tener acceso a state y a dispatch desde ahí. Por ejemplo, en el BudgetContext podríamos definir tambien algo como ``const auth = true`` y devolverlo, para que todos los componentes puedan acceder a él con useContext. Pero estar accediendo al contexto con ``useContext(BudgetContext)`` no es la mejor forma -> Utilizaremos un customHook. De esta forma utilizamos los hooks de react para conectar con el context que hemos creado personalizado.
+        ```
+        export const useBudget = () => {
+            const context = useContext(BudgetContext)
+            return context
+        }
+        ```
+        De esta forma ya podemos mandar llamar el hook y no tenemos que estar mandando a llamar useContext pasandole el BudgetContext cada vez, sino que directamente al importar el hook personalizado ya estamos importanto tanto useContext (el hook de react) como el context que queremos mandar llamar 
