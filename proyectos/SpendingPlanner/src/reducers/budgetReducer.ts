@@ -13,18 +13,45 @@ export type BudgetActions = {
     payload: {
         expense: ExpenseState
     }
+} | {
+    type: "remove-expense",
+    payload: {
+        id: Expense['id']
+    }
+} | {
+    type: "set-exp-editing-id",
+    payload: {
+        id: Expense['id']
+    }
+} | {
+    type: "edit-expense",
+    payload: {
+        expense: Expense
+    }
 }
 
 export type BudgetState = {
     budget: number,
     modalShown: boolean,
-    expenses: Expense[]
+    expenses: Expense[],
+    expEditingId: Expense['id']
+}
+
+const initialBudget = () : number => {
+    const localStorageBudget = localStorage.getItem('budget')
+    return localStorageBudget ? +localStorageBudget : 0
+}
+
+const initialExpenses = () : Expense[] => {
+    const localStorageExpenses = localStorage.getItem('expenses')
+    return localStorageExpenses ? JSON.parse(localStorageExpenses) : []
 }
 
 export const initialState : BudgetState = {
-    budget: 0,
+    budget: initialBudget(),
     modalShown: false,
-    expenses: []
+    expenses: initialExpenses(),
+    expEditingId: ""
 }
 
 
@@ -53,7 +80,8 @@ export const budgetReducer = (
     else if (action.type === "hide-modal"){
         return {
             ...state,
-            modalShown: false
+            modalShown: false,
+            expEditingId: ""
         }
     }
     else if (action.type === "add-expense"){
@@ -66,6 +94,24 @@ export const budgetReducer = (
                 newExpense
             ],
             modalShown: false //Cerramos la ventana
+        }
+    } else if (action.type === "remove-expense") {
+        return {
+            ...state,
+            expenses: state.expenses.filter(exp => exp.id !== action.payload.id)
+        }
+    } else if (action.type === "set-exp-editing-id"){
+        return {
+            ...state,
+            expEditingId: action.payload.id,
+            modalShown: true
+        }
+    } else if (action.type === "edit-expense") {
+        return {
+            ...state,
+            expenses: state.expenses.map(exp => exp.id === action.payload.expense.id ? action.payload.expense : exp),
+            modalShown: false,
+            expEditingId: ""
         }
     } else{
         return state
