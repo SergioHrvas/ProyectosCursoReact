@@ -1,5 +1,6 @@
 import { BudgetForm } from "./components/BudgetForm"
 import { BudgetTracker } from "./components/BudgetTracker"
+import { CategoryFilter } from "./components/CategoryFilter"
 import { ExpenseList } from "./components/ExpenseList"
 import ExpenseModal from "./components/ExpenseModal"
 import { useBudget } from "./hooks/useBudget"
@@ -13,6 +14,7 @@ function App() {
     localStorage.setItem('expenses', JSON.stringify(state.expenses))  
   }, [state.budget, state.expenses])
   const isValid = useMemo(() => state.budget > 0, [state.budget])
+  
   return (
     <>
       <header className="bg-lime-600 py-8 max-h-70">
@@ -31,6 +33,7 @@ function App() {
         {isValid && 
           (
             <main className="max-w-3xl mx-auto py-10">
+              <CategoryFilter/>
               <ExpenseModal/>
               <ExpenseList/>
             </main>
