@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 
 import { categories } from '../data/categories'
 import type { ExpenseState } from '../types';
@@ -23,7 +23,7 @@ export const ExpenseForm = () => {
     const [error, setError] = useState('')
     const [prevAmount, setPrevAmount] = useState(0)
 
-    const { dispatch, state, spent, available } = useBudget()
+    const { dispatch, state, available } = useBudget()
 
 
     useEffect(() => {
