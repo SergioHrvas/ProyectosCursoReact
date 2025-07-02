@@ -20,3 +20,4 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
         - *react-date-picker* y *react-calendar* para seleccionar la fecha de un calendario.
         - *react-swipeable-list* para tener una forma de editar y eliminar items de una lista de forma más moderna.
         - *react-circular-progressbar* para facilitar la visualización de datos
+    - Enlace al proyecto: https://app.netlify.com/projects/fancy-taiyaki-c18769/overview
