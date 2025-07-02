@@ -28,7 +28,6 @@ export default function useOrder(){
     }
 
     const saveOrder = () => {
-        console.log("LLEGO")
         setTip(0)
         setOrder([])
     }
