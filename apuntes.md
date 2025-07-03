@@ -361,7 +361,7 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         - HTML: ``<button onclick="getOrders()">``  
         - React (JSX): ``<button onClick={getOrders()}``
 
-        - HTML: ``<form onsubmit="agregarCliente(); retur false">``
+        - HTML: ``<form onsubmit="agregarCliente(); return false">``
         - JSX: ``<form onSubmit={handleSubmit}>``-> Convención, en el caso de los eventos se recomienda tener un handle y el nombre del evento (Al igual que setNombrestado)
 
         - **CUIDADO**: Cuando la función tiene argumentos/parámetros, hay que colocar un callback:
@@ -377,7 +377,7 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - **INMUTABILIDAD EN REACT**: Si yo escribo estadoArray.push(elemento), estoy mutando el estado, lo cual está mal. Hay que usar setState. Para saber qué métodos mutan: doesitmutate.xyz
     
-    - Si queiro actualizar la cantidad de un elemento de un array, no puedo hacer ``cart[itemExists].count++`` porque estoy modificando el state directamnte (lo estoy mutando y el state es inmutable). Para hacerlo bien, debo crear una copia con ``const updatedCart = ...cart``y luego hacer el count++ sobre esa copia. Finalmente, usamos setCart(updatedCart) para modificar el estado correctamente. El motivo de esto es que si no lo hago mediante esa función, react no detectará el cambio porque la referencia del objeto/array seguirá siendo la misma aunque sus propiedades cambien.
+    - Si quiero actualizar la cantidad de un elemento de un array, no puedo hacer ``cart[itemExists].count++`` porque estoy modificando el state directamnte (lo estoy mutando y el state es inmutable). Para hacerlo bien, debo crear una copia con ``const updatedCart = ...cart``y luego hacer el count++ sobre esa copia. Finalmente, usamos setCart(updatedCart) para modificar el estado correctamente. El motivo de esto es que si no lo hago mediante esa función, react no detectará el cambio porque la referencia del objeto/array seguirá siendo la misma aunque sus propiedades cambien.
 
     - **State derivado**: Si tenemos un state (por ejemplo, array) podemos crear una función/variable cuyo valor dependa de ese estado. Por ejemplo: si tenemos el estado cart que es un array, podemos declarar la variable ``const isEmpty = () => cart.length === 0``. De esta forma podemos dejar la lógica fuera del template y mejorar la legibilidad del código.
 
@@ -432,6 +432,18 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
     ```
     le estamos diciendo que se ejecute cada vez que el carrito cambie pero también se ejecuta una vez cuando el component esté listo (similar a cuando no tiene dependencias). Por tanto, como el carrito esta vacío (``const [cart, setCart] = useState([])``), le estamos estableciendo el carrito vacío al localStorage al principio. Debemos revisar primero si hay algo en localStorage (si no hay nada, le asignamos el vacío.)
 
+    ```
+    // Carrito inicial (recuperamos de localStorage)
+    const initialCart = () : CartItem[] => {
+        const localStorageCart = localStorage.getItem('cart')
+
+        // Comprobamos si hay algo
+        return localStorageCart ? JSON.parse(localStorageCart) : []
+    }
+
+    //Estados
+    const [cart, setCart] = useState(initialCart())
+    ```
 
     - **Deploy**: Ahora mismo tenemos todo en desarrollo pero una vez hemos terminado el proyecto, hay que construirlo con npm run build. Este comando va hacer unas mejoras de performance haciendo una versión simplificada y ligera.
 
@@ -495,7 +507,7 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - **Context API**: Nos permite manejar un estado global sin instalar dependencias porque ya viene incluido en React. 
         - Permite tener un estado global en la aplicacion: solo se tiene una instancia del state que se puede acceder desde cualquier componente sin tener que pasarlo por distintos componentes vía props.
-        - Si colocamos un state en un custom hook o reducer, lo que hemos hecho ha sido pasarlo en el App.tsx a los demás componentes vía props. Si comenzamos a instanciar ese reducer o ese custom hook, tendríamos múltiples instancias del state. Por tanto las funciones no se pueden comunicar correctamente, solo podrían hacerlo con el state que fue insanciado. Esto lo solucionamos con ContextAPI: solo vamos a tener una instancia del state porque va a estar fuera de la aplicación: la va a rodear.
+        - Si colocamos un state en un custom hook o reducer, lo que hemos hecho ha sido pasarlo en el App.tsx a los demás componentes vía props. Si comenzamos a instanciar ese reducer o ese custom hook, tendríamos múltiples instancias del state. Por tanto las funciones no se pueden comunicar correctamente, solo podrían hacerlo con el state que fue instanciado. Esto lo solucionamos con ContextAPI: solo vamos a tener una instancia del state porque va a estar fuera de la aplicación: la va a rodear.
         - Utilizaremos el hook **useContext** (otras opciones son Redux Toolkit o Zustand). Context es muy bueno porque no requiere dependencias, pero su boilerplate para configurarlo puede ser complejo (de hecho vamos a crear nuestro context y un custom hook para poder acceder directamente a ese context)
         - Creamos la carpeta de context en src y creamos dentro el fichero budgetContext.tsx (en este caso)
             - Creamos el provider primero que todo. De ahí vienen los datos. 
@@ -600,3 +612,58 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         }
         ```
         De esta forma ya podemos mandar llamar el hook y no tenemos que estar mandando a llamar useContext pasandole el BudgetContext cada vez, sino que directamente al importar el hook personalizado ya estamos importanto tanto useContext (el hook de react) como el context que queremos mandar llamar 
+    
+    - Librerias de formularios: Si vamos a utilizar varios formularios, muy grandes y complejos, o con valicaciones complejas, una librería nos solucionará muchos problemas. Tenemos varias opciones: React Hook Form (la utilizaremos), Formik (se integra con la libreria de validaciones Yup) o utilizar ZOD.
+
+        - Instalamos ``npm i react-hook-form``
+        - Documentacion: https://react-hook-form.com/get-started
+        - useForm es uno de los hooks que nos trae esta librería. Su sintáxis es const { register, handleSubmit, formState } = useForm().
+            - Register nos va a permitir registrar un input o un select y aplicar las reglas de validación de RHF. Lo utilizamos de la siguiente forma: ``<input {...register(name, {opciones})}`` donde:
+                - El nombre es lo que utilizaremos para recuperar los datos que el usuario ingresó (debe ser único)
+                - Opciones: entre algunas de ellas está la validación (por ejemplo: required: 'nombre del error')
+                - Ejemplo:
+                ```
+                <input
+                    id:"name"
+                    type:"text"
+                    {...register('name', {
+                        required: 'El nombre del paciente es obligatorio'
+                    })}
+                />
+                ```
+                - Otra validación podría ser:
+                ```
+                {{...register('name', {
+                    required: 'El nombre del paciente es obligatorio',
+                    maxLength: {
+                        value: 8,
+                        message: "Maximo 8 Caracteres"
+                    }
+                })}}
+                ```
+
+                - También se puede usar ``pattern`` si queremos validar que el valor sigue algún patrón como el del correo electrónico.
+
+
+            - handleSubmit: lo ponemos en el form de la siguiente forma: ``<form onSubmit={handleSubmit(registerPatient)}> </form>`` -> Parece confuso porque es un parámetro con una función dentro de otra -> registerPatient es la función que creamos en el componente y se encargará  de esperar a que ocurra ese evento y recuperar los valores.
+                - Si tenemos las distintas validaciones y tratamos de hacer un submit, no se ejecutará la acción puesta hasta que las validaciones de los campos se cumplan.
+            - formState es el estado del formulario. Es decir, contiene el estado en el que se encuentra el formulario que he creado. -> Tiene mucha información. 
+                - Para recuperar los errores tenemos la parte de ``errors`` (va a ser reactivo) -> Va a ser un objeto. Podemos acceder a cada error segun el nombre que le pusimos a su register correspondiente. Por ejemplo ``errors.name.message`` para acceder al mensaje
+        - RHF nos evita tener que ir almacenando en estados los distintos valores que vamos escribiendo en los formularios e ir cambiandolos con los distintos onChange. Lo que mantiene ese state es el register. Para recuperar lo que el usuario ingresa, es muy simple. En la función que se llama en el handleSubmit (en el ejemplo, ``registerPatient``), se toma como parámetro de dicha función lo que el usuario ingresó (lo podemos nombrar como queramos pero normalmente es data). De esta forma:
+        ``const registerPatient = (data) => { console.log(data )}``
+    
+    - Una forma que simplifica tanto useReducer como el estado global es **Zustand**. No viene incluido con React pero es muy útil. Zustand es una dependencia para manejar un estado global en apps de React. Su API es bastante sencilla y sirve tanto para JS como TS. ES una de las principales alternativas a Redux Toolkit.
+        - Para instalar ``npm i zustand``
+        - Un store de Zustand es similar al Reducer. Allí colocaremos el state y las funciones que modifican el state. 
+        - La función ``create`` nos permitirá crear el store. 
+        ```
+        export const usePatientStore = create(() => ({
+            // Aqui pondremos tanto el state como las funciones que modifican dicho state
+        }))
+        ```
+        - En zustand seguimos teniendo las acciones, pero la cantidad de código es infinitamente menor. Son funciones que tenemos que especificar qué parámetros toman, qué retornan y toda la lógica. Todo esto dentro del store. 
+
+        - Para llamar usar el store global: ``const { addPatient } = usePatientStore()``. Otra forma sería ``const addPatient = usePatientStore( state => state.addPatient )``
+
+        - Para que las acciones puedan modificar y obtener el estado, tengo que recibir en el callback de ``create`` de zustand las funciones get y set
+        ``export const usePatientStore = create<PatientState>((set, get) => ({``
