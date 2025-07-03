@@ -29,5 +29,6 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
         - *react-circular-progressbar* para facilitar la visualización de datos
     - Enlace al proyecto: https://fancy-taiyaki-c18769.netlify.app/
 
-- **VetCare:** Proyecto para la gestión de pacientes de una clínica veterinaria, donde se podrán añadir, modificar y eliminar pacientes ingresados. La novedad en esta aplicación es la incorporación de un estado global con **Zustand**, una herramienta que simplifica este tipo de estado en comparación con ContextAPI. Además, se utiliza la librería de *FormHookReact* para simplificar la validación de los formularios.
-    - Enlace al proyecto:
+- **VetCare:** Proyecto para la gestión de pacientes de una clínica veterinaria, donde se podrán añadir, modificar y eliminar pacientes ingresados. La novedad en esta aplicación es la incorporación de un estado global con **Zustand**, una herramienta que simplifica este tipo de estado en comparación con ContextAPI. Además, se utiliza la librería de *FormHookReact* para simplificar la validación de los formularios. Por último, se agregaron mensajes de alerta con la librería *React-Toastify* para cuando el usuario haga alguna acción poder retroalimentarle el resultado.
+    - Enlace al proyecto: https://heartfelt-sunshine-90fcc7.netlify.app/
+    

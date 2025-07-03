@@ -667,3 +667,9 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
         - Para que las acciones puedan modificar y obtener el estado, tengo que recibir en el callback de ``create`` de zustand las funciones get y set
         ``export const usePatientStore = create<PatientState>((set, get) => ({``
+
+        - Para implementar localStorage en Zustand, es muy sencillo:
+            - Primero importamos el middleware persist: ``import {persist} from 'zustand/middleware'`` -> Nos permite tener un estado persistente, y se le puede especificar si queremos almacenar en sessionStorage o en localStorage.
+            - Envolvemos todo el callback de create de zustand entre ``persist()`` -> ``create<PatientState>()(persist( (set) => ({...}), { name: 'patient-storage'}))`` -> De esta forma se almacena en localStorage por defecto.
+            - También podemos almacenar en sessionStorage o solamente que mantenga el estado mientras tenga la ventana abierta. Para ello utilizamos el parámetro ``storage: createJSONStorage(() => sessionStorage)``
+            - Podemos ver que lo sincroniza automaticamente cuando añadimos o modificamos el state -> no hace falta useEffect

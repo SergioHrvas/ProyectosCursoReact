@@ -1,6 +1,8 @@
 import {create} from 'zustand'
 import type {DraftPatient, Patient} from './types'
 import { v4 as uuidv4 } from 'uuid'
+import { persist } from 'zustand/middleware'
+
 
 //Definimos el type
 type PatientState = {
@@ -20,7 +22,9 @@ const createPatient = (patient: DraftPatient): Patient => {
 }
 
 //hook 
-export const usePatientStore = create<PatientState>((set) => ({
+export const usePatientStore = create<PatientState>()(
+    persist((set) => (
+    {
     // State
     patients: [],
     patientEditingId: "",
@@ -56,4 +60,7 @@ export const usePatientStore = create<PatientState>((set) => ({
         }))
     }
 
+}),  {
+    name: 'patient-storage',
+    //storage: createJSONStorage(() => sessionStorage )
 }))
