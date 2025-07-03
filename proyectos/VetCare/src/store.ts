@@ -5,8 +5,11 @@ import { v4 as uuidv4 } from 'uuid'
 //Definimos el type
 type PatientState = {
     patients: Patient[],
+    patientEditingId: Patient['id'],
     addPatient: (data: DraftPatient) => void,
-    removePatient: (id: Patient['id']) => void
+    removePatient: (id: Patient['id']) => void,
+    setPatientEditingId: (id: Patient['id']) => void,
+    updatePatient: (data: DraftPatient) => void
 }
 
 const createPatient = (patient: DraftPatient): Patient => {
@@ -20,6 +23,7 @@ const createPatient = (patient: DraftPatient): Patient => {
 export const usePatientStore = create<PatientState>((set) => ({
     // State
     patients: [],
+    patientEditingId: "",
 
 
     // Funciones
@@ -36,6 +40,19 @@ export const usePatientStore = create<PatientState>((set) => ({
     removePatient: (id) => {
         set((state) => ({
             patients: state.patients.filter(pac => pac.id !== id)
+        }))
+    },
+
+    setPatientEditingId(id) {
+        set(() => ({
+            patientEditingId: id
+        }))
+    },
+
+    updatePatient(data) {
+        set((state) => ({
+            patients: state.patients.map(pac => pac.id === state.patientEditingId ? {...data, id: pac.id} : pac ),
+            patientEditingId: ""
         }))
     }
 
