@@ -236,6 +236,10 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - ``grid md:grid-cols-2`` hace que al disminuir el ancho de la página, las columnas se apile una encima de otra verticalmente (responsive)
 
+
+## CSS MODULES
+- Cuando trabajamos con modulos, lo escribimos con el mismo nombre que el componente de react y ``.module.css``. Definimos ahí los estilos e importamos en el tsx de la siguiente forma ``import styles from 'ruta'``. Para usarlo, es tan fácil como ``className={styles.estilo}``
+
 ## REACT VITE
 
 - Crear proyecto con npm create vite@latest
@@ -673,3 +677,6 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
             - Envolvemos todo el callback de create de zustand entre ``persist()`` -> ``create<PatientState>()(persist( (set) => ({...}), { name: 'patient-storage'}))`` -> De esta forma se almacena en localStorage por defecto.
             - También podemos almacenar en sessionStorage o solamente que mantenga el estado mientras tenga la ventana abierta. Para ello utilizamos el parámetro ``storage: createJSONStorage(() => sessionStorage)``
             - Podemos ver que lo sincroniza automaticamente cuando añadimos o modificamos el state -> no hace falta useEffect
+
+    - Una API (Application Programming Interface) se define como funciones/métodos que ofrece una librería para ser utilizada por otro software como una capa de abstracción. Pone a disposición recursos que están alojados en otro servidor o db. Usualmente hay que enviar una petición estructurada -> Estándar.
+        - Para consultar una API con React podemos utilizar FetchAPI, axios o librerías como SWR. Algunas API's requieren un KEY y otras están protegidas por CORS
