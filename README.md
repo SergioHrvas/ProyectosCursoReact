@@ -31,4 +31,7 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
 
 - **VetCare:** Proyecto para la gestión de pacientes de una clínica veterinaria, donde se podrán añadir, modificar y eliminar pacientes ingresados. La novedad en esta aplicación es la incorporación de un estado global con **Zustand**, una herramienta que simplifica este tipo de estado en comparación con ContextAPI. Además, se utiliza la librería de *FormHookReact* para simplificar la validación de los formularios. Por último, se agregaron mensajes de alerta con la librería *React-Toastify* para cuando el usuario haga alguna acción poder retroalimentarle el resultado.
     - Enlace al proyecto: https://heartfelt-sunshine-90fcc7.netlify.app/
-    
+
+- **SearchingWeather**: Aplicación para conocer el clima de las ciudades de los distintos países. Se comienza a trabajar con APIS externas haciendo consultas a la API gratuita de *OpenWeatherMap*. Se trabaja con **Axios** para las peticiones HTTP y se utiliza **Zod** (también se exploró y probó la alternativa de Valibot) para parsear y tipar el resultado, mejorando la calidad y robustez del código TypeScript.
+    - Enlace al proyecto: https://spectacular-raindrop-5d756d.netlify.app/
+

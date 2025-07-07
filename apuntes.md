@@ -680,3 +680,55 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - Una API (Application Programming Interface) se define como funciones/métodos que ofrece una librería para ser utilizada por otro software como una capa de abstracción. Pone a disposición recursos que están alojados en otro servidor o db. Usualmente hay que enviar una petición estructurada -> Estándar.
         - Para consultar una API con React podemos utilizar FetchAPI, axios o librerías como SWR. Algunas API's requieren un KEY y otras están protegidas por CORS
+
+    - Para hacer una petición con axios es tan fácil como importarlo y hacer ``await axios(url)``
+    - Las variables de entorno hay que definirlas en el .env (.env.local para que git lo ignore) con VITE_NOMBRE para que VITE las detecte. Luego en el código se cargan con: ``import.meta.env.VITE_NOMBRE``
+
+    - Cuando obtenemos resultados de APIs externas, los resultados que recibo no son tipados: los detecta como any. Esto es un problema para TS y hay varias formas de solucionarlo tipando el resultado.
+        - La "peor" es crear un type nuevo con la información que me interesa y poniendo el tipo de la siguiente forma``axios<WeatherType>(url)`` -> puede dar lugar a valores undefined porque estamos forzando a que la respuesta tenga ese type y si no lo encuentra, TS lo marca como undefined -> no va a revisar si es correcto o no.  Lo que estamos haciendo es castear el resultado.
+        - TypeGuards: Creamos una función ``isWeatherResponse(weather: unknown)``. Unknown es un tipo utilizado para representar un valor cuyo tipo no conocezs aún -> forma de decirle al compilador de TS que no estás seguro de qué tipo de dato se va a recibir pero aún así con la función quiero asegurarme de hacer algunas verificaciones de tipo antes de operar con ese valor. -> unknown es mejor que any para este caso. Cuando hagamos las operaciones, hay que devolver si es correcto o no y convertir dicho objeto al tipo (``function isWeatherResponse(weather : unknown) : weather is WeatherType``) para el autocompletado y que TS lo detecte como tipo válido.
+        ```
+        function isWeatherResponse(weather : unknown) : weather is WeatherType{
+            return (
+                Boolean(weather) && // comprobamos que weather exista
+                typeof(weather) === 'object' && // comprobamos que weather sea un objeto
+                typeof(weather as WeatherType).name === 'string' && //accedemos a cada elemento comprobando su tipo
+                typeof(weather as WeatherType).main.temp === 'number' && 
+                typeof(weather as WeatherType).main.temp_max === 'number' && 
+                typeof(weather as WeatherType).main.temp_min === 'number'
+            )
+        }
+        ```        
+        y luego se usaría:
+        ```
+        const {data: weatherResult} = await axios(weatherUrl)
+        const result = isWeatherResponse(weatherResult)
+        if(result){
+            console.log(weatherResult.main.temp)
+        }
+        ```
+        El problema de esto es que no es un código mantenible. Con respuestas grandes, habrá funciones muy grandes y por tanto será poco escalable. Además, normalmente hay varios endpoints y habría que crear una función por cada uno. Tampoco es lo conveniente.
+        - Utilizar una librería como ZOD, que permite definir un esquema fácilmente y comprobar si el objeto cumple con esa condición. Hemos definido los types hasta ahora pero podemos definir un esquema e inferir el type que se generaría en base a ese esquema:
+        ```
+        const Weather = z.object({
+            name: z.string(),
+            main: z.object({
+                temp: z.number(),
+                temp_max: z.number(),
+                temp_min: z.number()
+            })      
+        })
+        ```
+        Luego definimos el type a partir del esquema con: ``type Weather = z.infer<typeof Weather> ``. 
+
+        Para utilizarlo entonces y hacer algo muy parecido al Type Guards (que tiene implicito Zod de forma muy fácil), utilizamos ``safeParse``del zod Weather, que lo que hace es tomar el reusltado de la consulta de la APÌ y va a revisar si esas propiedades que estoy recibiendo en JSON coinciden con lo que he definido en el esquema. Si es asi, devuelve true, si no devuelve FALSE. -> Devuelve success true o false y, en caso de true, también devuelve data, con la info parseada al esquema
+        ```
+        const {data: weatherResult} = await axios(weatherUrl)
+            const result = Weather.safeParse(weatherResult)
+            if(result.success){
+                console.log(result.data.name, result.data.main.temp)
+        }
+        ```
+
+        La desventaja de zod es que no es modular (importamos todo de una vez y eso lo hace un poco más pesado, sobre todo si lo vamos importando en distintos hooks o ficheros)
+        - Valibot: Es más modular que Zod, haciendolo más ligero. Realizamos lo mismo: definimos esquema (de la misma forma pero sin z. porque hemos importando solo ``string(), number() y object()``), inferimos con ``InferOutput<typeof esquemaDefinido>`` y parseamos con ``parse()``

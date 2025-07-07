@@ -1,0 +1,10 @@
+.alerta {
+    background-color: rgb(160, 0, 0);
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+}
