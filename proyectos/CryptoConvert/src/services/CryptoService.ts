@@ -1,6 +1,7 @@
 import axios from "axios"
 
-import { CryptoCurrenciesSchema } from "../schemas/crypto-schema"
+import { CryptoCurrenciesSchema, CryptoEchangeSchema } from "../schemas/crypto-schema"
+import type { CryptoCurrenciesPair } from "../types"
 
 export async function getCryptoCurrencies () {
 
@@ -15,6 +16,19 @@ export async function getCryptoCurrencies () {
     }
     else{
         return []
+    }
+}
+
+
+export async function getCryptoExchange(cryptoCurrenciesParams: CryptoCurrenciesPair){
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrenciesParams.cryptocurrency}&tsyms=${cryptoCurrenciesParams.currency}`
+    const {data : { DISPLAY : { [cryptoCurrenciesParams.cryptocurrency ] : { [cryptoCurrenciesParams.currency] : datos}}}} = await axios(url)
+
+    const result = CryptoEchangeSchema.safeParse(datos)
+
+    console.log(result)
+    if(result.success){
+        return result.data
     }
     
 }

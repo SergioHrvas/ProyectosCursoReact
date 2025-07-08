@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { CryptoForm } from "./components/CryptoForm"
 import "./index.css"
 import { useCryptoStore } from "./store"
+import { CryptoExhange } from "./components/CryptoExhange"
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
 
   useEffect(() => { fetchCryptos() }, [])
 
+  
   return (
     <>
       <div className="container">
@@ -18,6 +20,7 @@ function App() {
 
         <div className="content">
           <CryptoForm/>
+          <CryptoExhange/>
         </div>
       </div>
       

@@ -35,3 +35,6 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
 - **SearchingWeather**: Aplicación para conocer el clima de las ciudades de los distintos países. Se comienza a trabajar con APIS externas haciendo consultas a la API gratuita de *OpenWeatherMap*. Se trabaja con **Axios** para las peticiones HTTP y se utiliza **Zod** (también se exploró y probó la alternativa de Valibot) para parsear y tipar el resultado, mejorando la calidad y robustez del código TypeScript.
     - Enlace al proyecto: https://spectacular-raindrop-5d756d.netlify.app/
 
+- **CryptoConvert**: Apliación para la cotización y conversión de divisas y criptomonedas. Se trabaja con **Zustand** para el estado global, con **axios** para las peticiones HTTP a la API de *CoinDesk*, y con **Zod** para parsear y tipar la respuesta de las peticiones HTTP. De esta forma, se refuerzan los conceptos más importantes vistos en los proyectos anteriores.
+    - Enlace al proyecto: https://classy-piroshki-3431a2.netlify.app/
+
