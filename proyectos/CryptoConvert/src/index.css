@@ -1,0 +1,82 @@
+:root{ /* Definimos algunas variables */
+  --white: #FFF;
+  --primary: #61EBCC;
+  --black: #182239;
+}
+
+html { /* Para trabajar con rems al mismo tamaño que píxeles*/
+  font-size: 62.5%
+}
+
+body {
+  background-image: url("/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  font-size: 2rem;
+  font-family: 'Ubuntu', sans-serif
+}
+
+.container{
+  max-width: 60rem;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.app-title{
+  font-size: 2.5rem;
+  margin-top: 4rem;
+  color: var(--white);
+  line-height: .9;
+}
+
+.title{
+  font-size: 3.8rem;
+  color: var(--primary);
+  display: block;
+}
+
+.content{
+  background-color: var(--white);
+  margin-top: 4rem;
+  padding: 6rem 3rem;
+  border-radius: 3rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form, .field{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem
+}
+
+.form label {
+  color: var(--black)
+}
+
+.form select {
+  background-color: #ECEBEB;
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 1.7rem;
+}
+
+.form [type="submit"]{
+  background-color: var(--primary);
+  color: var(--black);
+  padding: 1.5rem;
+  font-weight: bold;
+  border-radius: 2rem;
+  border: none;
+  font-size: 2.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  transition: background-color 300ms ease;
+}
+
+.form [type="submit"]:hover{
+  background-color: #0ec796;
+}
