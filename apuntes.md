@@ -753,3 +753,33 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         )
         }
         ```
+
+    - Para reutilizar código y no poner por ejemplo el <Header> en todas las rutas, se utilizan los layouts. Yo creo mi layout, lo añado como Element en un <Route></Route> que agrupe todas las páginas que quiera que incorporen ese layout. Posteriormente, en el componente del layout utilizo Outlet de react-router, el cual inyecta el contenido de la página, permitiendo tener elementos compartidos o comunes a varias páginas
+    ```
+    import { Header } from '../components/Header'
+    import { Outlet } from 'react-router-dom'
+
+    export const Layout = () => {
+    return (
+        <>
+        <Header/>
+        <Outlet/>
+        </>
+    )
+    }
+    ```
+
+    - Al Route de la página principal, se le suele pasar el props `index`
+    - Para navegar entre páginas lo tradicional siempre ha sido utilizar la etiqueta `<a>` y ponerle la ruta a la que navegar. Esto provoca flashes entre páginas y empeora el rendimiento de la aplicación. Para mejorar esto hay dos opciones:
+        - Link: hay que pasarle `to="ruta"`
+        ```
+        <nav>
+            <Link to="/" className='text-white font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500'>
+                Inicio
+            </Link>
+            <Link to="/favourites" className='text-white font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500'>
+                Favoritos
+            </Link>
+        </nav>
+        ```
+        - NavLink: Misma sintáxis que `<Link>` pero tiene acceso a un callback en el className para detectar la página actual -> Muy útil para resaltar  en el header la página en la que se encuentra el usuario.
