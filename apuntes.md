@@ -783,3 +783,58 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         </nav>
         ```
         - NavLink: Misma sintáxis que `<Link>` pero tiene acceso a un callback en el className para detectar la página actual -> Muy útil para resaltar  en el header la página en la que se encuentra el usuario.
+        ```
+        <nav className="flex gap-6">
+            <NavLink to="/" className={({isActive}) => 
+                isActive ? 
+                'text-orange-500 uppercase font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500' : 
+                'text-white uppercase font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500'
+            }>
+                Inicio
+            </NavLink>
+            <NavLink to="/favourites" className={({isActive}) => 
+                isActive ? 
+                'text-orange-500 uppercase font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500' : 
+                'text-white uppercase font-bold text-2xl py-2 px-8 rounded-lg cursor-pointer hover:bg-slate-500'
+            }>
+                Favoritos
+            </NavLink>
+        </nav>
+        ```
+    - Cuando trabajamos en proyectos multipágina, muchas veces queremos saber donde se encuentra el usuario para poder ocultar ciertas páginas, mostrar X información... React Router nos da algunos hooks, entre ellos useLocation.
+        - Lo usamos así:
+        ```
+        const location = useLocation()
+        console.log(location)
+        ```
+        - Podemos ver que tiene las siguientes partes:
+            - hash: cuando agregamos en la url ``#nosotros``
+            - key: forma de identificar la navegación que estamos usando
+            - pathname: ubicación -> lo que uilizaremos para saber donde está el usuario
+            - search: cuando tenemos hun query string `?q=hola` -> en sistema de busqueda es util
+            - state: podemos colocar state en las rutas
+
+    - En Zustand también podemos tener multiples stores. Conforme nuestras apps crecen, el store también puede hacerlo, para tener un  poco de modularidad y simplificarlo, hay dos opciones para manejar multiples stores:
+        - Crear distintos archivos de stores 
+        - Dividirlos con Slice Pattern: algo que también se encuentra en Redux Toolkit -> Forma de dividir los stores en piezas pequeñas y unirlas en un store principal finalmente
+        
+    - Para los slices utilizamos un StateCreator, que nos va a permitir crear el state especificandole qué tipo va a tener el slice. De esta forma en TS vamos a tener el autocompletado. Asi nos quedaría el slice base:
+    ```
+    // Para que no se queje de momento
+    type Category = {}
+
+    export type RecipeSliceType = {
+        categories: Category[]
+    }
+
+    export const createRecipeSlice: StateCreator<RecipeSliceType> = (set, get, api) => ({
+        categories: [],
+    })
+    ```
+
+    Y en el store global que une los distintos slices, se crearía así:
+    ```
+    export const useAppStore = create<RecipeSliceType> ( (...a) => ( { // pasamos todos los argumentos (set, get...) a los demás 
+        ...createRecipeSlice(...a) // los tres puntos para que tome una copia
+    }))
+    ```
