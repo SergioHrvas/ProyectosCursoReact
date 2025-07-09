@@ -732,3 +732,24 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
         La desventaja de zod es que no es modular (importamos todo de una vez y eso lo hace un poco más pesado, sobre todo si lo vamos importando en distintos hooks o ficheros)
         - Valibot: Es más modular que Zod, haciendolo más ligero. Realizamos lo mismo: definimos esquema (de la misma forma pero sin z. porque hemos importando solo ``string(), number() y object()``), inferimos con ``InferOutput<typeof esquemaDefinido>`` y parseamos con ``parse()``
+
+    - React Router es una herramienta que nos permite tener aplicaciones en React con múltiples páginas. Es una de las librerías más comunes para las apps con múltiples páginas y navegación. 
+        - Permite crear secciones con distintas urls como /tienda, /login, /productos...
+        - También permite consultar APIs y procesar formularios. 
+        - Para utilizarlo sustituimos App.tsx por un router de la siguiente forma:
+        ```
+        import { BrowserRouter, Routes, Route } from 'react-router-dom'
+        import { IndexPage } from './pages/IndexPage'
+        import { FavPages } from './pages/FavPages'
+
+        export default function AppRouter() {
+        return (
+            <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<IndexPage/>}/>
+                <Route path='/favourites' element={<FavPages/>}/>
+            </Routes>
+            </BrowserRouter>
+        )
+        }
+        ```
