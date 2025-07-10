@@ -838,3 +838,13 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         ...createRecipeSlice(...a) // los tres puntos para que tome una copia
     }))
     ```
+
+    - ¿Que pasa si desde un slice quiero consumir el estado de otro slice?  Importamos el otro slice y lo utilizamos pasandole get, set y api. Por ejemplo ``createRecipesSlice(set,get,api).closeModal(). El problema es que da error en el set (TS se queja por tipos) y para solucionarlo hay que ir al slice importado y añadirle al StateCreateor el tipo del slice actual, dos arrays y el tipo del slice importado de nuevo, algo como:
+    ```
+    export const createRecipeSlice: StateCreator<RecipeSliceType & FavouriteSliceType, [], [], RecipeSliceType> = (set) => ({
+    ```
+    Y lo mismo en el otro slice:
+    ```
+    export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSliceType, [], [], FavouriteSliceType> = (set, get, api) => ({
+    ```
+    Esto lo hace muy complejo y añade código poco legible, por lo que es mejor llamar a la función deseada del otro slice desde fuera del slice actual. ESto se llama nested slices
