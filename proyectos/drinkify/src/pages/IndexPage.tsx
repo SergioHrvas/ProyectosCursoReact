@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { useAppStore } from "../stores/useAppStore"
 import { Drink } from "../components/Drink"
 
-export const IndexPage = () => {
+const IndexPage = () => {
   const {recipes} = useAppStore()
   // o tambien:
   // const categories = useAppStore((state) => state.categories)
@@ -27,3 +27,5 @@ export const IndexPage = () => {
     </>
   )
 }
+
+export default IndexPage

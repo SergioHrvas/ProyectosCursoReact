@@ -11,7 +11,7 @@ export const Header = () => {
         category: ""
     })
 
-    const [error, setError] = useState("")
+    const {showNotification} = useAppStore()
 
     const {pathname} = useLocation()
     const {categories, fetchCategories, fetchRecipes} = useAppStore()
@@ -31,11 +31,13 @@ export const Header = () => {
         e.preventDefault()
 
         if(Object.values(searchParams).includes('')){
-            setError('Todos los campos son obligatorios')
+            showNotification({
+                text: 'Todos los campos son obligatorios',
+                error: true
+            })
             return
         }
 
-        setError("")
         fetchRecipes(searchParams)
     }
 

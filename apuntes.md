@@ -848,3 +848,21 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
     export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSliceType, [], [], FavouriteSliceType> = (set, get, api) => ({
     ```
     Esto lo hace muy complejo y añade código poco legible, por lo que es mejor llamar a la función deseada del otro slice desde fuera del slice actual. ESto se llama nested slices
+    
+    - React Router es muy potente, pero hay que tener en cuenta la performance. Al hacer npm run build, hacemos que el usuario cuando acceda a producción, descargue todas las páginas aunque no la esté visitando. -> al ejecutar el comando, se va todo a un único archivo. VAmos a ver como dividirlo en pequeños archivos JS para que la pagina principal sea mas ligera y no descargue paginas innecesarias hasta que el usuario las visite. ->  Importante sobre todo en proyectos medianos y grandes.
+        - Utilizamos lazy y suspense de react en router.tsx.
+        - El lazy lo utilizamos para las distintas importaciones de las páginas. Pasamos de la sintáxis clásica a con lazy. **CUIDADO: El componente de la página tiene que estar exportada por defecto**
+
+        ```
+        // import { FavPages } from './pages/FavPages'
+        const FavPages = lazy(() => import('./pages/FavPages'))
+        ```
+        - El Suspense lo utilizamos en el element del route. Le pasamos un fallback que es lo que se va a mostrar en lo que se carga y descarga el componente. Dentro de ``<Suspense></Suspense>`` colocamos el componente de la página. Pasamos por tanto de la sintáxis de Route donde teníamos el componente de la página en ``element`` a una estructura algo más compleja:
+        ```
+        {/*<Route path='/favourites' element={<FavPages/>}/>*/}
+        <Route path='/favourites' element={
+        <Suspense fallback="Cargando...">
+            <FavPages/>
+        </Suspense>}/>
+        ```
+        - Una vez hecho esto podemos ver como se genera un nuevo archivo js, modularizando el código y liberando la pagina principal.

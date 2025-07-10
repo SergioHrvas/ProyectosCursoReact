@@ -1,4 +1,5 @@
 import type { StateCreator } from "zustand"
+import type { FavouriteSliceType } from "./favouriteSlice"
 
 export type Notification = {
     text: string,
@@ -8,13 +9,40 @@ export type Notification = {
 
 
 export type NotificationSliceType = {
-    notification: Notification
+    notification: Notification,
+    showNotification: (payload: Pick<Notification, 'text' | 'error'>) => void,
+    hideNotification: () => void
+
 }
 
-export const notificationSlice: StateCreator<NotificationSliceType> = (set,get) => ({
+export const createNotificationSlice: StateCreator<NotificationSliceType & FavouriteSliceType, [], [], NotificationSliceType> = (set, get) => ({
     notification: {
-        text: "aaa",
+        text: "",
         error: false,
-        show: true
+        show: false
+    },
+
+    showNotification: (payload: Pick<Notification, 'text' | 'error'>) => {
+        set({
+            notification: {
+                ...payload,
+                show: true
+            }
+        })
+
+        setTimeout(() => {
+            get().hideNotification()
+        }, 5000);
+    },
+
+    hideNotification: () => {
+        set({
+            notification: {
+                text: "",
+                show: false,
+                error: false
+            }
+        })
     }
+
 })

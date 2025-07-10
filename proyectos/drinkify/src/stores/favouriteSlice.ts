@@ -1,6 +1,7 @@
 import type { StateCreator } from "zustand";
 import type { RecipeInfo } from "../types";
-import { createRecipeSlice, type RecipeSliceType } from "./recipeSlice";
+import { type RecipeSliceType } from "./recipeSlice";
+import { type NotificationSliceType } from "./notificacionSlice";
 
 export type FavouriteSliceType = {
     favRecipes: RecipeInfo[],
@@ -9,17 +10,21 @@ export type FavouriteSliceType = {
     loadFromStorage: () => void
 }
 
-export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSliceType, [], [], FavouriteSliceType> = (set, get, api) => ({
+export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSliceType & NotificationSliceType, [], [], FavouriteSliceType> = (set, get) => ({
     favRecipes: [],
 
     manageOnFavourites: (recipe: RecipeInfo) => {
-        get().closeModal()
+
 
         if(get().isFavouriteRecipe(recipe.idDrink)){
             set((state) => ({
                 favRecipes: state.favRecipes.filter(r => r.idDrink !== recipe.idDrink)
             }))
-            
+
+            get().showNotification({
+                text: 'Receta eliminada de favoritos.',
+                error: false
+            })
         } else {
         
             //Primera forma de hacerlo:
@@ -37,9 +42,14 @@ export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSlice
                     recipe
                 ]
             }))
+            get().showNotification({
+                text: 'Receta agregada a favoritos.',
+                error: false
+            })
         }
 
-
+        get().closeModal()
+        
         localStorage.setItem('favRecipes', JSON.stringify(get().favRecipes))
     },
     
@@ -55,6 +65,5 @@ export const createFavouriteSlice: StateCreator<FavouriteSliceType & RecipeSlice
             set({
                 favRecipes: JSON.parse(localFavourites)
             })
-        console.log("MIRO", get().favRecipes)
     }
 })

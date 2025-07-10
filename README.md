@@ -35,6 +35,8 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
 - **SearchingWeather**: Aplicación para conocer el clima de las ciudades de los distintos países. Se comienza a trabajar con APIS externas haciendo consultas a la API gratuita de *OpenWeatherMap*. Se trabaja con **Axios** para las peticiones HTTP y se utiliza **Zod** (también se exploró y probó la alternativa de Valibot) para parsear y tipar el resultado, mejorando la calidad y robustez del código TypeScript.
     - Enlace al proyecto: https://spectacular-raindrop-5d756d.netlify.app/
 
-- **CryptoConvert**: Apliación para la cotización y conversión de divisas y criptomonedas. Se trabaja con **Zustand** para el estado global, con **axios** para las peticiones HTTP a la API de *CoinDesk*, y con **Zod** para parsear y tipar la respuesta de las peticiones HTTP. De esta forma, se refuerzan los conceptos más importantes vistos en los proyectos anteriores.
+- **CryptoConvert**: Aplicación para la cotización y conversión de divisas y criptomonedas. Se trabaja con **Zustand** para el estado global, con **axios** para las peticiones HTTP a la API de *CoinDesk*, y con **Zod** para parsear y tipar la respuesta de las peticiones HTTP. De esta forma, se refuerzan los conceptos más importantes vistos en los proyectos anteriores.
     - Enlace al proyecto: https://classy-piroshki-3431a2.netlify.app/
 
+- **Drinkify**: Proyecto para la búsqueda de recetas de cocktails y bebidas varias. Consumiendo la API de **TheCocktailDB**, obtenemos las recetas con **axios** validando la respuesta con **Zod** y manteniendo un estado global, esta vez dividido en slices, con **Zustand**. También utilizamos ventanas modales para la información de cada receta y para las notificaciones con **HeadlessUI** y tras un par de proyectos utilizando CSS Modules, en este caso se ha vuelto a trabajar con **Tailwind**.
+    - Enlace al proyecto: https://grand-liger-d77862.netlify.app/
