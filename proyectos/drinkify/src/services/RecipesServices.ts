@@ -1,6 +1,6 @@
 import axios from "axios"
-import { CategoriesSchema, RecipesSchema } from "../schemas/recipesSchemas"
-import type { SearchParams } from "../types"
+import { CategoriesSchema, RecipeInfoSchema, RecipesSchema } from "../schemas/recipesSchemas"
+import type { Recipe, SearchParams } from "../types"
 
 export const getCategories = async () => {
     const url = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
@@ -20,9 +20,24 @@ export const getRecipes = async (params: SearchParams) => {
     const result1 = RecipesSchema.safeParse(dataIng)
     const result2 = RecipesSchema.safeParse(dataCat)
 
-    const resultado = result1.data?.drinks.filter(d => result2.data?.drinks.some(d2 => d2.idDrink === d.idDrink))
+    const result = result1.data?.drinks.filter(d => result2.data?.drinks.some(d2 => d2.idDrink === d.idDrink))
     
     if(result1.success && result2.success) {
-        return resultado
+        return result
+    }
+}
+
+
+export const getRecipe = async(id: Recipe['idDrink']) => {
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
+
+    const {data} = await axios(url)
+
+    const result = RecipeInfoSchema.safeParse(data.drinks[0])
+    console.log(result)
+
+
+    if(result.success){
+        return result
     }
 }

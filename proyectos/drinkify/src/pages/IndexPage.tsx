@@ -16,7 +16,7 @@ export const IndexPage = () => {
         hasRecipes ? 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-8 gap-6">
             {recipes.map(recipe => (
-              <Drink recipe={recipe}/>
+              <Drink key={recipe.idDrink} recipe={recipe}/>
             ))}
 
           </div>
