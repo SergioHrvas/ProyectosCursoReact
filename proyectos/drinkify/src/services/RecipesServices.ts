@@ -1,10 +1,10 @@
-import axios from "axios"
+import api from '../lib/axios'
 import { CategoriesSchema, RecipeInfoSchema, RecipesSchema } from "../schemas/recipesSchemas"
 import type { Recipe, SearchParams } from "../types"
 
 export const getCategories = async () => {
-    const url = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
-    const {data} = await axios(url)
+    const url = "/list.php?c=list"
+    const {data} = await api(url)
     const result = CategoriesSchema.safeParse(data)
 
     if (result.success) {
@@ -13,10 +13,10 @@ export const getCategories = async () => {
 }
 
 export const getRecipes = async (params: SearchParams) => {
-    const urlIng = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${params.ingredient}`
-    const urlCat =  `https://www.thecocktaildb.com/api/json/v1/1/filter.php?&c=${params.category}`
-    const {data : dataIng} = await axios(urlIng)
-    const {data : dataCat} = await axios(urlCat)
+    const urlIng = `/filter.php?i=${params.ingredient}`
+    const urlCat = `/filter.php?&c=${params.category}`
+    const {data : dataIng} = await api(urlIng)
+    const {data : dataCat} = await api(urlCat)
     const result1 = RecipesSchema.safeParse(dataIng)
     const result2 = RecipesSchema.safeParse(dataCat)
 
@@ -29,13 +29,11 @@ export const getRecipes = async (params: SearchParams) => {
 
 
 export const getRecipe = async(id: Recipe['idDrink']) => {
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
+    const url = `/lookup.php?i=${id}`
 
-    const {data} = await axios(url)
+    const {data} = await api(url)
 
     const result = RecipeInfoSchema.safeParse(data.drinks[0])
-    console.log(result)
-
 
     if(result.success){
         return result
