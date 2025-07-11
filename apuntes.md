@@ -895,3 +895,21 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
             - Comunicación entre backend y frontend mediante JSON y peticiones HTTP
             - Gran cantidad de dependencias con NPM
             - Solo utilizamos código de JS/TS para las aplicaciones Full Stack
+
+    - ORM en NodeJS
+        - Un ORM simplifica la comunicacion entre la db y el codigo de la aplicación. En lugar de escribir consultas SQL, escribimos funciones similares al código que escribimos en JS/TS.
+        - Ventajas:
+            - **Abstracción**: Podemos interatuar con la db usando objetos, clases, métodos... en lugar de escribir consultas SQL complicadas
+            - **Portabilidad**: Podemos cambiar de un SGBD a otro sin tener que reescribir el código
+            - Productividad: Se encarga de tareas repetitivas como la generación de consultas SQL, permitiendonos enfocarnos en la lógica de la app.
+        - Consideraciones:
+            - Elegir uno en desarrollo de forma activa (que tenga soporte y se actualice)
+            - Aunque el ORM asegura la entrada de la información, SIEMPRE hay que validar.
+            - Ejemplos: Mongoose, Prisma, Sequelize, TypeORM...
+
+    - Sequelize: Soporta TS y diferentes bases de datos (oracle. postgres, mysql, mariadb, sqlite, sqlserver...). También soporta relaciones de información, lazy loading, eager loading, etc
+
+    - Middleware en NodeJS: Tipo de software intermedio utilizado para procesar solicitudes HTTP que llegan a una app web antes de ser manejadas por la función de enrutamiento principal. -> Es decir, podemos crear una función que se ejecute antes de la función principal.
+        - Funciones que se ejecutan en medio del flujo de solicitud y respuesta de una app web y pueden realizar diversas tareas como autenticación, validación de datos, registro de solicitudes (logging), compresión de respuestas...
+        - Es esencial para crear apps webs robustas y flexibles. Cada solicitud HTTP pasará a través de una serie de middleware antes de llegar a la función de controlador que maneja la solicitud final.
+        - Esto nos permitirá modularizar y organizar el código de mejor forma, ya que podemos agregar y quitar middleware según las necesidades.

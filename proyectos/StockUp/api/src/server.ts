@@ -1,27 +1,30 @@
 import express from 'express'
+import router from './router'
+import db from './config/db'
+import colors from 'colors'
 
+
+// Conexion a db
+async function connectionDB(){
+    try {
+        await db.authenticate() // Nos autenticamos en la db
+        db.sync() //Sincronizamos la db en caso de agregar nuevas tablas, filsa...
+        console.log(colors.green.bold("Se ha realizado la conexión con la BD de forma exitosa.")) 
+    } catch (error) {
+        console.log(error)
+        console.log(colors.red.bold ("Hubo un error en la conexión con la BD."))
+    }
+}
+
+connectionDB()
+
+//Instancia de express
 const server = express()
 
-// Routing
+//Leemos los datos del body
+server.use(express.json())
 
-server.get('/', (req, res) => {
-    res.send("GET")
-})
-
-server.post('/', (req, res) => {
-    res.send("POST")
-})
-
-server.put('/', (req, res) => {
-    res.send("PUT")
-})
-
-server.patch('/', (req, res) => {
-    res.send("PATCH")
-})
-
-server.delete('/', (req, res) => {
-    res.send("DELETE")
-})
+// Agregamos el Router
+server.use('/api/products', router)
 
 export default server
