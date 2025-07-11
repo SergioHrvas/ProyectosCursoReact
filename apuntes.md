@@ -913,3 +913,20 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         - Funciones que se ejecutan en medio del flujo de solicitud y respuesta de una app web y pueden realizar diversas tareas como autenticación, validación de datos, registro de solicitudes (logging), compresión de respuestas...
         - Es esencial para crear apps webs robustas y flexibles. Cada solicitud HTTP pasará a través de una serie de middleware antes de llegar a la función de controlador que maneja la solicitud final.
         - Esto nos permitirá modularizar y organizar el código de mejor forma, ya que podemos agregar y quitar middleware según las necesidades.
+
+    - Patch vs Put: Put actualiza y patch modifica. Put lo que hace es reemplazar el registro entero con lo que se mande en el body y patch modifica el/los campos enviados sin afectar al resto de columnas de la fila.
+
+    - Testing: Dos tipos en NodeJS y APIS:
+        - Unidad: Verificar que partes individuales del código funcionan: crear el servidor, visitar una ruta -> revisar que cada pieza funcione como esperamos antes de integrarla con otras
+
+        - Integración: Revisar cuando 2 o más piezas se unen como por ejemplo sería visitar una ruta y obtener datos, enviar una petición post, validar y entonces crear el producto
+
+        - Utilizaremos:
+            - Jest: uno de los frameworks de testing más conocidos. Es muy simple, los test corren aparte y no se mezclan con el código existente.
+
+            - Supertest: nos da funciones para probar el código pero podemos realizar peticiones a la API y revisar que el código funcione correctamente. 
+
+    - Para utilizar jest, lo iniciamos con ``npx ts-jest config:init``. Jest puede leer archivos de 3 formas:
+        - Archivos con la extensión .test.js
+        - Archivos con la extensión .spec.js
+        - Archivos en la carpeta __tests__
