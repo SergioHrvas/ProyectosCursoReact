@@ -866,3 +866,32 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         </Suspense>}/>
         ```
         - Una vez hecho esto podemos ver como se genera un nuevo archivo js, modularizando el código y liberando la pagina principal.
+
+## BACKEND (repaso)
+    - Una REST API es un conjunto de reglas que permiten que aplicaciones se comuniquen entre sí a través de la web. REST = Representational State Transfer -> Puede ser diseñada en cualquier lenguaje que se ejecute por HTTP (si no tienen cliente HTTP no puede ser REST API). Debe responder a las peticiones HTTP de GET, POST, PUT, PATCH, DELETE...
+        - Tienen una forma ordenada y estructura de poner recursos de una db a disposición.
+
+    - Verbos HTTP: Sirven para poder realizar ciertas acciones.
+        - GET: Obtener datos
+        - POST: Enviar datos / Creación
+        - PUT/PATCH: Actualización
+        - DELETE: Eliminar
+    
+    - Una API REST cuenta con endpoints (urls) para hacer operaciones CRUD. 
+
+    - Ventajas de API REST:
+        - Simples de crear
+        - Forma escalable y ordeanda de crear un proyecto
+        - Facilidad de uso y se pueden consumir en React, Angular, Vue.js, Flutter, Kotlin... 
+
+    - Cualquier lenguaje de programación que se ejecute en el servidor puede servir para crear una API REST: Python, PHP, Java, C#... Pero muchos frameworks soportan la creación de API REST y simplifician este proceso como Laravel, Express, Rails, Django... También se pueden utilizar distintas bases de datos como MySQL, PostgreSQL, MongoDB...
+
+    - Un stack es un conjunto de herramientas para crear nuestra aplicación. PERN es PostgreSQL, Express, React y Node.
+        - PostgreSQL: SGBD relacional orientado a objetos. Para interactuar con la base de datos podemos hacerlo mediante un ORM, que tiene todos los métodos para crear, obtener, actualizar y eliminar datos de la db
+        - Express: Infraestructura web rápida, minimalista y flexible para NodeJS. A diferencia de Rails o Laravel no tiene sistema de vistas ni ORM o Autenticación -> deja mucha parte de la configuración en manos del usuario. Ideal para aplicaciones web monolíticas o como API.
+        - NodeJS: Entorno de ejecución en JS que se ejecuta en el servidor. Gran cantidad de librerías disponibles para integrarlas con NPM. Puede consultar bases de datos, autenticar usuarios, manejar rutas, etc. 
+        - Ventajas de MERN o PERN:
+            - El stack nos permite separar el backend y el frontend: de esta forma un equipo puede trabajar unicamente en una de las dos áreas o facilitar encontrar errores en el caso de trabajar en ambos. 
+            - Comunicación entre backend y frontend mediante JSON y peticiones HTTP
+            - Gran cantidad de dependencias con NPM
+            - Solo utilizamos código de JS/TS para las aplicaciones Full Stack
