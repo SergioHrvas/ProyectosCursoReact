@@ -43,7 +43,7 @@ export const createProduct = async (req: Request, res: Response) => {
     //FORMA 2
     try {
         const saved_product = await Product.create(req.body)
-        res.send({data: saved_product})
+        res.status(201).send({data: saved_product})
     } catch(error){
         console.log(error)
         res.status(500).send({error: "Error interno"})

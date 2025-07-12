@@ -930,3 +930,5 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         - Archivos con la extensión .test.js
         - Archivos con la extensión .spec.js
         - Archivos en la carpeta __tests__
+
+    - Code Coverage: métrica utilizada para medir la cantidad de código que ha sido ejecutado  o cubierto por las pruebas. Mide el porcentaje de código que ha sido probado. Cuanto máyor sea la cobertura, más exhaustivas serán las pruebas. Se debe aspirar a más del 80% de coverage.
