@@ -1,5 +1,7 @@
 import express from 'express'
 import router from './router'
+import swaggerSpec, {swaggerUIOptions} from './config/swagger'
+import swaggerUI from 'swagger-ui-express'
 import db from './config/db'
 import colors from 'colors'
 
@@ -8,7 +10,7 @@ import colors from 'colors'
 export async function connectionDB(){
     try {
         await db.authenticate() // Nos autenticamos en la db
-        db.sync() //Sincronizamos la db en caso de agregar nuevas tablas, filsa...
+        await db.sync() //Sincronizamos la db en caso de agregar nuevas tablas, filsa...
         //console.log(colors.green.bold("Se ha realizado la conexión con la BD de forma exitosa.")) 
     } catch (error) {
         console.log(error)
@@ -27,8 +29,16 @@ server.use(express.json())
 // Agregamos el Router
 server.use('/api/products', router)
 
+// Añadimos recursos estáticos en public
+server.use(express.static('public'))
 
-server.get('/api', (req, res) => {
+/*server.get('/api', (req, res) => {
     res.json({msg:"Hola mundo"})
-})
+})*/
+
+
+
+//Documentacion SWAGGER
+server.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, swaggerUIOptions))
+
 export default server

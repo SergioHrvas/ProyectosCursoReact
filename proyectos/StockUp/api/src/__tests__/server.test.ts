@@ -2,7 +2,7 @@ import request from 'supertest'
 import server, {connectionDB} from '../server'
 import db from '../config/db'
 
-describe('GET /api', () => {
+/*describe('GET /api', () => {
     it('should send back a json response', async () => {
         const res = await request(server).get('/api')
 
@@ -15,7 +15,7 @@ describe('GET /api', () => {
 
 
     })
-})
+})*/
 
 jest.mock('../config/db')
 
