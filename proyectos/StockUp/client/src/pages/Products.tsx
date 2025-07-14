@@ -1,5 +1,5 @@
-import { Link, useLoaderData } from 'react-router-dom'
-import { getProducts } from '../services/ProductService'
+import { Link, useLoaderData, type ActionFunctionArgs } from 'react-router-dom'
+import { changeAvailable, getProducts } from '../services/ProductService'
 import type { Product } from '../types'
 import { ProductInfo } from '../components/ProductInfo'
 
@@ -9,6 +9,19 @@ export async function loader() {
 
   return products
 }
+
+export async function action ( {request }: ActionFunctionArgs) {
+  const data = Object.fromEntries(await request.formData())
+
+  if (data.id) {
+    await changeAvailable(+data.id)
+  }
+  else {
+    throw new Response('', { status: 401, statusText: "ID no válido" })
+  }
+  
+}
+
 
 export const Products = () => {
 

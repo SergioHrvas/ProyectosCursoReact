@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Layout } from './layouts/Layout'
-import { loader as productsLoader, Products } from './pages/Products'
+import { loader as productsLoader, action as changeAvailableAction, Products } from './pages/Products'
 import { NewProduct, action as actionForm } from './pages/NewProduct'
-import { EditProduct, loader as editProductLoader } from './pages/EditProduct'
-
+import { EditProduct, loader as editProductLoader, action as editProductAction } from './pages/EditProduct'
+import { action as productInfoAction } from './components/ProductInfo'
 export const router = createBrowserRouter([
     {
         path:'/',
@@ -12,7 +12,8 @@ export const router = createBrowserRouter([
             {
                 index: true, //para que sea en la pagina raiz
                 element: <Products/>,
-                loader: productsLoader
+                loader: productsLoader,
+                action: changeAvailableAction
             },
             {
                 path: 'products/create',
@@ -22,7 +23,13 @@ export const router = createBrowserRouter([
             {
                 path: 'products/:id/edit', // Patrón ROA
                 element: <EditProduct/>,
-                loader: editProductLoader
+                loader: editProductLoader,
+                action: editProductAction
+            },
+            {
+                path: 'products/:id/delete', 
+                action: productInfoAction
+
             }
         ]
     }

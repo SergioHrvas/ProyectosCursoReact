@@ -1,27 +1,32 @@
 import { Link, Form, useActionData, type ActionFunctionArgs, redirect, type LoaderFunctionArgs, useLoaderData } from "react-router-dom"
 import { Error } from "../components/Error"
-import { addProduct, getProduct } from "../services/ProductService"
+import { editProduct, getProduct } from "../services/ProductService"
+import { ProductForm } from "../components/ProductForm"
 
-export async function loader ({params} : LoaderFunctionArgs){
-  if(params.id) {
+const availableOptions = [
+  { name: "En Stock", value: true },
+  { name: "Agotado", value: false }
+]
+export async function loader({ params }: LoaderFunctionArgs) {
+  if (params.id) {
     const product = await getProduct(+params.id)
-    console.log(product)
-    if(!product) {
-      throw new Response('', {status: 404, statusText: "No encontrado"})
+
+    if (!product) {
+      throw new Response('', { status: 404, statusText: "No encontrado" })
     }
     return product
   }
-  else{
-    throw new Response('', {status: 401, statusText: "ID no válido"})
+  else {
+    throw new Response('', { status: 401, statusText: "ID no válido" })
   }
 
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   const data = Object.fromEntries(await request.formData())
 
   let error = ""
-  
+
 
   if (Object.values(data).includes('')) {
     error = "Todos los campos son obligatorios"
@@ -30,9 +35,16 @@ export async function action({ request }: ActionFunctionArgs) {
   if (error) {
     return error
   }
+  else {
+    error = ""
+  }
 
-  await addProduct(data)
-  error = ""
+  if (params.id) {
+    await editProduct(+params.id, data)
+  }
+  else {
+    throw new Response('', { status: 401, statusText: "ID no válido" })
+  }
 
   return redirect('/')
 }
@@ -62,33 +74,22 @@ export const EditProduct = () => {
 
       >
 
+        <ProductForm product={product}/>
         <div className="mb-4">
           <label
             className="text-gray-800"
-            htmlFor="name"
-          >Nombre del producto:</label>
-          <input
-            id="name"
-            type="text"
+            htmlFor="available"
+          >Disponibilidad:</label>
+          <select
+            id="available"
             className="mt-2 block w-full p-3 bg-gray-50"
-            placeholder="Nombre del producto"
-            name="name"
-            defaultValue={product.name}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="text-gray-800"
-            htmlFor="price"
-          >Precio:</label>
-          <input
-            id="price"
-            type="number"
-            className="mt-2 block w-full p-3 bg-gray-50"
-            placeholder="Precio del producto. ej. 300, 450"
-            name="price"
-            defaultValue={product.price}
-          />
+            name="available"
+            defaultValue={product.available.toString()}
+          >
+            {availableOptions.map(opt => (
+              <option key={opt.name} value={opt.value.toString()}>{opt.name}</option>
+            ))}
+          </select>
         </div>
         <input
           type="submit"

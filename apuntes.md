@@ -881,6 +881,25 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - Utilizaremos **useLoaderData** cuando queramos obtener el resultado de un loader y utilizaremos **useActionData** cuando queramos obtener el resultado de una acción
 
+    - El hook **useFetcher** de React Router es un hook que nos servirá para poder hacer pequeñas animaciones al realizar ciertas acciones quedandose en la misma pagina (algo asi como cuando damos like en twitter). useFetcher nos ayudará a no tener que redireccionar al usuario y realiar todas las interaccines en la misma página. 
+
+    ```
+    const fetcher = useFetcher()
+    ...
+    
+    <fetcher.Form method="POST">
+        <button 
+        type="button"
+        name="available"
+        value={product.available.toString()}
+        className={`${product.available ? 'text-black' : 'text-red-800'} rounded-lg p-2 text-xs uppercase font-bold w-full border border-slate-900`}
+        >
+        {product.available ? "En stock" : "Agotado"} 
+        </button>
+    </fetcher.Form>
+    ```
+
+    - Para enviar un parametro al action si ya no lo puedo obtener de la ruta puedo agregar un input hidden del id y obtenerlo en el actions con ``const data = Object.fromEntries(await request.formData())``
 
 ## BACKEND (repaso)
     - Una REST API es un conjunto de reglas que permiten que aplicaciones se comuniquen entre sí a través de la web. REST = Representational State Transfer -> Puede ser diseñada en cualquier lenguaje que se ejecute por HTTP (si no tienen cliente HTTP no puede ser REST API). Debe responder a las peticiones HTTP de GET, POST, PUT, PATCH, DELETE...
