@@ -4,8 +4,8 @@ import swaggerSpec, {swaggerUIOptions} from './config/swagger'
 import swaggerUI from 'swagger-ui-express'
 import db from './config/db'
 import colors from 'colors'
-
-
+import cors, { CorsOptions } from 'cors'
+import morgan from 'morgan'
 // Conexion a db
 export async function connectionDB(){
     try {
@@ -23,11 +23,33 @@ connectionDB()
 //Instancia de express
 const server = express()
 
+
+// Permitir conexiones
+const corsOptions: CorsOptions = {
+    origin: function(origin, callback){
+        // Origin: Quién envia la peticion
+        // Callback: permitir o negar la conexion
+
+        if(origin === process.env.FRONTEND_URL){
+            callback(null, true)
+        }
+        else{
+            callback(new Error("Error de CORS"))
+        }
+    }
+}
+
+
+server.use(cors(corsOptions))
+
 //Leemos los datos del body
 server.use(express.json())
 
+
+server.use(morgan('dev'))
 // Agregamos el Router
 server.use('/api/products', router)
+
 
 // Añadimos recursos estáticos en public
 server.use(express.static('public'))
@@ -35,7 +57,6 @@ server.use(express.static('public'))
 /*server.get('/api', (req, res) => {
     res.json({msg:"Hola mundo"})
 })*/
-
 
 
 //Documentacion SWAGGER

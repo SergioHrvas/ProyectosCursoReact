@@ -801,6 +801,11 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
             </NavLink>
         </nav>
         ```
+        - El hook **useNavigate**: lo llamamos antes del return y eso devuelve una función que pondremos en el onClick del botón con la ruta a navegar dentro como parámetro. También se le pueden pasar opciones y definir un state ahí para colocar información y pasarsela a la ruta a navegar.
+            - Para obtener ese estado en la ruta destino usamos el hook useLocation, que contiene ``state``
+            ``` const {state} = useLocation()```
+            La desventaja de este enfoque es que si accedo a la ruta asociada a ese estado (por ejemplo, para editar el producto con id 1 voy a /productos/1/editar), no estará relleno porque no ha accedido por el botón sino por la url -> aparecería como null.
+                - La solución es utilizar la URL como un state adicional, como la fuente de la verdad porque la URL del navegador nunca miente. Podríamos utilizar el hook getParams que es muy simple y eficiente, pero si necesitamos hacer peticiones a la API o realizar lógica basados en esos parámetros antes de que el componente se renderice, los loaders son más adecuados: 
     - Cuando trabajamos en proyectos multipágina, muchas veces queremos saber donde se encuentra el usuario para poder ocultar ciertas páginas, mostrar X información... React Router nos da algunos hooks, entre ellos useLocation.
         - Lo usamos así:
         ```
@@ -871,6 +876,12 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - React Router utiliza Actions para procesar la entrada de datos. Hay que importar un componente llamado <Form>, crear una función y en el router decirle qué función debe ejecutarse en el action 
 
+    - Loaders: React Router los utiliza para obtener datos de una API. Es similar al comportamiento de usar useEffect y colocar la respuesta en un state.
+        - Creamos una función y en el router decirle qué función debe ejcutarse en el loader (parecido a lo que se hizo con actions)
+
+    - Utilizaremos **useLoaderData** cuando queramos obtener el resultado de un loader y utilizaremos **useActionData** cuando queramos obtener el resultado de una acción
+
+
 ## BACKEND (repaso)
     - Una REST API es un conjunto de reglas que permiten que aplicaciones se comuniquen entre sí a través de la web. REST = Representational State Transfer -> Puede ser diseñada en cualquier lenguaje que se ejecute por HTTP (si no tienen cliente HTTP no puede ser REST API). Debe responder a las peticiones HTTP de GET, POST, PUT, PATCH, DELETE...
         - Tienen una forma ordenada y estructura de poner recursos de una db a disposición.
@@ -937,4 +948,9 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
 
     - Code Coverage: métrica utilizada para medir la cantidad de código que ha sido ejecutado  o cubierto por las pruebas. Mide el porcentaje de código que ha sido probado. Cuanto máyor sea la cobertura, más exhaustivas serán las pruebas. Se debe aspirar a más del 80% de coverage.
 
-    
+    - CORS: Cross-Origin Resource Sharing (Compartir recursos entre distintos orígenes). Es un mecanismo de seguridad que se utiliza en los navegadores web para controlar las solicitudes de recursos entre dominios diferentes. Es decir, CORS es una politica de seguridad implementada en el lado del servidor que permite o deniega las solicitudes de recursos web de un origen cruzado. Es una forma de proteger nuestra API REST para que solamente los dominios que demos de alta puedan realizar peticiones.
+        - El origen cruzado es cuando un recurso se solicita desde un dominio o puerto distinto al del origen del recurso actual. Antes de CORS, los navegadores web restringían automáticamente las solicitudes de origen cruzado para prevenir ataques de seguridad
+        - Ventajas de CORS:
+            - **Seguridad:** CORS permite a los servidores tener un control más granular sobre qué dominios pueden acceder a los recursos, reduciendo la posibilidad de ataques maliciosos de origen cruzado.
+            - **Acceso controlado a recursos**: CORS permite a los sitios webs controlar qué recursos están disponibles para ser solicitados por dominios externos y qué recursos están restringidos, brindando mayor control sobre los datos y los recursos del sitio web.
+            - **Interoperabilidad**: CORS facilita el intercambio de datos y recursos entre distintos dominios. Esto es útil sobre todo en situaciones en las que una web necesita cargar recursos de múltiples dominios para funcionar correctamente.    

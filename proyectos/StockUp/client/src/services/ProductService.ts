@@ -1,0 +1,61 @@
+import { PostProductSchema, ProductSchema, ProductsSchema, type Product } from "../types" 
+import { safeParse } from "valibot"
+import axios from "axios"
+
+
+type ProductData = {
+     [k: string]: FormDataEntryValue;
+}
+
+export async function addProduct(data: ProductData) {
+    try{
+        // Validamos los datos enviados
+        const dataParsed = safeParse(PostProductSchema, {...data, price: +data.price})
+       
+        if(dataParsed.success){
+            const url = `${import.meta.env.VITE_API_URL}/api/products`
+            
+            await axios.post(url, dataParsed.output)
+            
+        } else{
+            throw new Error("Error en la validez de los datos")
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getProducts(){
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/api/products`
+        const {data : { data }} = await axios(url)
+        
+        const result = safeParse(ProductsSchema, data)
+        if (result.success) {
+            return result.output
+        } else {
+            throw new Error("Error en la validez de la respuesta")
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getProduct(id: Product['id']){
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
+        const {data : { data }} = await axios(url)
+        
+        const result = safeParse(ProductSchema, data)
+        if (result.success) {
+            return result.output
+        } else {
+            throw new Error("Error en la validez de la respuesta")
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
