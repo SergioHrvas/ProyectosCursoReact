@@ -50,7 +50,7 @@ export const Products = () => {
               </tr>
           </thead>
           <tbody>
-          {products.map(prod => (
+          {products && products.map(prod => (
             <ProductInfo product={prod} key={prod.id}/>
           ))}
           </tbody>

@@ -40,3 +40,13 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
 
 - **Drinkify**: Proyecto para la búsqueda de recetas de cocktails y bebidas varias. Consumiendo la API de **TheCocktailDB**, obtenemos las recetas con **axios** validando la respuesta con **Zod** y manteniendo un estado global, esta vez dividido en slices, con **Zustand**. También utilizamos ventanas modales para la información de cada receta y para las notificaciones con **HeadlessUI** y tras un par de proyectos utilizando CSS Modules, en este caso se ha vuelto a trabajar con **Tailwind**. Es además el primer proyecto en el que se usa **React Router** para poder añadir varias vistas/páginas en la aplicación. Adicionalmente se le ha añadido un modelo de IA con **OpenRouter**, que permitirá generar recetas bebidas de forma automática a partir de un prompt.
     - Enlace al proyecto: https://grand-liger-d77862.netlify.app/
+
+- **StockUp**: Aplicación para la gestión de inventario de una tienda genérica. Se pueden crear, modificar, cambiar la disponibilidad y eliminar productos. Novedades de este proyecto:
+    - El frontend de React con una API REST propia desarrollada con NodeJS, Express y PostgreSQL (*proyectos/StockUp/api*)
+    - Se utilizan herramientas como:
+        - **Valibot** como alternativa a *Zod* y así ampliar las herramientas posibles para la validación de los tipos de datos de TS.
+        -  **React Router**: Nos
+            - Actions y Loaders para obtener los datos y enviarlos de forma más eficiente.
+        - **Axios**: Para enviar las peticiones HTTP
+        - **Tailwind**: Para estilos responsive
+    - Enlace al proyecto (sin backend y base de datos activa para evitar sobrecostes): https://whimsical-gumption-d44a6d.netlify.app/
