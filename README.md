@@ -45,7 +45,7 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
     - El frontend de React con una API REST propia desarrollada con NodeJS, Express y PostgreSQL (*proyectos/StockUp/api*)
     - Se utilizan herramientas como:
         - **Valibot** como alternativa a *Zod* y así ampliar las herramientas posibles para la validación de los tipos de datos de TS.
-        -  **React Router**: Nos
+        -  **React Router**: Nos ayuda con la gestión de las rutas y páginas.
             - Actions y Loaders para obtener los datos y enviarlos de forma más eficiente.
         - **Axios**: Para enviar las peticiones HTTP
         - **Tailwind**: Para estilos responsive
