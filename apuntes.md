@@ -866,6 +866,10 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         </Suspense>}/>
         ```
         - Una vez hecho esto podemos ver como se genera un nuevo archivo js, modularizando el código y liberando la pagina principal.
+    
+    - data APIs en React Router: APIs que permiten obtener datos de una API de forma muy eficiente y manejar entradas de datos de un formulario.
+
+    - React Router utiliza Actions para procesar la entrada de datos. Hay que importar un componente llamado <Form>, crear una función y en el router decirle qué función debe ejecutarse en el action 
 
 ## BACKEND (repaso)
     - Una REST API es un conjunto de reglas que permiten que aplicaciones se comuniquen entre sí a través de la web. REST = Representational State Transfer -> Puede ser diseñada en cualquier lenguaje que se ejecute por HTTP (si no tienen cliente HTTP no puede ser REST API). Debe responder a las peticiones HTTP de GET, POST, PUT, PATCH, DELETE...
@@ -932,3 +936,5 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
         - Archivos en la carpeta __tests__
 
     - Code Coverage: métrica utilizada para medir la cantidad de código que ha sido ejecutado  o cubierto por las pruebas. Mide el porcentaje de código que ha sido probado. Cuanto máyor sea la cobertura, más exhaustivas serán las pruebas. Se debe aspirar a más del 80% de coverage.
+
+    
