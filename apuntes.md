@@ -973,3 +973,7 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
             - **Seguridad:** CORS permite a los servidores tener un control más granular sobre qué dominios pueden acceder a los recursos, reduciendo la posibilidad de ataques maliciosos de origen cruzado.
             - **Acceso controlado a recursos**: CORS permite a los sitios webs controlar qué recursos están disponibles para ser solicitados por dominios externos y qué recursos están restringidos, brindando mayor control sobre los datos y los recursos del sitio web.
             - **Interoperabilidad**: CORS facilita el intercambio de datos y recursos entre distintos dominios. Esto es útil sobre todo en situaciones en las que una web necesita cargar recursos de múltiples dominios para funcionar correctamente.    
+    
+    - En cuanto a MongoDB, su ODM (como ORM pero con documentos) más famoso es Mongoose, que nos permitirá hacer consultas de Mongo más sencillas y simplifica bastantes tareas.
+        - En Mongoose, al igual que Sequalize, se utilizan modalos para diseñar los tipos de datos que tendremos.
+        - Tiene una gran cantidad de métodos para realizar las acciones CRUD
