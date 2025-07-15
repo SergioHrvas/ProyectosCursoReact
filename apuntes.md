@@ -977,3 +977,13 @@ Framework CSS basado en utilidades. A diferencia de bootstrap donde una clase co
     - En cuanto a MongoDB, su ODM (como ORM pero con documentos) más famoso es Mongoose, que nos permitirá hacer consultas de Mongo más sencillas y simplifica bastantes tareas.
         - En Mongoose, al igual que Sequalize, se utilizan modalos para diseñar los tipos de datos que tendremos.
         - Tiene una gran cantidad de métodos para realizar las acciones CRUD
+
+    - MVC: Modelo Vista Controlador. Es un patrón de arquitectura software que permite la separación de responsabilidades de cada pieza del código. Separa la lógica de programación de la presentación.
+        - Ventajas:
+            - Mejor orden y escalablidad del proyecto
+            - Al ser una arquitectura probada, todos los programadores de un grupo saben donde encontrar el código encargado de realizar alguna tarea.
+            - Cualquier framework MVC será fácil de aprender una vez aprendido MVC (como Laravel, Django, NextJS, Springboot...)
+        - El modelo es lo relacionado con los datos: DB, CRUD, ORM/ODM... Se encarga de consultar la base de datos pero no de mostrar esos datos.
+        - La vista es lo que se ve en pantalla. Muestra los resultados del modelo. React, Angular, Kotlin son ejemplos de herramientas para la vista.
+        - El controlador comunica el modelo y la vista. Antes de que el modelo consulte a la db, el controlador se encarga de llamarlo y una vez ya se hace la consulta a la db, el controlador comunica  ala vista los datos para que los muestre.
+        - El router es una pieza extra encargada de registrar todas las URLs o endpoint de nuestra aplicación. Por ejemplo, si un usuario accede a una URL, el router tiene indicaciones de comunicarse con el controlador especifico y ese controlador ya sabe a que modelo va a llamar y que vista va a mostrar esos resultados. La vista en un entorno NodeJS-Express-React, sería el JSON que recibe React
