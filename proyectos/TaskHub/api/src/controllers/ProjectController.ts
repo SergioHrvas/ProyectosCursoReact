@@ -10,9 +10,81 @@ export class ProjectController {
     static getAllProjects = async (req: Request, res: Response) => {
         try {
             const projects = await Project.find()
-            return res.send(projects)
+            res.send(projects)
         } catch (error) {
             console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static getProjectById = async (req: Request, res: Response) => {
+        const {id} = req.params
+        try {
+            const project = await Project.findById(id)
+            
+            if(!project){
+                const error = new Error ("Proyecto no encontrado")
+                return res.status(404).send({error: error.message})
+            }
+            res.send(project)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static createProject = async (req: Request, res: Response) => {
+        const newProject = new Project(req.body)
+        try {
+            const projectSaved = await newProject.save()
+            res.send(projectSaved)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static updateProject = async (req: Request, res: Response) => {
+        const {id} = req.params
+
+        try {
+            const project = await Project.findByIdAndUpdate(id, req.body, {new: true})
+
+            if (!project){
+                const error = new Error ("Proyecto no encontrado")
+                return res.status(404).send({error: error.message}) 
+            }
+
+
+            res.send(project)
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+
+    static deleteProject = async (req: Request, res: Response) => {
+        const {id} = req.params
+
+        try {
+            const project = await Project.findById(id)
+            
+            if (!project){
+                const error = new Error ("Proyecto no encontrado")
+                return res.status(404).send({deleted: false, error: error.message}) 
+            }
+
+            await project.deleteOne()
+
+
+            res.send({deleted: true, project})
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({deleted: false, error: "Error interno."})
         }
     }
 }
+
