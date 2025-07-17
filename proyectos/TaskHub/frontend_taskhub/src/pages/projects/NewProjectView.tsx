@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { Description } from "@headlessui/react"
 import { FormProject } from "@/components/projects/FormProject"
 import type { ProjectFormType } from "@/types/index"
 import { createProject } from "@/services/ProjectService"
+import { toast } from 'react-toastify'
 
 export const NewProjectView = () => {
+
+    const navigate = useNavigate()
 
     const initialValues : ProjectFormType = {
         name: "",
@@ -16,9 +18,12 @@ export const NewProjectView = () => {
         defaultValues: initialValues
     })
 
-    const handleForm = (data: ProjectFormType) => {
-        createProject(data)
+    const handleForm = async (formData: ProjectFormType) => {
+        await createProject(formData)
+        toast.success("Proyecto creado correctamente")
+        navigate('/')
     }
+
 
     return (
         <>
@@ -45,7 +50,7 @@ export const NewProjectView = () => {
                     <input
                         type="submit"
                         value="Crear proyecto"
-                        className="bg-fuchsia-600 hover:bg-fuchsia-800 transition-color w-full rounded-lg p-3 text-white font-bold text-lg uppercase"
+                        className="bg-fuchsia-600 hover:bg-fuchsia-800 transition-color w-full rounded-lg p-3 text-white font-bold text-lg uppercase cursor-pointer"
                     />
 
                 </form>
