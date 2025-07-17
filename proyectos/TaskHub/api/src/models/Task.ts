@@ -10,7 +10,7 @@ const taskStatus = {
 } as const
 
 export type TaskStatusType = typeof taskStatus[keyof typeof taskStatus]
-
+export const taskStatusValues = Object.values(taskStatus); 
 
 // Tipo para TypeScript
 export type TaskType = Document & {

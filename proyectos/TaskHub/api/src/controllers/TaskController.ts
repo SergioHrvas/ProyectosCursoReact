@@ -34,4 +34,64 @@ export class TaskController {
             return res.status(500).send({error: "Error interno"})
         }
     }
+
+    static getTaskByID = async (req: Request, res : Response) => {
+        try {
+            const task = req.task
+
+            res.send(task)
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({error: "Error interno"})
+        }  
+    }
+
+
+    static updateTask = async (req: Request, res : Response) => {
+        try {
+            const task = req.task
+        
+            task.description = req.body.description
+            task.name = req.body.name
+
+            const updatedTask = await task.save()
+
+            res.send({task: updatedTask})
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({error: "Error interno"})
+        }  
+    }
+
+
+    static deleteTask = async (req: Request, res : Response) => {
+        const {taskId} = req.params
+        try {
+            const task = req.task
+
+            req.project.tasks = req.project.tasks.filter ( task => task.toString() !== taskId)
+            await Promise.allSettled([task.deleteOne(), req.project.save()])
+            
+            res.send({deleted: true})
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({error: "Error interno"})
+        }  
+    }
+
+    static changeStatus = async (req: Request, res: Response) => {
+        const {status} = req.body
+        try {
+            const task = req.task
+
+            task.status = status
+
+            const taskUpdated = await task.save()
+            
+            res.send({task: taskUpdated})
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({error: "Error interno"})
+        }  
+    }
 }
