@@ -901,6 +901,50 @@ const fetcher = useFetcher()
 
 - Para enviar un parametro al action si ya no lo puedo obtener de la ruta puedo agregar un input hidden del id y obtenerlo en el actions con ``const data = Object.fromEntries(await request.formData())``
 
+
+- Cuando los proyectos se van hacindo grande, necesitamos una herramienta que nos de estructura y un mejor orden: **React Query**. Es una librería para obtener datos del servidor. Sus ventajas principales son que obtiene datos de forma optimizada y rápida, cachea las consultas, sincroniza/actualiza los datos del servidor de forma muy simple... Se puede utilizar tanto con fetchAPI o con axios. 
+    - Los dos conceptos más importantes que introduce son:
+        - Queries: Se utilizan para obtener datos de un servidor o API (GET) -> useQuery()
+        - Mutations: Se utilzian para crear, actualizar o eliminar datos en el servidor (POST, PUT, PATCH, DELETE) -> useMutation()
+    - Para usarlo, hay que envolver la aplicacion en el main.tsx entre QueryClientProvider:
+    ```
+    import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
+    const queryClient = new QueryClient()
+
+    createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+        <QueryClientProvider client={queryClient}>
+        <Router />
+        </QueryClientProvider>
+    </StrictMode>,
+    )
+    ``` 
+    - Posteriormente se crea la variable mutation con el hook, pasándole la función que debe ejecutar en ``mutationFn`` y otras opciones como qué hace cuando hay un error o qué hace cuando hay éxito. Para activar la mutación, se hace ``mutation.mutate(parametro)`` o ``mutation.mutateAsync(parametro)``
+    ```
+    const mutation = useMutation({
+        mutationFn: createProject,
+        onError: () => {
+            toast.error("No se ha podido crear el proyecto")
+        },
+        onSuccess: () => {
+            toast.success("Proyecto creado correctamente")
+            navigate('/')
+        }
+    })
+
+    const handleForm = async (formData: ProjectFormType) => {
+        await mutation.mutateAsync(formData)
+    }
+    ```
+    - Las funciones asíncronas las maneja react query por nosotros asi que podemos hacer:
+    ```
+    const handleForm = (formData: ProjectFormType) => mutate(formData)
+    ```
+    - Incluso aplicar distructuring en el useMutation para luego solo tener:
+    ``const handleForm = (formData: ProjectFormType) => mutate(formData)``
+
+
 ## BACKEND (repaso)
 - Una REST API es un conjunto de reglas que permiten que aplicaciones se comuniquen entre sí a través de la web. REST = Representational State Transfer -> Puede ser diseñada en cualquier lenguaje que se ejecute por HTTP (si no tienen cliente HTTP no puede ser REST API). Debe responder a las peticiones HTTP de GET, POST, PUT, PATCH, DELETE...
     - Tienen una forma ordenada y estructura de poner recursos de una db a disposición.
@@ -1002,3 +1046,4 @@ const fetcher = useFetcher()
     }
     ```
     - Cuando necesitamos hacer dos await seguidos pero uno no depende de otro, es decir, pueden funcionar en paralelo, es mucho más eficiente utilizar ``await Promise.allSettled([tarea1, tarea2])`` para que una tarea no espere a la otra.
+
