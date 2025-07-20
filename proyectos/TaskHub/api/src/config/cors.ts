@@ -3,14 +3,14 @@ import { CorsOptions } from "cors"
 export const corsConfig : CorsOptions = {
     origin: function(origin, callback) {
         const whitelist = [
-            process.env.FRONTEND_URL
+            process.env.FRONTEND_URL,
         ]
 
-        if (whitelist.includes(origin)){
-            callback(null, true)
-        }
-        else{
-            callback(new Error("Error de CORS"))
+        // Permitir solicitudes sin 'origin' (como Thunder Client o Postman)
+        if (!origin || whitelist.includes(origin)) {
+        callback(null, true);
+        } else {
+        callback(new Error("Not allowed by CORS"));
         }
     }
 }

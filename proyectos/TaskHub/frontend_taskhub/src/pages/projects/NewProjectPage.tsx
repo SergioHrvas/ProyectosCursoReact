@@ -6,7 +6,7 @@ import type { ProjectFormType } from "@/types/index"
 import { createProject } from "@/services/ProjectService"
 import { toast } from 'react-toastify'
 
-export const NewProjectView = () => {
+export const NewProjectPage = () => {
 
     const navigate = useNavigate()
 

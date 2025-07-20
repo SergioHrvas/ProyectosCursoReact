@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const ProjectSchema = z.object({
+export const ProjectSchema = z.object({
     _id: z.string(),
     name: z.string(),
     client: z.string(),
@@ -16,6 +16,10 @@ export const ProjectsSchema = z.array(
     })
 )
 
+export const ProjectDeletedSchema = z.object({
+    deleted: z.boolean(),
+    project: ProjectSchema
+})
 export type ProjectType = z.infer<typeof ProjectSchema>
 
 export type ProjectFormType = Pick<ProjectType, 'name' | "client" | "description">
