@@ -18,7 +18,7 @@ export async function validateProjectExists (req: Request, res: Response, next: 
             return res.status(400).send({error: "Id no válido"})
         }
         
-        const project = await Project.findById(projectId)
+        const project = await (await Project.findById(projectId)).populate('tasks')
         if(!project){
             const error = new Error("Proyecto no encontrado")
             return res.status(404).send({error: error.message})

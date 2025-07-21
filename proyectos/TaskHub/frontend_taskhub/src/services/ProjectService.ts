@@ -5,7 +5,6 @@ import { isAxiosError } from "axios";
 export async function createProject (formData : ProjectFormType) {
     try {
         const {data} = await api.post('/projects', formData)
-        console.log(data)
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error(error.response.data.error)
@@ -35,9 +34,7 @@ export async function getProjects () {
 export async function getProject (projectId: ProjectType['_id']){
     try {
         const {data} = await api.get(`/projects/${projectId}`)
-
         const result = ProjectSchema.safeParse(data)
-
         if(result.success){
             return result.data
         }

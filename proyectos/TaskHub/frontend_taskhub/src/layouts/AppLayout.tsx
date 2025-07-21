@@ -10,9 +10,7 @@ export const AppLayout = () => {
         <header className="bg-slate-800 py-5">
             <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center">
                 <div className="w-72">
-                  <Link to={'/'}>
                     <Logo/>
-                  </Link>
                 </div>
                 <NavMenu/>
             </div>

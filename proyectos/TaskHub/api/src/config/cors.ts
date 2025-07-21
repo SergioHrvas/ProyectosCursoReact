@@ -8,9 +8,9 @@ export const corsConfig : CorsOptions = {
 
         // Permitir solicitudes sin 'origin' (como Thunder Client o Postman)
         if (!origin || whitelist.includes(origin)) {
-        callback(null, true);
+            callback(null, true);
         } else {
-        callback(new Error("Not allowed by CORS"));
+            callback(new Error("Not allowed by CORS"));
         }
     }
 }

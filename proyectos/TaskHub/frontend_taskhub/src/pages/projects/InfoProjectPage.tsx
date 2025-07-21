@@ -1,4 +1,6 @@
 import { EditProjectForm } from "@/components/projects/EditProjectForm"
+import NewTaskModal from "@/components/tasks/NewTaskModal"
+import { TaskList } from "@/components/tasks/TaskList"
 import { getProject } from "@/services/ProjectService"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
@@ -21,9 +23,11 @@ export const InfoProjectPage = () => {
     return <p>Cargando...</p>
   }
 
-  if (isError)
+  if (isError){
+    console.log(error)
     return <Navigate to="/404" />
-
+  }
+  
   if (data) return (
     <>
       <h1 className="text-5xl font-black">{data.name}</h1>
@@ -37,6 +41,11 @@ export const InfoProjectPage = () => {
           Añadir tarea
         </button>
       </nav>
+      <TaskList
+        tasks={data.tasks}
+      />
+
+      <NewTaskModal/>
     </>
 
   )
