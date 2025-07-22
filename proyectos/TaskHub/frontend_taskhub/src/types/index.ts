@@ -14,6 +14,11 @@ export const TaskSchema = z.object({
     status: TaskStatusSchema
 })
 
+export const TaskDeletedSchema = z.object({
+    deleted: z.boolean(),
+    project: TaskSchema
+})
+
 export type TaskType = z.infer<typeof TaskSchema>
 export type TaskFormType = Pick<TaskType, 'name' | 'description'>
 

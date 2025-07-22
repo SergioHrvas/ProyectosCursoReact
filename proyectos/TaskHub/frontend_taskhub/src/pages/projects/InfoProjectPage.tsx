@@ -1,4 +1,4 @@
-import { EditProjectForm } from "@/components/projects/EditProjectForm"
+import { EditTaskData } from "@/components/tasks/EditTaskData"
 import NewTaskModal from "@/components/tasks/NewTaskModal"
 import { TaskList } from "@/components/tasks/TaskList"
 import { getProject } from "@/services/ProjectService"
@@ -24,7 +24,6 @@ export const InfoProjectPage = () => {
   }
 
   if (isError){
-    console.log(error)
     return <Navigate to="/404" />
   }
   
@@ -46,6 +45,7 @@ export const InfoProjectPage = () => {
       />
 
       <NewTaskModal/>
+      <EditTaskData/>
     </>
 
   )
