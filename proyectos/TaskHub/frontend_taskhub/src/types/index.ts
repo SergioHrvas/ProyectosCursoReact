@@ -11,7 +11,9 @@ export const TaskSchema = z.object({
     name: z.string(),
     description: z.string(),
     project: z.string(),
-    status: TaskStatusSchema
+    status: TaskStatusSchema,
+    updatedAt: z.string(),
+    createdAt: z.string()
 })
 
 export const TaskDeletedSchema = z.object({
@@ -28,7 +30,8 @@ export const ProjectSchema = z.object({
     name: z.string(),
     client: z.string(),
     description: z.string(),
-    tasks: z.array(TaskSchema)
+    tasks: z.array(TaskSchema),
+
 })
 
 export const ProjectsSchema = z.array(

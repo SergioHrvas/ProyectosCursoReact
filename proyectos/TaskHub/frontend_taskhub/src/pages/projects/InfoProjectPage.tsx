@@ -1,6 +1,7 @@
 import { EditTaskData } from "@/components/tasks/EditTaskData"
 import NewTaskModal from "@/components/tasks/NewTaskModal"
 import { TaskList } from "@/components/tasks/TaskList"
+import TaskModal from "@/components/tasks/TaskModal"
 import { getProject } from "@/services/ProjectService"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
@@ -46,6 +47,7 @@ export const InfoProjectPage = () => {
 
       <NewTaskModal/>
       <EditTaskData/>
+      <TaskModal/>
     </>
 
   )

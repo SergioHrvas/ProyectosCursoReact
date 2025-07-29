@@ -44,7 +44,6 @@ export default function EditTaskModal({data, taskId} : EditTaskModalProps) {
     })
 
     const handleForm = (formData: TaskFormType) => {
-        console.log(formData)
         mutate({projectId, taskId, formData})
     }
     return (
