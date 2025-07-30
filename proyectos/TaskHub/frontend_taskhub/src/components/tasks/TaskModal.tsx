@@ -1,10 +1,12 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, type ChangeEvent } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query'
-import { getTask } from '@/services/TaskService';
+import { useQuery, useMutation, useQueryClient} from '@tanstack/react-query'
+import { getTask, updateStatus } from '@/services/TaskService';
 import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
+import { statusTranslations } from '@/locales/es';
+import type { TaskStatus } from '@/types/index';
 
 export default function TaskModal() {
 
@@ -24,13 +26,30 @@ export default function TaskModal() {
     })
 
     const navigate = useNavigate()
-
+    const queryClient = useQueryClient()
 
     useEffect(() => {
         if(isError){
             toast.error(error.message, { toastId: 'error'})
         }
     }, [isError])
+
+
+    const { mutate } = useMutation({
+        mutationFn: updateStatus,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: () => {
+            toast.success("Estado de la tarea actualizado correctamente")
+            queryClient.invalidateQueries({queryKey: ['project', projectId]})
+            queryClient.invalidateQueries({queryKey: ['task', taskId]})
+        }
+    })
+
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        mutate({projectId, taskId, status: e.target.value as TaskStatus})
+    }
     
     if(isError) {
         return <Navigate to={`/projects/${projectId}`} />
@@ -73,7 +92,16 @@ export default function TaskModal() {
                                     </Dialog.Title>
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
                                     <div className='my-5 space-y-3'>
-                                        <label className='font-bold'>Estado Actual: {data.status}</label>
+                                        <label className='font-bold'>Estado Actual:</label>
+
+                                        <select
+                                            defaultValue={data.status}
+                                            onChange={handleChange}
+                                            className='w-full p-3 bg-white border-gray-300'>
+                                                {Object.entries(statusTranslations).map( ([status, translation]) => 
+                                                <option value={status}>{translation}</option>
+                                                )}
+                                        </select>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

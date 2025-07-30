@@ -13,7 +13,7 @@ export const InfoProjectPage = () => {
   const params = useParams()
   const projectId = params.projectId!
 
-  const { data, isLoading, error, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => getProject(projectId),
     retry: false

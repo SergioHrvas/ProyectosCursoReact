@@ -59,3 +59,14 @@ export async function deleteTask({projectId, taskId} : {projectId: ProjectType['
         }
     }
 }
+
+export async function updateStatus({projectId, taskId, status} : {projectId: ProjectType['_id'], taskId: TaskType['_id'], status: TaskType['status']}){
+    try {
+        const {data} = await api.patch(`/projects/${projectId}/tasks/${taskId}`, {status})
+        const result = z.safeParse(TaskSchema, data)
+    } catch (error) {
+        if(isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}

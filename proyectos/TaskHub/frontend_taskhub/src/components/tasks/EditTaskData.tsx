@@ -7,7 +7,6 @@ export const EditTaskData = () => {
     const {search} = useLocation()    
     const queryParams = new URLSearchParams(search)
     const taskId = queryParams.get('editTask')!
-    const show = taskId ? true : false
 
     const params = useParams()
     const projectId = params.projectId!
