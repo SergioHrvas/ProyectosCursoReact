@@ -1,7 +1,7 @@
 import { bold } from 'colors'
 import mongoose, {Schema, Document, PopulatedDoc, Types, mongo} from 'mongoose'
 
-export type User = Document & {
+export type TUser = Document & {
     name: string,
     surname: string,
     username: string,
@@ -42,5 +42,5 @@ const UserSchema : Schema = new Schema ({
     }
 })
 
-const User = mongoose.model<User>('User', UserSchema)
+const User = mongoose.model<TUser>('User', UserSchema)
 export default User
