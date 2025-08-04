@@ -1,4 +1,3 @@
-import { bold } from 'colors'
 import mongoose, {Schema, Document, PopulatedDoc, Types, mongo} from 'mongoose'
 
 export type TUser = Document & {
