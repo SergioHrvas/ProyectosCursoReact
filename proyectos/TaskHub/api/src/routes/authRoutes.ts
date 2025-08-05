@@ -25,4 +25,13 @@ router.post(
     handleInputError,
     AuthController.confirmAccount
 )
+
+
+router.post(
+    '/login',
+    body('user').notEmpty().withMessage("El nombre de usuario o correo electrónico es obligatorio"),
+    body('password').notEmpty().withMessage("La contraseña es obligatoria"),
+    handleInputError,
+    AuthController.login
+)
 export default router

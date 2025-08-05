@@ -1,4 +1,4 @@
-import { genSalt, hash } from 'bcrypt'
+import { genSalt, hash, compare } from 'bcrypt'
 import User, { TUser } from '../models/User'
 import {Response} from 'express'
 
@@ -17,4 +17,9 @@ export const isUniqueUser = async (user: TUser, res: Response) : Promise<boolean
         return false
     }
     return true
+}
+
+export const checkPassword = async (sentPassword: string, storedPassword: string) : Promise<boolean> => {
+    console.log(sentPassword, storedPassword)
+    return await compare(sentPassword, storedPassword)
 }

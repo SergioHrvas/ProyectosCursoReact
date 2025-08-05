@@ -1,9 +1,8 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
 import Token from '../models/Token'
-import { hashPassword, isUniqueUser } from '../utils/auth'
+import { checkPassword, hashPassword, isUniqueUser } from '../utils/auth'
 import { generateToken } from '../utils/token'
-import { transport } from '../config/nodemailer'
 import { AuthEmail } from '../emails/AuthEmail'
 
 export class AuthController {
@@ -43,7 +42,7 @@ export class AuthController {
 
             if(!tokenExists){
                 const error = new Error('Token no válido')
-                return res.status(401).send(error.message)
+                return res.status(404).send(error.message)
             }
             else {
                 const user = await User.findById(tokenExists.user)
@@ -53,6 +52,47 @@ export class AuthController {
 
                 return res.status(200).send("Cuenta confirmada correctamente")
             }
+
+        } catch (error) {
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static login = async (req: Request, res: Response) => {
+        try {
+            const { user, password } = req.body
+            
+            const userExists = await User.findOne({$or: [ {email: user}, {username: user}]})
+
+            console.log(userExists)
+            if(!userExists){
+                const error = new Error('El usuario no existe')
+                return res.status(404).send(error.message)
+            }
+            if ( ! userExists.confirmed ){
+                const token = new Token()
+                token.token = generateToken()
+                
+                token.user = userExists.id
+
+                await token.save()
+                await AuthEmail.sendConfirmEmail({email: userExists.email, token: token.token, name: userExists.name})
+
+
+                const error = new Error('El usuario no está confirmado. Hemos enviado un correo electrónico. Comprueba su bandeja de entrada')
+                return res.status(401).send(error.message)
+            }
+            
+            // Revisamos la contraseña
+            const isPasswordCorrect = await checkPassword(password, userExists.password)
+            console.log(isPasswordCorrect)
+            if(!isPasswordCorrect){
+                const error = new Error('Error en la autenticación. Revisa que el usuario y la contraseña sean válidos')
+                return res.status(403).send(error.message)
+            }
+            
+            return res.status(200).send("Inicio de sesión realizado correctamente")
+            
 
         } catch (error) {
             res.status(500).send({error: "Error interno."})
