@@ -7,6 +7,7 @@ import { InfoProjectPage } from './pages/projects/InfoProjectPage'
 import { AuthLayout } from './layouts/AuthLayout'
 import { LoginPage } from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
+import ConfirmAccountPage from './pages/auth/ConfirmAccountPage'
 
 export default function Router () {
 
@@ -23,6 +24,7 @@ export default function Router () {
                 <Route element={<AuthLayout/>}>
                     <Route path="/auth/login" element={<LoginPage/>}/>
                     <Route path="/auth/register" element={<RegisterPage/>}/>
+                    <Route path="/auth/confirm-account" element={<ConfirmAccountPage/>}/>
                 </Route>
 
             </Routes>
