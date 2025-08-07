@@ -28,7 +28,7 @@ export class AuthController {
 
             await Promise.allSettled([user.save(), token.save()])
 
-            res.send('Cuenta creada. Te hemos enviado un correo electrónico para confirmar la cuenta.')
+            return res.send('Cuenta creada. Te hemos enviado un correo electrónico para confirmar la cuenta.')
         } catch (error) {
             res.status(500).send({error: "Error interno."})
         }
@@ -42,7 +42,7 @@ export class AuthController {
 
             if(!tokenExists){
                 const error = new Error('Token no válido')
-                return res.status(404).send(error.message)
+                return res.status(404).send({error: error.message})
             }
             else {
                 const user = await User.findById(tokenExists.user)
@@ -64,11 +64,11 @@ export class AuthController {
             
             const userExists = await User.findOne({$or: [ {email: user}, {username: user}]})
 
-            console.log(userExists)
             if(!userExists){
                 const error = new Error('El usuario no existe')
-                return res.status(404).send(error.message)
+                return res.status(404).send({error: error.message})
             }
+            
             if ( ! userExists.confirmed ){
                 const token = new Token()
                 token.token = generateToken()
@@ -80,15 +80,15 @@ export class AuthController {
 
 
                 const error = new Error('El usuario no está confirmado. Hemos enviado un correo electrónico. Comprueba su bandeja de entrada')
-                return res.status(401).send(error.message)
+                return res.status(401).send({error: error.message})
             }
             
             // Revisamos la contraseña
             const isPasswordCorrect = await checkPassword(password, userExists.password)
-            console.log(isPasswordCorrect)
+
             if(!isPasswordCorrect){
                 const error = new Error('Error en la autenticación. Revisa que el usuario y la contraseña sean válidos')
-                return res.status(403).send(error.message)
+                return res.status(403).send({error: error.message})
             }
             
             return res.status(200).send("Inicio de sesión realizado correctamente")
@@ -96,6 +96,36 @@ export class AuthController {
 
         } catch (error) {
             res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static requestConfirmationCode = async (req : Request, res: Response) => {
+        try {
+            const { user } = req.body
+
+            const userExists = await User.findOne({$or: [{"email": user}, {"username": user}]})
+            
+            if(!userExists){
+                return res.status(404).send({error: "El usuario no está registrado"})
+            }
+
+            if(userExists.confirmed){
+                return res.status(403).send({error: "El usuario ya está confirmado"})
+            }
+            
+            await Token.deleteMany({user: userExists.id})
+            
+            const token = new Token()
+            token.token = generateToken()
+            token.user = userExists.id
+
+            await AuthEmail.sendConfirmEmail({email: userExists.email, token: token.token, name: userExists.name})
+
+            token.save()
+
+            return res.send('Se envió un nuevo código a tu correo electrónico.')
+        } catch (error) {
+            return res.status(500).send({error: "Error interno."})
         }
     }
 }

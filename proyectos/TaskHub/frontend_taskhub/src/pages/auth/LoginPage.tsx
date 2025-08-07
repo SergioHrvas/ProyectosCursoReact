@@ -2,6 +2,9 @@ import { ErrorMessage } from "@/components/ErrorMessage"
 import type { UserLoginForm } from "@/types/index"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
+import { useMutation } from '@tanstack/react-query'
+import { loginAccount } from "@/services/AuthService"
+import { toast } from "react-toastify"
 
 export const LoginPage = () => {
   const initialValues: UserLoginForm = {
@@ -10,7 +13,18 @@ export const LoginPage = () => {
   }
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-  const handleLogin = (formData: UserLoginForm) => { }
+
+  const { mutate } = useMutation({
+    mutationFn: loginAccount,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      toast.success(data)
+    }
+  })
+
+  const handleLogin = (formData: UserLoginForm) => { mutate(formData) }
 
   return (
     <>
@@ -30,11 +44,7 @@ export const LoginPage = () => {
             placeholder="Email / Username de Registro"
             className="w-full p-3  border-gray-300 border"
             {...register("user", {
-              required: "El email / username es obligatorio",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Email / username no válido",
-              },
+              required: "El email / username es obligatorio"
             })}
           />
           {errors.user && (

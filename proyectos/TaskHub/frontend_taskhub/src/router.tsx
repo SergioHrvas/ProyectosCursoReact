@@ -8,6 +8,7 @@ import { AuthLayout } from './layouts/AuthLayout'
 import { LoginPage } from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ConfirmAccountPage from './pages/auth/ConfirmAccountPage'
+import { RequestConfirmationCodePage } from './pages/auth/RequestConfirmationCodePage'
 
 export default function Router () {
 
@@ -25,6 +26,7 @@ export default function Router () {
                     <Route path="/auth/login" element={<LoginPage/>}/>
                     <Route path="/auth/register" element={<RegisterPage/>}/>
                     <Route path="/auth/confirm-account" element={<ConfirmAccountPage/>}/>
+                    <Route path="/auth/request-code" element={<RequestConfirmationCodePage/>}/>
                 </Route>
 
             </Routes>
