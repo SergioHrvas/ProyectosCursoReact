@@ -176,7 +176,7 @@ export default function RegisterPage() {
 
             <nav className="mt-10 flex-col space-y-5">
                 <p className="text-center text-white font-normal">¿Ya estás registrado? <Link to="/auth/login" className="text-fuchsia-500 font-bold">Inicia sesión</Link></p>
-
+                <p className="text-center text-white font-normal">¿Olvidaste la contraseña? <Link to="/auth/forgot-password" className="text-fuchsia-500 font-bold">Reseteala</Link></p>
             </nav>
         </>
     )

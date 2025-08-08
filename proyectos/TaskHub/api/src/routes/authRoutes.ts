@@ -43,4 +43,11 @@ router.post(
     AuthController.requestConfirmationCode
 )
 
+router.post(
+    '/forgot-password',
+    body('user').notEmpty().withMessage("El nombre de usuario o correo electrónico es obligatorio"),
+    handleInputError,
+    AuthController.forgotPassword
+)
+
 export default router

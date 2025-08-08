@@ -28,6 +28,11 @@ export const LoginPage = () => {
 
   return (
     <>
+      <h1 className="text-5xl font-black text-white">Login</h1>
+      <p className="text-xl font-light text-white mt-5">
+          Rellena el formulario para {''}
+          <span className=" text-fuchsia-500 font-bold"> iniciar sesión</span>
+      </p>
       <form
         onSubmit={handleSubmit(handleLogin)}
         className="space-y-8 p-10 bg-white"
@@ -79,7 +84,8 @@ export const LoginPage = () => {
 
       <nav className="mt-10 flex-col space-y-5">
         <p className="text-center text-white font-normal">¿No tienes cuenta? <Link to="/auth/register" className="text-fuchsia-500 font-bold">Regístrate</Link></p>
-        
+        <p className="text-center text-white font-normal">¿Olvidaste la contraseña? <Link to="/auth/forgot-password" className="text-fuchsia-500 font-bold">Reseteala</Link></p>
+      
       </nav>
     </>
   )

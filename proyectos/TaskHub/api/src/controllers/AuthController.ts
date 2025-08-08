@@ -128,4 +128,31 @@ export class AuthController {
             return res.status(500).send({error: "Error interno."})
         }
     }
+
+    static forgotPassword = async (req : Request, res: Response) => {
+        try {
+            console.log("aaaaaaa")
+            const { user } = req.body
+
+            const userExists = await User.findOne({$or: [{"email": user}, {"username": user}]})
+            
+            if(!userExists){
+                return res.status(404).send({error: "El usuario no está registrado"})
+            }
+
+            const token = new Token()
+            token.token = generateToken()
+            token.user = userExists.id
+
+
+            await AuthEmail.sendResetPasswordEmail({email: userExists.email, token: token.token, name: userExists.name})
+
+            await token.save()
+            
+
+            return res.send('Se envió un nuevo código a tu correo electrónico.')
+        } catch (error) {
+            return res.status(500).send({error: "Error interno."})
+        }
+    }
 }

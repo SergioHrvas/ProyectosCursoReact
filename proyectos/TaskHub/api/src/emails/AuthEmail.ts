@@ -23,4 +23,21 @@ export class AuthEmail {
             console.log("Mensaje enviado:", info.messageId)
             return info
     }
+
+    static sendResetPasswordEmail = async ( user : IEmail) => {
+            const info = await transport.sendMail({
+                from: 'TaskHub <official@taskhub.com>',
+                to: user.email,
+                subject: 'Uptask - Resetea tu contraseña',
+                text: 'UpTask - Resetea tu contraseña',
+                html: `<p>Hola ${user.name}! </p>
+                <p>Accede al enlace de abajo e ingresa el siguiente token: <b>${user.token}</b></p>
+                <a href="${process.env.FRONTEND_URL}/auth/reset-password">Restablecer contraseña</a>
+                
+                <p>El token expirará en 10 minutos</p>`
+            })
+
+            console.log("Mensaje enviado:", info.messageId)
+            return info
+    }
 }
