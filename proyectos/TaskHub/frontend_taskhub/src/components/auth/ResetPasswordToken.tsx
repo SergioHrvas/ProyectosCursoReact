@@ -1,9 +1,36 @@
+import { validateToken } from '@/services/AuthService';
+import type { TokenConfirmation } from '@/types/index';
 import { PinInput, PinInputField } from '@chakra-ui/pin-input';
+import { useMutation } from '@tanstack/react-query';
+import type { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-export default function ResetPasswordToken() {
-    const handleChange = (token: string) => {}
-    const handleComplete = (token: string) => {}
+
+type ResetPasswordTokenProps = {
+    token: TokenConfirmation['token'],
+    setToken: Dispatch<SetStateAction<string>>,
+    setIsValidToken: Dispatch<SetStateAction<boolean>>
+}
+
+export default function ResetPasswordToken({token, setToken, setIsValidToken} : ResetPasswordTokenProps) {
+    
+    const { mutate } = useMutation({
+        mutationFn: validateToken,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            setIsValidToken(true)
+        }
+    }) 
+    const handleChange = (token: TokenConfirmation['token']) => {
+        setToken(token)
+    }
+    const handleComplete = (token: TokenConfirmation['token']) => {
+       mutate({token})
+    }
 
     return (
         <>
@@ -14,7 +41,7 @@ export default function ResetPasswordToken() {
                     className="font-normal text-2xl text-center block"
                 >Código de 6 dígitos</label>
                 <div className="flex justify-center gap-5">
-                    <PinInput value={"123456"} onChange={handleChange} onComplete={handleComplete}>
+                    <PinInput value={token} onChange={handleChange} onComplete={handleComplete}>
                         <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
                         <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
                         <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />

@@ -131,7 +131,6 @@ export class AuthController {
 
     static forgotPassword = async (req : Request, res: Response) => {
         try {
-            console.log("aaaaaaa")
             const { user } = req.body
 
             const userExists = await User.findOne({$or: [{"email": user}, {"username": user}]})
@@ -153,6 +152,49 @@ export class AuthController {
             return res.send('Se envió un nuevo código a tu correo electrónico.')
         } catch (error) {
             return res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static validateToken = async (req: Request, res: Response) => {
+        try {
+            const { token } = req.body
+            
+            const tokenExists = await Token.findOne({token})
+
+            if(!tokenExists){
+                const error = new Error('Token no válido')
+                return res.status(404).send({error: error.message})
+            }
+
+            return res.status(200).send("Token válido. Indique la nueva contraseña")
+    
+
+        } catch (error) {
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static resetPassword = async (req: Request, res: Response) => {
+        try {
+            const { password } = req.body
+            const { token } = req.params 
+            
+            const tokenExists = await Token.findOne({token})
+
+            if(!tokenExists){
+                const error = new Error('Token no válido')
+                return res.status(404).send({error: error.message})
+            }
+
+            const user = await User.findById(tokenExists.user)
+            user.password = await hashPassword(password)
+
+            Promise.allSettled([user.save(), tokenExists.deleteOne()])
+
+            return res.status(200).send("Contraseña actualizada correctamente")
+    
+        } catch (error) {
+            res.status(500).send({error: "Error interno."})
         }
     }
 }

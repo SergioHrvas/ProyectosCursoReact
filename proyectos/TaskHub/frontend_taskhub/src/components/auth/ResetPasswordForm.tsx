@@ -1,10 +1,19 @@
-import type { NewPasswordForm } from "../../types";
+import type { NewPasswordForm, TokenConfirmation } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@/components/ErrorMessage";
+import { useMutation } from "@tanstack/react-query";
+import { resetPassword } from "@/services/AuthService";
+import { toast } from "react-toastify";
 
-export default function ResetPasswordForm() {
+type ResetPasswordFormProps = {
+    token: TokenConfirmation['token']
+}
+
+export default function ResetPasswordForm({token} : ResetPasswordFormProps) {
+    
     const navigate = useNavigate()
+    
     const initialValues: NewPasswordForm = {
         password: '',
         password_confirmation: '',
@@ -12,7 +21,20 @@ export default function ResetPasswordForm() {
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
 
 
-    const handleNewPassword = (formData: NewPasswordForm) => {}
+    const {mutate} = useMutation({
+        mutationFn: resetPassword,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            reset()
+            navigate('/auth/login')
+        }
+    })
+    const handleNewPassword = (formData: NewPasswordForm) => {
+        mutate({formData, token})
+    }
 
     const password = watch('password');
 

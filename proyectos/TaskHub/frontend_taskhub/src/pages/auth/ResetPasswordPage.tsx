@@ -1,11 +1,11 @@
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
 import ResetPasswordToken from '@/components/auth/ResetPasswordToken';
-import { PinInput, PinInputField } from '@chakra-ui/pin-input';
+import type { TokenConfirmation } from '@/types/index';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export default function ResetPasswordPage() {
 
+    const [token, setToken] = useState<TokenConfirmation['token']>('')
     const [isValidToken, setIsValidToken] = useState(false)
 
 
@@ -17,8 +17,8 @@ export default function ResetPasswordPage() {
                 <span className=" text-fuchsia-500 font-bold"> resetear tu contraseña</span>
             </p>
             {!isValidToken ?
-                <ResetPasswordToken/> : 
-                <ResetPasswordForm/>
+                <ResetPasswordToken token={token} setToken={setToken} setIsValidToken={setIsValidToken}/> : 
+                <ResetPasswordForm token={token}/>
             }
         </>
 
