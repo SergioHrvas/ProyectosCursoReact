@@ -1047,3 +1047,23 @@ const fetcher = useFetcher()
     ```
     - Cuando necesitamos hacer dos await seguidos pero uno no depende de otro, es decir, pueden funcionar en paralelo, es mucho más eficiente utilizar ``await Promise.allSettled([tarea1, tarea2])`` para que una tarea no espere a la otra.
 
+    - JSON Web Token (JWT) es un estándar abierto que define un formato compacto y seguro para transmitir información entre dos partes de forma segura como un objecto JSON.
+        - Tiene las siguientes partes:
+            - Header: 
+            - Payload: Aqui podemos colocar los datos
+            - Signature
+
+        - Ventajas:
+            - Seguridad: algoritmos de firma digital para asegurar que los datos no son alterados durante la transmisión. Así se garantiza la integridad de la información y que las dos paetes confíen en su validez
+            - Autenticación y autorización: Se utilizan para autenticar usuarios y permitirles acceder a recursos protegidos. El usuario cuando se autentica correctamente recibe el JWT que contiene la información de permisos y roles. EL servidor puede verificar la validez del token y autorizar o npo el acceso a los datos.
+            - Transferencia eficiente de datos: Formato compacto que se puede transmitir tanto por cabeceras HTTP, URL o el body.
+            - Stateless: Sin estado. La información necesaria para autenticar y autorizar al usuario está en el token. NO hay necesidad de almacenar información de la sesión en el servidor, lo que facilita escalabilidad  
+    
+    - ¿Donde guardar el token?
+        - LocalStorage:  
+            - Ventajas: Fácil de usar. Almacenar y recuperar datos es sencillo. Es persistente: los datos permanencen en el navegador incluso después de cerraro y reiniciar el ordenador (a excepción de SessionStorage). El rendimiento puede ser más rápido ya que no se envían con cada solicitud HTTP
+            - Desventajas: Vulnerable a XSS (ATAQUES DE SCRIPTS ENTRE SITIOS ). Capacidad limitada ya qe el almacenamiento está limitado a máximo 5-10MB por dominio (es bastante). No es compatible con solicitudes cruzadas (CORS) -> Los datos almacenados en LS no se envían automaticamente con las solicitudes CORS a otros dominios
+        - Cookies:
+            - Ventajas: En seguridad, permiten configurarse con las banderas HttpONly y Secure para aumentar la seguridad y proteger contra ataques XSS y CSRF (si genero una cookie en un domninio, solo puede ser accedida por peticiones que vienen de ese dominio ). Además tienen soporte para CORS, se envian automaticamente con las solicitudes CORS -> facilita el manejo de autenticación en apps distribuidas. Además podemos controlar la expiración para que se eliminen automaticamente del navegador
+            - Desventajas: Pueden causar sobrecarga de red porque se envían con cada solicitud HTTP, lo que aumenta el tráfico si los tokens son grandes. Tienen capacidad limitada -> Normalmente 4KB por cookie
+            - Persistencia: Pueden ser eliminadas por el usuario o expirar automáticamente tras un periodo de tiempo, lo que require renovar los tokens de forma periódica.

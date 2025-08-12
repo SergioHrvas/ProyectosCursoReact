@@ -6,6 +6,7 @@ import { TaskController } from '../controllers/TaskController'
 import { validateProjectExists } from '../middlewares/project'
 import { taskStatusValues } from '../models/Task'
 import { taskBelongsToProject, validateTaskExists } from '../middlewares/task'
+import { authenticate } from '../middlewares/auth'
 
 const router = Router()
 
@@ -18,6 +19,7 @@ router.get('/:projectId',
 )
 
 router.post('/',
+    authenticate,
     body('name').notEmpty().withMessage("El nombre del proyecto es obligatorio"),
     body('client').notEmpty().withMessage("El nombre del cliente es obligatorio"),
     body('description').notEmpty().withMessage("La descripción del proyecto es obligatoria"),

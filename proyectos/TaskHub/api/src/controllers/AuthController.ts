@@ -4,6 +4,7 @@ import Token from '../models/Token'
 import { checkPassword, hashPassword, isUniqueUser } from '../utils/auth'
 import { generateToken } from '../utils/token'
 import { AuthEmail } from '../emails/AuthEmail'
+import { createJWT } from '../utils/jwt'
 
 export class AuthController {
     
@@ -90,8 +91,10 @@ export class AuthController {
                 const error = new Error('Error en la autenticación. Revisa que el usuario y la contraseña sean válidos')
                 return res.status(403).send({error: error.message})
             }
+
+            const token = createJWT({id: userExists.id})
             
-            return res.status(200).send("Inicio de sesión realizado correctamente")
+            return res.status(200).send(token)
             
 
         } catch (error) {
