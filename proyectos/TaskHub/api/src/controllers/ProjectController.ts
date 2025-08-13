@@ -9,7 +9,7 @@ export class ProjectController {
 
     static getAllProjects = async (req: Request, res: Response) => {
         try {
-            const projects = await Project.find()
+            const projects = await Project.find({admin: req.user.id})
             res.send(projects)
         } catch (error) {
             console.log(error)
@@ -18,9 +18,19 @@ export class ProjectController {
     }
 
     static getProjectById = async (req: Request, res: Response) => {
-        const {id} = req.params
         try {
             const project = req.project
+            
+            if(!project){
+                const error = new Error("Prouecto no encontrado")
+                return res.status(404).send({error: error.message})
+            }
+            
+            if(project.admin.toString() !== req.user.id){
+                const error = new Error("Usuario no autorizado")
+                return res.status(401).send({error: error.message})
+            }
+            
             res.send(project)
         } catch (error) {
             console.log(error)
@@ -30,6 +40,8 @@ export class ProjectController {
 
     static createProject = async (req: Request, res: Response) => {
         const newProject = new Project(req.body)
+        newProject.admin = req.user.id
+
         try {
             const projectSaved = await newProject.save()
             res.send(projectSaved)
@@ -42,6 +54,16 @@ export class ProjectController {
     static updateProject = async (req: Request, res: Response) => {
         try {
             const project = req.project
+
+            if(!project){
+                const error = new Error("Prouecto no encontrado")
+                return res.status(404).send({error: error.message})
+            }
+            
+            if(project.admin.toString() !== req.user.id){
+                const error = new Error("Usuario no autorizado")
+                return res.status(401).send({error: error.message})
+            }
 
             project.name = req.body.name
             project.client = req.body.client
@@ -60,11 +82,20 @@ export class ProjectController {
 
 
     static deleteProject = async (req: Request, res: Response) => {
-        const {id} = req.params
-
         try {
+            
             const project = req.project
 
+            if(!project){
+                const error = new Error("Prouecto no encontrado")
+                return res.status(404).send({error: error.message})
+            }
+            
+            if(project.admin.toString() !== req.user.id){
+                const error = new Error("Usuario no autorizado")
+                return res.status(401).send({error: error.message})
+            }
+            
             await project.deleteOne()
 
 

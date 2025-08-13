@@ -13,7 +13,7 @@ export type TaskStatusType = typeof taskStatus[keyof typeof taskStatus]
 export const taskStatusValues = Object.values(taskStatus); 
 
 // Tipo para TypeScript
-export type TaskType = Document & {
+export type TTask = Document & {
     name: string
     description: string,
     project: Types.ObjectId,
@@ -46,5 +46,5 @@ const TaskSchema: Schema = new Schema({
 }, {timestamps: true})
 
 // Registramos el esquema en la instancia de mongo
-const Task = mongoose.model<TaskType>('Task', TaskSchema)
+const Task = mongoose.model<TTask>('Task', TaskSchema)
 export default Task

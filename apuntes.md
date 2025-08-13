@@ -1067,3 +1067,7 @@ const fetcher = useFetcher()
             - Ventajas: En seguridad, permiten configurarse con las banderas HttpONly y Secure para aumentar la seguridad y proteger contra ataques XSS y CSRF (si genero una cookie en un domninio, solo puede ser accedida por peticiones que vienen de ese dominio ). Además tienen soporte para CORS, se envian automaticamente con las solicitudes CORS -> facilita el manejo de autenticación en apps distribuidas. Además podemos controlar la expiración para que se eliminen automaticamente del navegador
             - Desventajas: Pueden causar sobrecarga de red porque se envían con cada solicitud HTTP, lo que aumenta el tráfico si los tokens son grandes. Tienen capacidad limitada -> Normalmente 4KB por cookie
             - Persistencia: Pueden ser eliminadas por el usuario o expirar automáticamente tras un periodo de tiempo, lo que require renovar los tokens de forma periódica.
+    
+    - Autenticación vs Autorización:
+        - Autenticación: Verificar la identidad del usuario o entidad para asegurarnos de que el usuario es realmente quien dice ser. Se hace por credenciales (nombre de usuario y contraseña), tokens de seguridad, reconocimiento biométrico... "¿Es realmente quien dice ser?"
+        - Autorización: Una vez el usuario es autenticado, se determina si se le debe permitir al usuario acceder a ciertos recursos o realizar determinadas acciones. Se realiza por permisos y roles. "¿Tienes permiso para hacer esto?"

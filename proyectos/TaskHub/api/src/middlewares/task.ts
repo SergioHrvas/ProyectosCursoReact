@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction} from 'express'
-import Task, { TaskType } from '../models/Task'
+import Task, { TTask } from '../models/Task'
 import { Types } from 'mongoose'
 
 declare global {
     namespace Express {
         interface Request { // asi añadimos el campo task a Request de Express (al ser una interfaz repetida en Express, añade los campos nuevos)
-            task: TaskType
+            task: TTask
         }
     }
 }

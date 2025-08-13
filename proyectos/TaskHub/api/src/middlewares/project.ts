@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction} from 'express'
-import Project, { ProjectType } from '../models/Project'
+import Project, { TProject } from '../models/Project'
 import { Types } from 'mongoose'
 
 declare global {
     namespace Express {
         interface Request { // asi añadimos el campo project a Request de Express (al ser una interfaz repetida en Express, añade los campos nuevos)
-            project: ProjectType
+            project: TProject
         }
     }
 }

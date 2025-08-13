@@ -1,12 +1,13 @@
 import mongoose, {Schema, Document, PopulatedDoc, Types} from 'mongoose'
-import { TaskType } from './Task'
-
+import { TTask } from './Task'
+import { TUser } from './User'
 // Tipo para TypeScript
-export type ProjectType = Document & {
+export type TProject = Document & {
     name: string
     client: string
-    description: string
-    tasks: PopulatedDoc<TaskType & Document>[]
+    description: string,
+    admin: PopulatedDoc<TUser & Document>,
+    tasks: PopulatedDoc<TTask & Document>[]
 }
 
 // Esquema para MongoDB
@@ -26,14 +27,19 @@ const ProjectSchema: Schema = new Schema({
         required: true,
         trim: true,
     },
+    admin: {
+        type: Types.ObjectId,
+        ref: 'User'
+    },
     tasks: [
         {
             type: Types.ObjectId,
             ref: 'Task'
         }
-    ]
+    ],
+
 }, {timestamps: true})
 
 // Registramos el esquema en la instancia de mongo
-const Project = mongoose.model<ProjectType>('Project', ProjectSchema) // Le ponemos el generic ProjectType para el autocompletado
+const Project = mongoose.model<TProject>('Project', ProjectSchema) // Le ponemos el generic ProjectType para el autocompletado
 export default Project
