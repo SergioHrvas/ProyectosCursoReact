@@ -20,6 +20,5 @@ export const isUniqueUser = async (user: TUser, res: Response) : Promise<boolean
 }
 
 export const checkPassword = async (sentPassword: string, storedPassword: string) : Promise<boolean> => {
-    console.log(sentPassword, storedPassword)
     return await compare(sentPassword, storedPassword)
 }

@@ -2,7 +2,7 @@ import { ErrorMessage } from "@/components/ErrorMessage"
 import type { UserLoginForm } from "@/types/index"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { loginAccount } from "@/services/AuthService"
 import { toast } from "react-toastify"
 
@@ -15,6 +15,8 @@ export const LoginPage = () => {
 
   const navigate = useNavigate()
 
+  const queryClient = useQueryClient()
+
   const { mutate } = useMutation({
     mutationFn: loginAccount,
     onError: (error) => {
@@ -22,6 +24,7 @@ export const LoginPage = () => {
     },
     onSuccess: () => {
       toast.success("Iniciando sesión")
+      queryClient.resetQueries({queryKey: ['user']});
       navigate("/")
     }
   })
