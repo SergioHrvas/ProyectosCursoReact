@@ -4,7 +4,7 @@ import { isAxiosError } from "axios";
 
 export async function createProject (formData : ProjectFormType) {
     try {
-        const {data} = await api.post('/projects', formData)
+        await api.post('/projects', formData)
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error(error.response.data.error)

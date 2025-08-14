@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@/components/ErrorMessage"
 import type { UserLoginForm } from "@/types/index"
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useMutation } from '@tanstack/react-query'
 import { loginAccount } from "@/services/AuthService"
 import { toast } from "react-toastify"
@@ -13,6 +13,7 @@ export const LoginPage = () => {
   }
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
+  const navigate = useNavigate()
 
   const { mutate } = useMutation({
     mutationFn: loginAccount,
@@ -21,6 +22,7 @@ export const LoginPage = () => {
     },
     onSuccess: () => {
       toast.success("Iniciando sesión")
+      navigate("/")
     }
   })
 

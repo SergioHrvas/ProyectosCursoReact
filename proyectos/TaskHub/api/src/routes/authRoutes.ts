@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { AuthController } from '../controllers/AuthController'
 import { body, param } from 'express-validator'
 import { handleInputError } from '../middlewares/validation'
+import { authenticate } from '../middlewares/auth'
 
 const router = Router()
 
@@ -67,6 +68,12 @@ router.post(
     }).withMessage("Las contraseñas no coinciden."),
     handleInputError,
     AuthController.resetPassword
+)
+
+
+router.get('/user',
+    authenticate,
+    AuthController.getUser
 )
 
 export default router

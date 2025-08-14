@@ -11,28 +11,30 @@ import ConfirmAccountPage from './pages/auth/ConfirmAccountPage'
 import { RequestConfirmationCodePage } from './pages/auth/RequestConfirmationCodePage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
+import { MainLayout } from './layouts/MainLayout'
 
 export default function Router () {
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<AppLayout/>}> {/* Los hijos compartirán el mismo Layout */}
-                    <Route path="/" element={<Dashboard />} index/>
-                    <Route path="/projects/create" element={<NewProjectPage />}/>
-                    <Route path="/projects/:projectId" element={<InfoProjectPage />}/>
-                    <Route path="/projects/:projectId/edit" element={<EditProjectPage />}/>
+                <Route element={<MainLayout/>}>
+                    <Route element={<AppLayout/>}> {/* Los hijos compartirán el mismo Layout */}
+                        <Route element={<Dashboard />} index/>
+                        <Route path="/projects/create" element={<NewProjectPage />}/>
+                        <Route path="/projects/:projectId" element={<InfoProjectPage />}/>
+                        <Route path="/projects/:projectId/edit" element={<EditProjectPage />}/>
 
+                    </Route>
+                    <Route element={<AuthLayout/>}>
+                        <Route path="/auth/login" element={<LoginPage/>}/>
+                        <Route path="/auth/register" element={<RegisterPage/>}/>
+                        <Route path="/auth/confirm-account" element={<ConfirmAccountPage/>}/>
+                        <Route path="/auth/request-code" element={<RequestConfirmationCodePage/>}/>
+                        <Route path="/auth/forgot-password" element={<ForgotPasswordPage/>}/>
+                        <Route path="/auth/reset-password" element={<ResetPasswordPage/>}/>
+                    </Route>
                 </Route>
-                <Route element={<AuthLayout/>}>
-                    <Route path="/auth/login" element={<LoginPage/>}/>
-                    <Route path="/auth/register" element={<RegisterPage/>}/>
-                    <Route path="/auth/confirm-account" element={<ConfirmAccountPage/>}/>
-                    <Route path="/auth/request-code" element={<RequestConfirmationCodePage/>}/>
-                    <Route path="/auth/forgot-password" element={<ForgotPasswordPage/>}/>
-                    <Route path="/auth/reset-password" element={<ResetPasswordPage/>}/>
-                </Route>
-
             </Routes>
         
         </BrowserRouter>

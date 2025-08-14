@@ -200,4 +200,8 @@ export class AuthController {
             res.status(500).send({error: "Error interno."})
         }
     }
+
+    static getUser = async (req: Request, res: Response) => {
+        return res.send(req.user)
+    }
 }
