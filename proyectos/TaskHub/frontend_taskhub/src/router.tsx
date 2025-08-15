@@ -12,6 +12,7 @@ import { RequestConfirmationCodePage } from './pages/auth/RequestConfirmationCod
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import { MainLayout } from './layouts/MainLayout'
+import { ProjectTeamPage } from './pages/projects/ProjectTeamPage'
 
 export default function Router () {
 
@@ -24,7 +25,7 @@ export default function Router () {
                         <Route path="/projects/create" element={<NewProjectPage />}/>
                         <Route path="/projects/:projectId" element={<InfoProjectPage />}/>
                         <Route path="/projects/:projectId/edit" element={<EditProjectPage />}/>
-
+                        <Route path="/projects/:projectId/team" element={<ProjectTeamPage />}/>
                     </Route>
                     <Route element={<AuthLayout/>}>
                         <Route path="/auth/login" element={<LoginPage/>}/>

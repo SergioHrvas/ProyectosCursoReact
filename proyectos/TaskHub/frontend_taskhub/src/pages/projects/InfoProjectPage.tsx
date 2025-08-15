@@ -4,7 +4,7 @@ import { TaskList } from "@/components/tasks/TaskList"
 import TaskModal from "@/components/tasks/TaskModal"
 import { getProject } from "@/services/ProjectService"
 import { useQuery } from "@tanstack/react-query"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 
 
 export const InfoProjectPage = () => {
@@ -40,6 +40,13 @@ export const InfoProjectPage = () => {
         >
           Añadir tarea
         </button>
+
+        <Link
+          to={`team`}
+          className='bg-fuchsia-600 font-bold text-white uppercase text-xl p-3 rounded-md hover:bg-fuchsia-800 transition-colors'
+        >
+            Administrar equipo
+        </Link>
       </nav>
       <TaskList
         tasks={data.tasks}
