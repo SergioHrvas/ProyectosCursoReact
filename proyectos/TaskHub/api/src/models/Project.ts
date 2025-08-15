@@ -7,7 +7,8 @@ export type TProject = Document & {
     client: string
     description: string,
     admin: PopulatedDoc<TUser & Document>,
-    tasks: PopulatedDoc<TTask & Document>[]
+    tasks: PopulatedDoc<TTask & Document>[],
+    team: PopulatedDoc<TUser & Document>[]
 }
 
 // Esquema para MongoDB
@@ -37,6 +38,13 @@ const ProjectSchema: Schema = new Schema({
             ref: 'Task'
         }
     ],
+    team: [
+        {
+            type: Types.ObjectId,
+            ref: 'User'
+        }
+    ]
+    
 
 }, {timestamps: true})
 

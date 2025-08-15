@@ -7,6 +7,7 @@ import { validateProjectExists } from '../middlewares/project'
 import { taskStatusValues } from '../models/Task'
 import { taskBelongsToProject, validateTaskExists } from '../middlewares/task'
 import { authenticate } from '../middlewares/auth'
+import { TeamController } from '../controllers/TeamController'
 
 const router = Router()
 
@@ -101,5 +102,31 @@ router.patch('/:projectId/tasks/:taskId',
     TaskController.changeStatus
 )
 
+/** Teams */
+router.post('/:projectId/team/find',
+    body('user').notEmpty().withMessage('El usuario a buscar es obligatorio'),
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    handleInputError,
+    TeamController.getMemberTeam
+)
 
+router.post('/:projectId/team/',
+    body('id').isMongoId().withMessage('El id del usuario no es válido'),
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    handleInputError,
+    TeamController.addMemberToTeam
+)
+
+router.delete('/:projectId/team',
+    body('id').isMongoId().withMessage('El id del usuario no es válido'),
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    handleInputError,
+    TeamController.deleteMemberFromTeam
+)
+
+router.get('/:projectId/team',
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    handleInputError,
+    TeamController.getTeamMembers
+)
 export default router
