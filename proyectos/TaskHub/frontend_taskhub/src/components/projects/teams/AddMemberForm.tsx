@@ -18,9 +18,6 @@ export default function AddMemberForm() {
 
     const mutation = useMutation({
         mutationFn: findUser,
-        onSuccess: (data) => {
-            reset()
-        },
         onError: (error) => {
             toast.error(error.message)
         }
@@ -33,6 +30,11 @@ export default function AddMemberForm() {
         }
         
         mutation.mutate(data)
+    }
+
+    const resetSearch = () => {
+        reset()
+        mutation.reset()
     }
 
     return (
@@ -80,7 +82,7 @@ export default function AddMemberForm() {
                 </ErrorMessage>
             )}
 
-            {mutation.data && <SearchResult user={mutation.data}/>}
+            {mutation.data && <SearchResult user={mutation.data} projectId={projectId} reset={resetSearch}/>}
             </div>
         </>
     )

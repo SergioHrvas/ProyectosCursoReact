@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+const UserId = z.string().uuid()
+export type UserId = z.infer<typeof UserId>
+
 /* Auth & Users */
 const AuthSchema = z.object({
     name: z.string(),
@@ -82,3 +85,4 @@ export const ProjectDeletedSchema = z.object({
 export type ProjectType = z.infer<typeof ProjectSchema>
 
 export type ProjectFormType = Pick<ProjectType, 'name' | "client" | "description">
+
