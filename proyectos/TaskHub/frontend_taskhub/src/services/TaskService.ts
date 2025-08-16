@@ -5,7 +5,7 @@ import z from "zod";
 
 export async function createTask({formData, projectId} : {formData: TaskFormType, projectId: ProjectType['_id']}){
     try {
-        const {data} = await api.post(`/projects/${projectId}/tasks`, formData)
+        await api.post(`/projects/${projectId}/tasks`, formData)
     } catch (error) {
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
@@ -31,7 +31,7 @@ export async function getTask({projectId, taskId} : {projectId: ProjectType['_id
 
 export async function updateTask({formData, projectId, taskId} : {formData: TaskFormType, projectId: ProjectType['_id'], taskId: TaskType['_id']}){
     try {
-        const {data} = await api.put(`/projects/${projectId}/tasks/${taskId}`, formData)
+        await api.put(`/projects/${projectId}/tasks/${taskId}`, formData)
     } catch (error) {
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
@@ -63,7 +63,7 @@ export async function deleteTask({projectId, taskId} : {projectId: ProjectType['
 export async function updateStatus({projectId, taskId, status} : {projectId: ProjectType['_id'], taskId: TaskType['_id'], status: TaskType['status']}){
     try {
         const {data} = await api.patch(`/projects/${projectId}/tasks/${taskId}`, {status})
-        const result = z.safeParse(TaskSchema, data)
+        z.safeParse(TaskSchema, data)
     } catch (error) {
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)

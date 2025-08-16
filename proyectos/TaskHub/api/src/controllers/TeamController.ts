@@ -12,13 +12,16 @@ export class TeamController {
                 return res.status(404).send({error: error.message})
             }
             
-            const userExists = req.project.team.some(user => user._id.toString() === userObject.id.toString());
-
-            if(!userExists){
-                const error = new Error('El usuario no pertenece al projecto')
-                return res.status(401).send({error: error.message})
+            // Return only changes the user object
+            const userData = {
+                _id: userObject.id,
+                name: userObject.name,
+                surname: userObject.surname,
+                username: userObject.username,
+                email: userObject.email
             }
-            return res.status(200).send({userObject})
+            
+            return res.status(200).send({user: userData})
             
         } catch (error) {
             res.status(500).send({error: "Error interno."})
