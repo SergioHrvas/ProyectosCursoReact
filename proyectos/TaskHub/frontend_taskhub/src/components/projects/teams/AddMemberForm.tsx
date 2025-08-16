@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { ErrorMessage } from "../../ErrorMessage";
 import type { TeamMemberForm } from "@/types/index";
@@ -13,6 +13,9 @@ export default function AddMemberForm() {
     }
     const params = useParams()
     const projectId = params.projectId!
+
+    
+    const navigate = useNavigate()
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
@@ -35,6 +38,7 @@ export default function AddMemberForm() {
     const resetSearch = () => {
         reset()
         mutation.reset()
+        navigate(`/projects/${projectId}/team`)
     }
 
     return (

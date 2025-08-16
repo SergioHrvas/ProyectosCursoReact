@@ -30,9 +30,13 @@ export const UserSchema = AuthSchema.pick({
     username: true,
     email: true
 }).extend({_id: z.string()})
-export type User = z.infer<typeof UserSchema>
 
+export const UsersSchema = z.array(UserSchema)
+
+export type User = z.infer<typeof UserSchema>
 export type TeamMemberForm = Pick<Auth, 'user'>
+export type Users = z.infer<typeof UsersSchema>
+
 /* Tasks */
 export const TaskStatusSchema = z.enum(
     ["pending", "onHold", "inProgress", "underReview", "completed"]

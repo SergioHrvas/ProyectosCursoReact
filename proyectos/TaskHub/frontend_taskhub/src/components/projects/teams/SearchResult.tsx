@@ -1,7 +1,6 @@
 import { addMemberToTeam } from "@/services/TeamService"
-import type { TeamMemberForm, User } from "@/types/index"
-import { useMutation } from "@tanstack/react-query"
-import type { UseFormReset } from "react-hook-form"
+import type { User } from "@/types/index"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 
 type SearchResultProps = {
@@ -11,11 +10,13 @@ type SearchResultProps = {
 }
 
 export const SearchResult = ({user, projectId, reset}: SearchResultProps) => {
+    const queryClient = useQueryClient()
 
     const {mutate} = useMutation({
         mutationFn: addMemberToTeam,
         onSuccess: (data) => {
             toast.success(data);
+            queryClient.invalidateQueries({ queryKey: ['projectTeam', projectId] }) // Refresh the team members list
             reset()
         },
         onError: (error) => {

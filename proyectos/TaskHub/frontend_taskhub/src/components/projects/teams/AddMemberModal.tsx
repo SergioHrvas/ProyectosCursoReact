@@ -12,8 +12,6 @@ export default function AddMemberModal() {
     const addMember = queryParams.get('addMember');
     const show = addMember ? true : false
 
-    console.log('show', show)
-
     return (
         <>
             <Transition appear show={show} as={Fragment}>
