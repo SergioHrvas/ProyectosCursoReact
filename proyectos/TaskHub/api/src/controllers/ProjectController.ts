@@ -9,7 +9,16 @@ export class ProjectController {
 
     static getAllProjects = async (req: Request, res: Response) => {
         try {
-            const projects = await Project.find({admin: req.user.id})
+            if (!req.user || !req.user.id) {
+                return res.status(401).send({error: "Usuario no autenticado"});
+            }
+
+            const projects = await Project.find(
+                {$or: [
+                    {admin: req.user.id},
+                    {team: {$in: [req.user.id]}}
+                ]})
+
             res.send(projects)
         } catch (error) {
             console.log(error)
@@ -26,7 +35,7 @@ export class ProjectController {
                 return res.status(404).send({error: error.message})
             }
             
-            if(project.admin.toString() !== req.user.id){
+            if(project.admin.toString() !== req.user.id && !project.team.includes(req.user.id)){
                 const error = new Error("Usuario no autorizado")
                 return res.status(401).send({error: error.message})
             }

@@ -8,10 +8,11 @@ import { toast } from "react-toastify"
 import { Fragment } from "react/jsx-runtime"
 
 type TaskCardProps = {
-    task: TaskType
+    task: TaskType,
+    hasAuthorization: boolean
 }
 
-export const TaskCard = ({ task }: TaskCardProps) => {
+export const TaskCard = ({ task, hasAuthorization }: TaskCardProps) => {
 
     const navigate = useNavigate()
     const params = useParams()
@@ -26,9 +27,9 @@ export const TaskCard = ({ task }: TaskCardProps) => {
         },
         onSuccess: () => {
             toast.success("Tarea eliminada correctamente")
-            queryClient.invalidateQueries({queryKey: ["project", projectId]})
+            queryClient.invalidateQueries({ queryKey: ["project", projectId] })
         }
-        
+
     })
 
     return (
@@ -36,7 +37,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
             <div className="flex flex-col gap-y-3 min-w-0">
                 <button
                     type="button"
-                    onClick={() => navigate('/')} 
+                    onClick={() => navigate('/')}
                     className="text-xl font-bold text-gray-800 text-left"
                 >
                     {task.name}
@@ -57,28 +58,32 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                             <MenuItem>
                                 <button
                                     type='button'
-                                    onClick={() => navigate(location.pathname + `?task=${task._id}`)} 
+                                    onClick={() => navigate(location.pathname + `?task=${task._id}`)}
                                     className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                     Ver Tarea
                                 </button>
                             </MenuItem>
-                            <MenuItem>
-                                <button 
-                                    type='button'
-                                    onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
-                                    className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                        Editar Tarea
-                                </button>
-                            </MenuItem>
+                            {hasAuthorization &&
+                                <>
+                                    <MenuItem>
+                                        <button
+                                            type='button'
+                                            onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
+                                            className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                            Editar Tarea
+                                        </button>
+                                    </MenuItem>
 
-                            <MenuItem>
-                                <button 
-                                    type='button' 
-                                    className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                    onClick={() => mutate({projectId, taskId: task._id})}>
-                                    Eliminar Tarea
-                                </button>
-                            </MenuItem>
+                                    <MenuItem>
+                                        <button
+                                            type='button'
+                                            className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                            onClick={() => mutate({ projectId, taskId: task._id })}>
+                                            Eliminar Tarea
+                                        </button>
+                                    </MenuItem>
+                                </>
+                            }
                         </MenuItems>
                     </Transition>
                 </Menu>

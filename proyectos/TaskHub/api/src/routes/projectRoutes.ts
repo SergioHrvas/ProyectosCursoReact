@@ -5,7 +5,7 @@ import { handleInputError } from '../middlewares/validation'
 import { TaskController } from '../controllers/TaskController'
 import { validateProjectExists } from '../middlewares/project'
 import { taskStatusValues } from '../models/Task'
-import { taskBelongsToProject, validateTaskExists } from '../middlewares/task'
+import { hashAuthorization, taskBelongsToProject, validateTaskExists } from '../middlewares/task'
 import { authenticate } from '../middlewares/auth'
 import { TeamController } from '../controllers/TeamController'
 
@@ -58,6 +58,7 @@ router.get('/:projectId/tasks',
 )
 
 router.post('/:projectId/tasks',
+    hashAuthorization,
     param('projectId').isMongoId().withMessage("El id no es válido"),
     body('name').notEmpty().withMessage("El nombre del proyecto es obligatorio"),
     body('description').notEmpty().withMessage("El nombre del cliente es obligatorio"),
@@ -77,6 +78,7 @@ router.get('/:projectId/tasks/:taskId',
 
 
 router.put('/:projectId/tasks/:taskId',
+    hashAuthorization,
     param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
     param('taskId').isMongoId().withMessage("El id de la tarea no es válido"),
     body('name').notEmpty().withMessage("El nombre del proyecto es obligatorio"),
@@ -87,6 +89,7 @@ router.put('/:projectId/tasks/:taskId',
 
 
 router.delete('/:projectId/tasks/:taskId',
+    hashAuthorization,
     param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
     param('taskId').isMongoId().withMessage("El id de la tarea no es válido"),
     handleInputError,

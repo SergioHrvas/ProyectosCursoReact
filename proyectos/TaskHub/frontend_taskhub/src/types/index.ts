@@ -69,7 +69,7 @@ export const ProjectSchema = z.object({
     client: z.string(),
     description: z.string(),
     tasks: z.array(TaskSchema),
-
+    admin: z.string(),
 })
 
 export const ProjectsSchema = z.array(
@@ -77,7 +77,8 @@ export const ProjectsSchema = z.array(
         _id: true,
         name: true,
         client: true,
-        description: true
+        description: true,
+        admin: true
     })
 )
 

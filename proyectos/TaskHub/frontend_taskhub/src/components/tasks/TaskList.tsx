@@ -4,6 +4,7 @@ import { statusTranslations } from "@/locales/es"
 
 type TaskListProps = {
     tasks: TaskType[]
+    hasAuthorization: boolean
 }
 
 type GroupTask = {
@@ -27,7 +28,7 @@ const statusColors : { [key:string] : string} = {
     completed: 'border-t-green-500'
 }
 
-export const TaskList = ({ tasks }: TaskListProps) => {
+export const TaskList = ({ tasks, hasAuthorization }: TaskListProps) => {
 
 
     const groupedTasks = tasks.reduce((acc, task) => {
@@ -50,7 +51,7 @@ export const TaskList = ({ tasks }: TaskListProps) => {
                         {tasks.length === 0 ? (
                             <li className="text-gray-500 text-center pt-3">Sin tareas</li>
                         ) : (
-                            tasks.map(task => <TaskCard key={task._id} task={task} />)
+                            tasks.map(task => <TaskCard key={task._id} task={task} hasAuthorization={hasAuthorization} />)
                         )}
                     </ul>
                 </div>
