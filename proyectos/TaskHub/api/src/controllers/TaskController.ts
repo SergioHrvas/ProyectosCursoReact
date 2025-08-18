@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import Task from "../models/Task"
+import Task, { taskStatusValues } from "../models/Task"
+import { now } from 'mongoose'
 
 export class TaskController { 
     static createTask = async (req: Request, res: Response) => {
@@ -37,8 +38,8 @@ export class TaskController {
 
     static getTaskByID = async (req: Request, res : Response) => {
         try {
-            const task = req.task
-
+            const task = await Task.findById(req.task.id).populate({path: 'completedBy.user', select: 'id name surname username email'})
+            
             res.send(task)
         } catch (error) {
             console.log(error)
@@ -50,7 +51,7 @@ export class TaskController {
     static updateTask = async (req: Request, res : Response) => {
         try {
             const task = req.task
-        
+
             task.description = req.body.description
             task.name = req.body.name
 
@@ -82,11 +83,18 @@ export class TaskController {
     static changeStatus = async (req: Request, res: Response) => {
         const {status} = req.body
         try {
-            const task = req.task
 
-            task.status = status
+            req.task.status = status
 
-            const taskUpdated = await task.save()
+            const data = {
+                user: req.user.id,
+                status: status,
+                date: now()
+            }
+            
+            req.task.completedBy.push(data)
+
+            const taskUpdated = await req.task.save()
             
             res.send({task: taskUpdated})
         } catch (error) {

@@ -17,7 +17,12 @@ export type TTask = Document & {
     name: string
     description: string,
     project: Types.ObjectId,
-    status: TaskStatusType
+    status: TaskStatusType,
+    completedBy: [{
+        user: Types.ObjectId,
+        status: String,
+        date: Date
+    }]
 } // también se podria declarar como un interface
 
 // Esquema para MongoDB
@@ -42,7 +47,24 @@ const TaskSchema: Schema = new Schema({
         enum: Object.values(taskStatus),
         default: taskStatus.PENDING,
         required: true
-    } 
+    },
+    completedBy:  [
+        {
+            user: {
+                type: Types.ObjectId,
+                ref: 'User',
+                default: null
+            },
+            status: {
+                type: String,
+                enum: Object.values(taskStatus),
+                default: taskStatus.PENDING,
+            },
+            date: {
+                type: Date,
+            }
+        }
+    ]
 }, {timestamps: true})
 
 // Registramos el esquema en la instancia de mongo

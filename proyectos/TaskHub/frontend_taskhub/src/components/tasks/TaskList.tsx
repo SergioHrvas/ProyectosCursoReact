@@ -1,14 +1,14 @@
-import type { TaskType } from "@/types/index"
+import type { MinimalTaskType, TaskType } from "@/types/index"
 import { TaskCard } from "./TaskCard"
 import { statusTranslations } from "@/locales/es"
 
 type TaskListProps = {
-    tasks: TaskType[]
+    tasks: MinimalTaskType[]
     hasAuthorization: boolean
 }
 
 type GroupTask = {
-    [key: string]: TaskType[]
+    [key: string]: MinimalTaskType[]
 }
 
 const initialGroups : GroupTask = {
@@ -20,7 +20,7 @@ const initialGroups : GroupTask = {
 }
 
 
-const statusColors : { [key:string] : string} = {
+export const statusColors : { [key:string] : string} = {
     pending: 'border-t-slate-500',
     onHold: 'border-t-red-500',
     underReview: 'border-t-blue-500',

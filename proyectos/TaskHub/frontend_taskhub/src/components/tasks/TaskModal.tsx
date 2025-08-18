@@ -8,6 +8,14 @@ import { formatDate } from '@/utils/utils';
 import { statusTranslations } from '@/locales/es';
 import type { TaskStatus } from '@/types/index';
 
+export const statusColors : { [key:string] : string} = {
+    pending: 'text-slate-500',
+    onHold: 'text-red-500',
+    underReview: 'text-blue-500',
+    inProgress: 'text-amber-500',
+    completed: 'text-green-500'
+}
+
 export default function TaskModal() {
 
     const params = useParams()
@@ -91,7 +99,7 @@ export default function TaskModal() {
                                     >{data.name}
                                     </Dialog.Title>
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
-                                    <div className='my-5 space-y-3'>
+                                    <div className='my-7 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
 
                                         <select
@@ -99,10 +107,24 @@ export default function TaskModal() {
                                             onChange={handleChange}
                                             className='w-full p-3 bg-white border-gray-300'>
                                                 {Object.entries(statusTranslations).map( ([status, translation]) => 
-                                                <option value={status}>{translation}</option>
+                                                <option key={status} value={status}>{translation}</option>
                                                 )}
                                         </select>
                                     </div>
+
+                                    <p className='text-lg text-slate-600 font-bold mb-3'>Historial de cambios</p>
+                                    {
+                                        data.completedBy.length > 0 ? 
+                                        <div className='p-2 space-y-2'>
+                                            {data.completedBy.map(change => (
+                                                <div className='flex justify-between'>
+                                                    <span>{change.user.name} {''} {change.user.surname} {''} <span className='text-gray-400 text-sm'>(@{change.user.username})</span></span> <span className={`font-bold ${statusColors[change.status]}`}>{statusTranslations[change.status]}</span><span>{formatDate(change.date)}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        : 
+                                        <p>No hay cambios anteriores en el estado.</p>
+                                    }
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

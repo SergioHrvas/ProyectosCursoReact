@@ -1,5 +1,5 @@
 import { deleteTask } from "@/services/TaskService"
-import type { TaskType } from "@/types/index"
+import type { MinimalTaskType } from "@/types/index"
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import { Fragment } from "react/jsx-runtime"
 
 type TaskCardProps = {
-    task: TaskType,
+    task: MinimalTaskType,
     hasAuthorization: boolean
 }
 
@@ -37,7 +37,7 @@ export const TaskCard = ({ task, hasAuthorization }: TaskCardProps) => {
             <div className="flex flex-col gap-y-3 min-w-0">
                 <button
                     type="button"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate(location.pathname + `?task=${task._id}`)}
                     className="text-xl font-bold text-gray-800 text-left"
                 >
                     {task.name}

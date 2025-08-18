@@ -73,7 +73,6 @@ export async function updateProject ({formData, projectId} : {formData: ProjectF
 export async function deleteProject (projectId: ProjectType['_id']){
     try {
         const {data} = await api.delete(`/projects/${projectId}`)
-        console.log(data)
         const result = ProjectDeletedSchema.safeParse(data)
 
         if(result.success){
