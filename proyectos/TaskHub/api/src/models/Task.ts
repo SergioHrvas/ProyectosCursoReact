@@ -22,7 +22,8 @@ export type TTask = Document & {
         user: Types.ObjectId,
         status: String,
         date: Date
-    }]
+    }],
+    notes: Types.ObjectId[]
 } // también se podria declarar como un interface
 
 // Esquema para MongoDB
@@ -63,6 +64,12 @@ const TaskSchema: Schema = new Schema({
             date: {
                 type: Date,
             }
+        }
+    ],
+    notes: [
+        {
+            type: Types.ObjectId,
+            ref: 'Note'
         }
     ]
 }, {timestamps: true})

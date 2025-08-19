@@ -45,7 +45,6 @@ export async function taskBelongsToProject ( req: Request, res: Response, next: 
 
 }
 
-
 export async function hasAuthorization ( req: Request, res: Response, next: NextFunction) {
     if (req.user.id.toString() !== req.project.admin.toString()) {
         const error = new Error("Usuario no autorizado")

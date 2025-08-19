@@ -8,6 +8,8 @@ import { taskStatusValues } from '../models/Task'
 import { hasAuthorization, taskBelongsToProject, validateTaskExists } from '../middlewares/task'
 import { authenticate } from '../middlewares/auth'
 import { TeamController } from '../controllers/TeamController'
+import { NoteController } from '../controllers/NoteController'
+import { noteBelongsToTask, validateNoteExists } from '../middlewares/note'
 
 const router = Router()
 
@@ -132,4 +134,34 @@ router.get('/:projectId/team',
     handleInputError,
     TeamController.getTeamMembers
 )
+
+/** Notas */
+router.post('/:projectId/tasks/:taskId/notes',
+    body('text').notEmpty().withMessage("El texto de la nota es obligatorio"),
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    param('taskId').isMongoId().withMessage("El id de la tarea no es válido"),
+    handleInputError,
+    NoteController.createNote
+)
+
+
+router.get('/:projectId/tasks/:taskId/notes',
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    param('taskId').isMongoId().withMessage("El id de la tarea no es válido"),
+    handleInputError,
+    NoteController.getNotes
+)
+
+router.param('noteId', validateNoteExists)
+router.param('noteId', noteBelongsToTask)
+
+
+router.delete('/:projectId/tasks/:taskId/notes/:noteId',
+    param('projectId').isMongoId().withMessage("El id del proyecto no es válido"),
+    param('taskId').isMongoId().withMessage("El id de la tarea no es válido"),
+    param('noteId').isMongoId().withMessage("El id de la nota no es válido"),
+    handleInputError,
+    NoteController.deleteNote
+)
+
 export default router
