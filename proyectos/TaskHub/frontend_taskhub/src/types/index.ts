@@ -37,6 +37,27 @@ export type User = z.infer<typeof UserSchema>
 export type TeamMemberForm = Pick<Auth, 'user'>
 export type Users = z.infer<typeof UsersSchema>
 
+
+/* Notes */
+export const NoteSchema = z.object({
+    _id: z.string(),
+    text: z.string(),
+    author: UserSchema,
+    task: z.string(),
+    createdAt: z.string()
+})
+
+export const NoteSchemaReduced = NoteSchema.pick({
+        author: true,
+        text: true,
+        _id: true,
+        createdAt: true
+})
+
+export type Note = z.infer<typeof NoteSchema>
+export type NoteFormData = Pick<Note, 'text'>
+export type NoteReduced = Pick<Note, 'author' | 'text' | '_id' | 'createdAt'>
+
 /* Tasks */
 export const TaskStatusSchema = z.enum(
     ["pending", "onHold", "inProgress", "underReview", "completed"]
@@ -62,7 +83,15 @@ export const TaskSchema = z.object({
     status: TaskStatusSchema,
     updatedAt: z.string(),
     createdAt: z.string(),
-    completedBy: CompletedBySchema
+    completedBy: CompletedBySchema,
+    notes: z.array(NoteSchema.pick({
+        author: true,
+        text: true,
+        _id: true,
+        createdAt: true
+    }).extend({
+        author: UserSchema
+    }))
 })
 
 export const TaskDeletedSchema = z.object({

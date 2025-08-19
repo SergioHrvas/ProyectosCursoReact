@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import Task, { taskStatusValues } from "../models/Task"
 import { now } from 'mongoose'
+import Note from '../models/Note'
 
 export class TaskController { 
     static createTask = async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ export class TaskController {
 
     static getTaskByID = async (req: Request, res : Response) => {
         try {
-            const task = await Task.findById(req.task.id).populate({path: 'completedBy.user', select: 'id name surname username email'}).populate({path: 'notes', select: 'id text author', populate: { path: 'author', select: 'id name surname username email'} })
+            const task = await Task.findById(req.task.id).populate({path: 'completedBy.user', select: 'id name surname username email'}).populate({path: 'notes', select: 'id text author createdAt', populate: { path: 'author', select: 'id name surname username email'} })
             
             res.send(task)
         } catch (error) {
@@ -71,7 +72,13 @@ export class TaskController {
             const task = req.task
 
             req.project.tasks = req.project.tasks.filter ( task => task.toString() !== taskId)
-            await Promise.allSettled([task.deleteOne(), req.project.save()])
+            await Promise.allSettled([
+                task.notes.map((noteId: any) => 
+                    Note.deleteOne({ _id: noteId })
+                ),
+                task.deleteOne(),
+                req.project.save()
+            ])
             
             res.send({deleted: true})
         } catch (error) {

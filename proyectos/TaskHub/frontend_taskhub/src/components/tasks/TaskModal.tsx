@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
 import { statusTranslations } from '@/locales/es';
 import type { TaskStatus } from '@/types/index';
+import { NotesPanel } from '../notes/NotesPanel';
 
 export const statusColors : { [key:string] : string} = {
     pending: 'text-slate-500',
@@ -106,8 +107,8 @@ export default function TaskModal() {
                                             defaultValue={data.status}
                                             onChange={handleChange}
                                             className='w-full p-3 bg-white border-gray-300'>
-                                                {Object.entries(statusTranslations).map( ([status, translation]) => 
-                                                <option key={status} value={status}>{translation}</option>
+                                                {Object.entries(statusTranslations).map(([status, translation], idx) => 
+                                                    <option key={`${status}-${idx}`} value={status}>{translation}</option>
                                                 )}
                                         </select>
                                     </div>
@@ -125,6 +126,8 @@ export default function TaskModal() {
                                         : 
                                         <p>No hay cambios anteriores en el estado.</p>
                                     }
+
+                                    <NotesPanel taskId={taskId} notes={data.notes}/>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
