@@ -204,4 +204,53 @@ export class AuthController {
     static getUser = async (req: Request, res: Response) => {
         return res.send(req.user)
     }
+
+    static updateUser = async (req: Request, res: Response) => {
+        const {name, surname, username, email} = req.body
+
+        try {
+            let userExists = await User.find({$or: [ {email: email}, {username: username}]})
+
+            userExists = userExists.filter(user => user.id.toString() != req.user.id.toString())
+            if(userExists && userExists.length > 0){
+                const error = new Error("Ya existe un usuario con ese email/username")
+                return res.status(401).send({error: error.message})
+            }
+
+            req.user.name = name
+            req.user.surname = surname
+            req.user.username = username
+            req.user.email = email
+
+            await req.user.save()
+            res.send("Perfil modificado correctamente.")
+        } catch (error) {
+            res.status(500).send({error: "Error interno."})
+        }
+    }
+
+    static changePassword = async (req: Request, res: Response) => {
+        const { password, password_old} = req.body
+
+        try {
+
+            const user = await User.findById(req.user.id)
+            // Revisamos la contraseña
+            const isPasswordCorrect = await checkPassword(password_old, user.password)
+
+            if(!isPasswordCorrect){
+                const error = new Error('Error en la autenticación. Revisa que el usuario y la contraseña sean válidos')
+                return res.status(403).send({error: error.message})
+            }
+            
+            req.user.password = await hashPassword(password)
+
+            await req.user.save()
+
+            res.send("Contraseña actualizada correctamente.")
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
 }
