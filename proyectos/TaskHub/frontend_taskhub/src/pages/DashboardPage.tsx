@@ -1,12 +1,14 @@
+import DeleteProjectModal from '@/components/projects/DeleteProjectModal'
 import { useAuth } from '@/hooks/useAuth'
 import { deleteProject, getProjects } from '@/services/ProjectService'
 import { isAdmin } from '@/utils/policies'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Fragment } from 'react/jsx-runtime'
+import type { ProjectType } from '../types'
 
 export const Dashboard = () => {
 
@@ -16,6 +18,8 @@ export const Dashboard = () => {
     queryKey: ['projects'],
     queryFn: getProjects
   })
+
+  const navigate = useNavigate()
 
   const { mutate } = useMutation({
     mutationFn: deleteProject,
@@ -27,6 +31,10 @@ export const Dashboard = () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
     }
   })
+
+  const handleDelete = (projectId: ProjectType['_id']) => {
+    mutate(projectId)
+  }
   
   return (
     <>
@@ -100,7 +108,7 @@ export const Dashboard = () => {
                                 <button
                                   type='button'
                                   className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                  onClick={() => { mutate(project._id) }}
+                                  onClick={() => { navigate(`${location.pathname}?deleteProject=${project._id}`) }}
                                 >
                                   Eliminar Proyecto
                                 </button>
@@ -118,6 +126,7 @@ export const Dashboard = () => {
               <Link to="/projects/create" className='text-purple-800 font-bold'>Crear proyecto</Link>
             </p>
       }
+      <DeleteProjectModal deleteProject={handleDelete}/>
     </>
   )
 }

@@ -99,4 +99,11 @@ router.put('/change-password',
     handleInputError,
     AuthController.changePassword
 )
+
+router.post('/check-password',
+    authenticate,
+    body('password').notEmpty().withMessage("La contraseña es obligatoria."), 
+    handleInputError,
+    AuthController.checkPassword
+)
 export default router

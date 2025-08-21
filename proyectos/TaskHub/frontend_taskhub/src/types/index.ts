@@ -25,7 +25,7 @@ export type RequestConfirmationCodeForm = Pick<Auth, 'user'>
 export type ForgotPasswordForm = Pick<Auth, 'user'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 export type ChangePasswordForm = Pick<Auth, 'password' | 'password_confirmation' | 'password_old'>
-
+export type CheckPasswordForm = Pick<Auth, 'password'>
 export type UserProfileForm = Pick<Auth, 'name' | 'email' | 'surname' | 'username'>
 
 export const UserSchema = AuthSchema.pick({

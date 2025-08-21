@@ -253,4 +253,24 @@ export class AuthController {
             res.status(500).send({error: "Error interno."})
         }
     }
+
+    static checkPassword = async (req: Request, res: Response) => {
+        const { password } = req.body
+        try {
+            const user = await User.findById(req.user.id)
+
+            // Revisamos la contraseña
+            const isPasswordCorrect = await checkPassword(password, user.password)
+
+            if(!isPasswordCorrect){
+                const error = new Error('La contraseña es incorrecta.')
+                return res.status(403).send({error: error.message})
+            }
+            
+            res.send("La contraseña es correcta.")
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({error: "Error interno."})
+        }
+    }
 }
