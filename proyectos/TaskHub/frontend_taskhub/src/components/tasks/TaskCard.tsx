@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Fragment } from "react/jsx-runtime"
+import { useDraggable } from '@dnd-kit/core'
 
 type TaskCardProps = {
     task: MinimalTaskType,
@@ -13,6 +14,10 @@ type TaskCardProps = {
 }
 
 export const TaskCard = ({ task, hasAuthorization }: TaskCardProps) => {
+
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: task._id,
+    })
 
     const navigate = useNavigate()
     const params = useParams()
@@ -32,10 +37,21 @@ export const TaskCard = ({ task, hasAuthorization }: TaskCardProps) => {
 
     })
 
+    const style = transform ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+    } : undefined
+
     return (
-        <li className="flex bg-slate-50 border border-slate-300 shadow p-5 items-center justify-between gap-3">
-            <div className="flex flex-col gap-y-3 min-w-0">
+        <li     
+                {...listeners}
+                {...attributes}
+                ref={setNodeRef} 
+                style={style}
+                className="flex bg-slate-50 border border-slate-300 shadow p-5 items-center justify-between gap-3">
+            <div
+                className="flex flex-col gap-y-3 min-w-0">
                 <button
+                    onPointerDown={e => e.stopPropagation()}
                     type="button"
                     onClick={() => navigate(location.pathname + `?task=${task._id}`)}
                     className="text-xl font-bold text-gray-800 text-left"
@@ -44,7 +60,7 @@ export const TaskCard = ({ task, hasAuthorization }: TaskCardProps) => {
                 </button>
                 <p className="text-gray-500">{task.description}</p>
             </div>
-            <div className="flex shrink-0  gap-x-6">
+            <div className="flex shrink-0  gap-x-6" onPointerDown={e => e.stopPropagation()}>
                 <Menu as="div" className="relative flex-none">
                     <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                         <span className="sr-only">opciones</span>

@@ -16,16 +16,15 @@ export async function createTask({formData, projectId} : {formData: TaskFormType
 export async function getTask({projectId, taskId} : {projectId: ProjectType['_id'], taskId: TaskType['_id']}){
     try {
         const {data} = await api.get(`/projects/${projectId}/tasks/${taskId}`)
-        console.log(data)
         const result = TaskSchema.safeParse(data)
-        console.log(result)
+
         if(result.success){
             return result.data
         } else{
             throw new Error(result.error.message)
         }
     } catch (error) {
-        console.log(error)
+        console.log()
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
         }

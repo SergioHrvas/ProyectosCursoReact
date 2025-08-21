@@ -117,8 +117,8 @@ export default function TaskModal() {
                                     {
                                         data.completedBy.length > 0 ? 
                                         <div className='p-2 space-y-2'>
-                                            {data.completedBy.map(change => (
-                                                <div className='flex justify-between'>
+                                            {data.completedBy.map((change, idx) => (
+                                                <div key={`${change.status}-${change.user._id}-${idx}`} className='flex justify-between'>
                                                     <span>{change.user.name} {''} {change.user.surname} {''} <span className='text-gray-400 text-sm'>(@{change.user.username})</span></span> <span className={`font-bold ${statusColors[change.status]}`}>{statusTranslations[change.status]}</span><span>{formatDate(change.date)}</span>
                                                 </div>
                                             ))}
