@@ -73,9 +73,6 @@ export class TaskController {
 
             req.project.tasks = req.project.tasks.filter ( task => task.toString() !== taskId)
             await Promise.allSettled([
-                task.notes.map((noteId: any) => 
-                    Note.deleteOne({ _id: noteId })
-                ),
                 task.deleteOne(),
                 req.project.save()
             ])

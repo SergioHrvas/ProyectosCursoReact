@@ -1,5 +1,5 @@
 import mongoose, {Schema, Document, PopulatedDoc, Types} from 'mongoose'
-import { TTask } from './Task'
+import Task, { TTask } from './Task'
 import { TUser } from './User'
 // Tipo para TypeScript
 export type TProject = Document & {
@@ -48,6 +48,16 @@ const ProjectSchema: Schema = new Schema({
 
 }, {timestamps: true})
 
+// Middleware
+ProjectSchema.pre('deleteOne', { document: true, query: false}, async function () {
+    
+    const projectId = this._id
+    if(!projectId) return
+    
+    const tasks = await Task.find({project: projectId})
+
+    await Promise.all(tasks.map(task => task.deleteOne()))
+})
 // Registramos el esquema en la instancia de mongo
 const Project = mongoose.model<TProject>('Project', ProjectSchema) // Le ponemos el generic ProjectType para el autocompletado
 export default Project

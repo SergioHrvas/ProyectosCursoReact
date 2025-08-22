@@ -1,4 +1,4 @@
-import type { MinimalTaskType, ProjectType, TaskStatus, TaskType } from "@/types/index"
+import type { MinimalTaskType, ProjectType, TaskStatus } from "@/types/index"
 import { TaskCard } from "./TaskCard"
 import { statusTranslations } from "@/locales/es"
 import { DropTask } from "./DropTask"

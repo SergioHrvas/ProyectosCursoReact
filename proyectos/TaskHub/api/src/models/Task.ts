@@ -1,4 +1,5 @@
 import mongoose, {Schema, Document, Types} from 'mongoose'
+import Note from './Note';
 
 //Creamos nuestro propio type para task
 const taskStatus = {
@@ -73,6 +74,17 @@ const TaskSchema: Schema = new Schema({
         }
     ]
 }, {timestamps: true})
+
+// Middleware
+TaskSchema.pre('deleteOne', { document: true, query: false}, async function () {
+    
+    const taskId = this._id
+    if(!taskId) return
+    
+    console.log("aaaaaaaaaaaaaa")
+    await Note.deleteMany({task: taskId})
+})
+
 
 // Registramos el esquema en la instancia de mongo
 const Task = mongoose.model<TTask>('Task', TaskSchema)

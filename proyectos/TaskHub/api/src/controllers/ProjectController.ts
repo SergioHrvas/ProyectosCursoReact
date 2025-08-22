@@ -31,7 +31,7 @@ export class ProjectController {
             const project = req.project
             
             if(!project){
-                const error = new Error("Prouecto no encontrado")
+                const error = new Error("Proyecto no encontrado")
                 return res.status(404).send({error: error.message})
             }
             
@@ -64,16 +64,6 @@ export class ProjectController {
         try {
             const project = req.project
 
-            if(!project){
-                const error = new Error("Prouecto no encontrado")
-                return res.status(404).send({error: error.message})
-            }
-            
-            if(project.admin.toString() !== req.user.id){
-                const error = new Error("Usuario no autorizado")
-                return res.status(401).send({error: error.message})
-            }
-
             project.name = req.body.name
             project.client = req.body.client
             project.description = req.body.description
@@ -94,19 +84,7 @@ export class ProjectController {
         try {
             
             const project = req.project
-
-            if(!project){
-                const error = new Error("Prouecto no encontrado")
-                return res.status(404).send({error: error.message})
-            }
-            
-            if(project.admin.toString() !== req.user.id){
-                const error = new Error("Usuario no autorizado")
-                return res.status(401).send({error: error.message})
-            }
-            
             await project.deleteOne()
-
 
             res.send({deleted: true, project})
 

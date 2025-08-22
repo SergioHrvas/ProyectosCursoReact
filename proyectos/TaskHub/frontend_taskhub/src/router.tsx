@@ -16,6 +16,7 @@ import { ProjectTeamPage } from './pages/projects/ProjectTeamPage'
 import { ProfilePage } from './pages/profile/ProfilePage'
 import { ChangePasswordPage } from './pages/profile/ChangePasswordPage'
 import { ProfileLayout } from './layouts/ProfileLayout'
+import { ErrorPage } from './pages/ErrorPage'
 
 export default function Router () {
 
@@ -42,6 +43,10 @@ export default function Router () {
                         <Route path="/auth/request-code" element={<RequestConfirmationCodePage/>}/>
                         <Route path="/auth/forgot-password" element={<ForgotPasswordPage/>}/>
                         <Route path="/auth/reset-password" element={<ResetPasswordPage/>}/>
+                    </Route>
+
+                    <Route element={<AppLayout/>}>
+                        <Route path="*" element={<ErrorPage/>}/>
                     </Route>
                 </Route>
             </Routes>
