@@ -50,3 +50,8 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
         - **Axios**: Para enviar las peticiones HTTP
         - **Tailwind**: Para estilos responsive
     - Enlace al proyecto (sin backend y base de datos activa para evitar sobrecostes): https://whimsical-gumption-d44a6d.netlify.app/
+
+
+- **TaskHub**: Aplicación para la gestión de proyectos y sus respectivas tareas. La más grande de todos los proyectos del repositorio con todas las tecnologías más importantes del entorno react vistas hasta ahora y usando librerías de componentes como Dnd
+    - Enlace al proyecto: https://taskhub-react-project.vercel.app/auth/login
+    
