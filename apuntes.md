@@ -1070,4 +1070,42 @@ const fetcher = useFetcher()
     
     - Autenticación vs Autorización:
         - Autenticación: Verificar la identidad del usuario o entidad para asegurarnos de que el usuario es realmente quien dice ser. Se hace por credenciales (nombre de usuario y contraseña), tokens de seguridad, reconocimiento biométrico... "¿Es realmente quien dice ser?"
-        - Autorización: Una vez el usuario es autenticado, se determina si se le debe permitir al usuario acceder a ciertos recursos o realizar determinadas acciones. Se realiza por permisos y roles. "¿Tienes permiso para hacer esto?"
+        - Autorización: Una vez el usuario es autenticado, se determina si se le debe permitir al usuario acceder a ciertos recursos o realizar determinadas acciones. Se realiza por permisos y roles. "¿Tienes permiso para hacer esto?" 
+
+## NextJs
+- Framework de React para construcción de sitios y apps Full Stack, pudiendo utilizar componentes de React para crear el sitio web y NextJS para características específicas y optimizaciones.
+- NextJS compila la aplicación y por lo tanto solo nos preocupamos de crear la aplicación y no de la configuración.
+- La característica clave es que **ejecuta React en el servidor**
+- Principales características:
+    - **Rendering**: Poder ejecutar código de cliente y código de servidor. 
+    - **Optimizaciones**: Incluyendo caché, optimizaciones para imagenes, para rutas...
+    - **Soporta TypeScript**
+    - **Routing**: Cuenta con su propio sistema de rutas. Desde la version 13 tiene dos routers:
+        - **App Router**: El más nuevo. Se recomienda utilizar este en proyectos nuevos (vercel ha mencionado que todas las características de NextJS son agregadas al App Router)
+        - **Pages Router**: El más estable
+- **Archivos reservados en NextJS**
+    - Antes que nada, sobre las carpetas:
+        - Cada carpeta será una ruta en la aplicación. Automáticamente se va a crear la URL con NextJS
+            - *Por ejemplo para /products/new tendré que crear una carpeta products y dentro new*
+    - Page.tsx: Diseño único para una URL. Estará en todas las carpetas que vayamos creando para tener routing en las aplicaciones.
+    - Layout.tsx: Diseño global que comparte una URL o sus segmentos hijos. 
+        *Por ejemplo si creamos un layout en products, también se aplica a new*
+    - Loading: Componente que se muestra mientras se carga una página con Suspense
+    - Not-found: Componente que se muestra cuando un recurso no es encontrado - 404
+    - Error: Componente que se muestra cuando hay errores inesperados
+    - Route: Componente para crear un endpoint de una REST API
+
+- **Rendering en NextJS** - Componentes del Cliente y del Servidor
+    - Componentes: Una de las principales características de NextJS es poder ejecutar código React en el servidor. *En versiones anteriores el mismo código se ejecutaba 1º en el servidor y después en el cliente, permitiendo que en un mismo proyecto de Next pudiesemos obtener los datos de una REST API y después mostrar los resultados en pantalla*. Desde Next13 con App Directory, todos los componentes se ejecutan por defecto en el servidor (todos los componentes son por defecto Server Componentes y no híbridos). Pero podemos ejecutar componentes que se ejecuten en el cliente utilizando la directiva ``use client`` 
+    - Con componentes de Servidor y Cliente, es importante saber que el código es unidireccional: Primero se ejecutan los componentes del servidor y después los del cliente. Los componentes que son hijos de un componente de cliente, son automáticamente también del cliente aunque no se especifiquen.
+    - Un componente de servidor puede renderizar componentes de cliente 
+    - ¿Cuándo utilizar Server Components?
+        - Cuando queramos obtener datos de un ORM y mostrar la información
+        - Para ejecutar funciones del servidor y acceder a recursos únicamente en el backend
+        - Autenticación, API Keys, Tokens...
+    - ¿Cuándo utilizar Client Components?
+        - Cuando queramos utilizar eventos y añadir interacción entre aplicaciones mediante onClick, onSubmit, onChange...
+        - Cuando queramos utilizar los hooks de React como useState, useEffect, useReducer...
+        - Para usar librerías que no se ejecutan en el servidor como toast, zustand u otras del cliente.
+        - Cuando necesitemos utilizar API's del navegador como LocalStorage, Notification API, GeoLocation API, etc
+        - Para consumir datos de una API externa en JSON

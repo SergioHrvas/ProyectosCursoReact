@@ -55,5 +55,5 @@ A continuación describiré los distintos proyectos que voy haciendo a la vez qu
 - **TaskHub**: Aplicación para la gestión de proyectos y sus respectivas tareas. La más grande de todos los proyectos del repositorio con todas las tecnologías más importantes del entorno react vistas hasta ahora y usando librerías de componentes como **dnd-kit** o **chakra-ui/pin-input**.
     - API Rest propia en Node con MongoDB y Express (utilizando tecnologías como **mongoose**, **jsonwebtoken**, **express-validator**, **morgan**, **bcrypt**, etc).
     - Funcionalidades llamativas como un sistema de login robusto y completo, arrastrables para cambiar el estado de tareas, etc
-    - Enlace al proyecto: https://taskhub-react-project.vercel.app/auth/login (desplegado en MongoAtlas, Vercel y Render)
+    - Enlace al proyecto: https://taskhub-react-project.vercel.app (desplegado en MongoAtlas, Vercel y Render)
 
