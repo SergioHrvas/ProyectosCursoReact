@@ -1109,3 +1109,21 @@ const fetcher = useFetcher()
         - Para usar librerías que no se ejecutan en el servidor como toast, zustand u otras del cliente.
         - Cuando necesitemos utilizar API's del navegador como LocalStorage, Notification API, GeoLocation API, etc
         - Para consumir datos de una API externa en JSON
+
+- EN NextJS podemos hacer Data Fetching de 4 formas distintas:
+    - En el servidor con fetch()
+    - En el servidor con un ORM o consultas SQL
+    - En el cliente con un Route Handler y una petición GET
+    - En el cliente con React Query, axios u otras opciones
+- Podemos obtener datos y consultar el ORM en cualquier página o ruta oeen cualquier componente **que se ejecute en el servidor**. Para obtener los datos en componentes de cliente, tendríamos que utilizar React Query, SWR, Axios, etc
+- NextJS si soporta componentes asíncronos (React no)
+- En NextJS podemos utilizar enlaces e imágenes optimizados con ``<Image>`` y ``<Link>`` que ofrece.
+- **Routing dinámico**: A veces necesitamos acceder a un recurso de la base de datos por su ID o slug -> ver detalles de un determinado item/entidad. En el App Router lo hacemos mediante una carpeta y un nombre entre corchetes: ``[id]`` o ``[slug]``
+
+## Prisma
+- ORM OpenSource para JS o TS.
+- Consta de 3 herramientas:
+    - Prisma Client: Para interactuar en el código con la base de datos. Es un querybuilder y nos permite consultar la base de datos, soportando NodeJS y TS y pudiendose utilizar con NextJS sin problema
+    - Prisma Migrate: Para el sistema de migraciones. Podemos definir las tablas y relaciones en PRisma para luego generar la base de datos por nosotros con esta herramienta 
+    - Prisma Studio: Cliente web para ver los datos de la db. No es Open Source.
+- Soporta MariaDB, SQLServer, MongoDB, MySQL, PostgreSQL y SQLite
