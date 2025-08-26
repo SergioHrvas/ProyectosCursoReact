@@ -47,42 +47,42 @@ export const products = [
   {
     name: "Pizza Margherita",
     price: 13.0,
-    image: "pizzas_01",
+    image: "pizza_01",
     categoryId: 2,
     description: "Pizza clásica con salsa de tomate natural, queso mozzarella vegetal, albahaca fresca y aceite de oliva extra virgen"
   },
   {
     name: "Pizza de Champiñones",
     price: 14.0,
-    image: "pizzas_02",
+    image: "pizza_02",
     categoryId: 2,
     description: "Pizza con champiñones portobello salteados, ajo, romero y queso vegano fundido sobre base de masa madre"
   },
   {
     name: "Pizza de Verduras Grilladas",
     price: 14.5,
-    image: "pizzas_03",
+    image: "pizza_03",
     categoryId: 2,
     description: "Pizza con berenjena, calabacín y pimientos asados, cebolla morada y reducción balsámica"
   },
   {
     name: "Pizza de 'Pepperoni' Vegetal",
     price: 14.5,
-    image: "pizzas_04",
+    image: "pizza_04",
     categoryId: 2,
     description: "Pizza con pepperoni vegetal a base de seitán, queso vegano y orégano fresco sobre salsa de tomate artesanal"
   },
   {
     name: "Pizza Hawaiana con 'Jamón' Vegetal",
     price: 15.0,
-    image: "pizzas_05",
+    image: "pizza_05",
     categoryId: 2,
     description: "Pizza tropical con jamón vegetal de gluten, piña asada, queso vegano y salsa barbacoa"
   },
   {
     name: "Pizza 4 Estaciones",
     price: 15.5,
-    image: "pizzas_06",
+    image: "pizza_06",
     categoryId: 2,
     description: "Pizza gourmet con alcachofas, champiñones, olivas negras y pimientos asados sobre base integral"
   },

@@ -1118,7 +1118,7 @@ const fetcher = useFetcher()
 - Podemos obtener datos y consultar el ORM en cualquier página o ruta oeen cualquier componente **que se ejecute en el servidor**. Para obtener los datos en componentes de cliente, tendríamos que utilizar React Query, SWR, Axios, etc
 - NextJS si soporta componentes asíncronos (React no)
 - En NextJS podemos utilizar enlaces e imágenes optimizados con ``<Image>`` y ``<Link>`` que ofrece.
-- **Routing dinámico**: A veces necesitamos acceder a un recurso de la base de datos por su ID o slug -> ver detalles de un determinado item/entidad. En el App Router lo hacemos mediante una carpeta y un nombre entre corchetes: ``[id]`` o ``[slug]``
+- **Routing dinámico**: A veces necesitamos acceder a un recurso de la base de datos por su ID o slug -> ver detalles de un determinado item/entidad. En el App Router lo hacemos mediante una carpeta y un nombre entre corchetes: ``[id]`` o ``[slug]``, etc 
 
 ## Prisma
 - ORM OpenSource para JS o TS.
