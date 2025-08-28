@@ -1120,6 +1120,10 @@ const fetcher = useFetcher()
 - En NextJS podemos utilizar enlaces e imágenes optimizados con ``<Image>`` y ``<Link>`` que ofrece.
 - **Routing dinámico**: A veces necesitamos acceder a un recurso de la base de datos por su ID o slug -> ver detalles de un determinado item/entidad. En el App Router lo hacemos mediante una carpeta y un nombre entre corchetes: ``[id]`` o ``[slug]``, etc 
 
+- **Server Actions**: Funciones asíncronas que se ejecutan en el servidor y se pueden utilizar con clientes de componente y servidor. Se utilizan para crear datos o mutarlos y estan muy ligados al CRUD. Utilizan la directiva "use server" que en el caso de componentes de servidor debe ser la primera línea de la función y en el Client Components se deben importar de otro archivo que en la parte superior deben tener esa directiva.
+    - Deben estar dentro del atributo ``action={}`` de un formulario ``<form>`` pero también pueden ser llamados dentro de un useEffect o al presionar un botón.
+    - No son exclusivos de NextJS, ya que REACT en la version 19 los va a incorporar 
+
 ## Prisma
 - ORM OpenSource para JS o TS.
 - Consta de 3 herramientas:
