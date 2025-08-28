@@ -9,18 +9,32 @@ import { toast } from "react-toastify"
 
 export const OrderSummary = () => {
 
-  const { order } = useStore()
+  const { order, clearOrder } = useStore()
   const total = useMemo(() => order.reduce((total, entry) => total + entry.subtotal, 0), [order])
   
-  const handleCreateOrder = (formData: FormData) => {
+  const handleCreateOrder = async (formData: FormData) => {
     const data = {
-      name: formData.get('name')
+      name: formData.get('name'),
+      total: total,
+      orderProducts: order
     }
 
     const result = OrderSchema.safeParse(data)
     if(!result.success){
       result.error.issues.forEach(issue => toast.error(issue.message))
+      return
     }
+
+    const response = await createOrder(data)
+    if(response && response.errors.length > 0){
+      response.errors.forEach(error => toast.error(error))
+      return
+    }
+
+    toast.success("Pedido realizado correctamente")
+    clearOrder()
+
+
   }
   return (
     <aside className="lg:h-screen lg:overflow-y-scroll md:w-64 lg:w-96 p-5">
