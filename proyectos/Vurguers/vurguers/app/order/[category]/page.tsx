@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/products/ProductCard"
+import { TitlePage } from "@/components/ui/TitlePage"
 import { prisma } from "@/src/lib/prisma"
 
 type OrderPageProps = {
@@ -25,10 +26,7 @@ export default async function OrderPage({params}: OrderPageProps) {
 
   return (
     <>
-      <h1
-        className="text-2xl my-10 ml-2 font-bold">
-          Selecciona los productos para tu pedido
-        </h1>
+      <TitlePage> Selecciona los productos para tu pedido </TitlePage>
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 items-stretch p-2">
         {products.map(product => (
           <ProductCard key={product.id} product={product}/>

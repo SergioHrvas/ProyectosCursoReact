@@ -21,7 +21,7 @@ export const OrderDetails = ({ entry }: OrderDetailsProps) => {
                         type="button"
                         onClick={() => removeFromOrder(entry.id)}
                     >
-                        <XCircleIcon className="text-red-600 h-8 w-8" />
+                        <XCircleIcon className="text-red-600 h-8 w-8 cursor-pointer" />
                     </button>
                 </div>
                 <p className="text-2xl text-emerald-700 font-black">

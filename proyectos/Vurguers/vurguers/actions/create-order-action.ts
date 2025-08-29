@@ -1,5 +1,5 @@
 "use server"
-
+import { revalidatePath } from "next/cache"
 import { prisma } from "@/src/lib/prisma"
 import { OrderSchema } from "@/src/schema"
 
@@ -24,6 +24,7 @@ export async function createOrder(data : unknown){
                 }
             }
         })
+
     } catch (error) {
         
     }
